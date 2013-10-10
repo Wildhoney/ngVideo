@@ -7,6 +7,7 @@
     <file path="/Dummy.txt" changelist="b8c42f7e-6d36-4715-8c32-bba083936a3c" time="1381443525107" ignored="false" />
     <file path="/index.html" changelist="b8c42f7e-6d36-4715-8c32-bba083936a3c" time="1381443560263" ignored="false" />
     <file path="/default.css" changelist="b8c42f7e-6d36-4715-8c32-bba083936a3c" time="1381443675281" ignored="false" />
+    <file path="/.gitignore" changelist="b8c42f7e-6d36-4715-8c32-bba083936a3c" time="1381443708649" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -64,6 +65,7 @@
       <list>
         <option value="$PROJECT_DIR$/example/index.html" />
         <option value="$PROJECT_DIR$/example/css/default.css" />
+        <option value="$PROJECT_DIR$/.gitignore" />
       </list>
     </option>
   </component>
@@ -79,7 +81,7 @@
     <OptionsSetting value="true" id="Update" />
     <OptionsSetting value="true" id="Status" />
     <OptionsSetting value="true" id="Edit" />
-    <ConfirmationsSetting value="0" id="Add" />
+    <ConfirmationsSetting value="1" id="Add" />
     <ConfirmationsSetting value="0" id="Remove" />
   </component>
   <component name="ProjectReloadState">
@@ -282,6 +284,13 @@
     <entry file="file://$PROJECT_DIR$/example/index.html">
       <provider selected="true" editor-type-id="text-editor">
         <state line="11" column="37" selection-start="222" selection-end="222" vertical-scroll-proportion="-6.875">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="2" column="17" selection-start="38" selection-end="38" vertical-scroll-proportion="0.05199307">
           <folding />
         </state>
       </provider>
