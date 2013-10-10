@@ -1,0 +1,21 @@
+{
+  "name": "HTML5-Angular-Video",
+  "version": "0.0.1",
+  "description": "HTML5-Angular-Video",
+  "main": "example/index.html",
+  "directories": {
+    "example": "example"
+  },
+  "scripts": {
+    "test": "grunt test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Wildhoney/HTML5-Angular-Video.git"
+  },
+  "author": "Adam Timberlake",
+  "license": "BSD-2-Clause",
+  "bugs": {
+    "url": "https://github.com/Wildhoney/HTML5-Angular-Video/issues"
+  }
+}

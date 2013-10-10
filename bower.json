@@ -1,0 +1,17 @@
+{
+  "name": "HTML5-Angular-Video",
+  "version": "0.0.1",
+  "homepage": "https://github.com/Wildhoney/HTML5-Angular-Video",
+  "authors": [
+    "Adam Timberlake <adam.timberlake@gmail.com>"
+  ],
+  "main": "example/index.html",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
