@@ -8,17 +8,3 @@ section.container {
     max-width: 600px;
     margin: auto;
 }
-
-div.video-container {
-    padding-bottom: 0;
-    box-shadow: 0 0 30px rgba(0, 0, 0, .75);
-    overflow: hidden;
-    float: left;
-}
-
-div.video-container video {
-    width: 100%;
-    float: left;
-    background-color: black;
-    box-shadow: 0 0 30px rgba(0, 0, 0, .25);
-}
