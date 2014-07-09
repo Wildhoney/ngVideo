@@ -11,7 +11,7 @@ script:
 deploy:
   provider: heroku
   api_key:
-    secure: bifdQlsvJLZrfOjLB414/NmrPBs9GElPrLh04tUBfZWl8MXvU3mQLf2jGGXWzebk5vcIeu/RrPOJn4F1aNIZCC2pDPDZZc2GqyMXbRhU4d39hFYfhe1Y1V84TgtWCPnV9Lx4blOAMbwKqfMzJf0D3MlodLsiEy9OyjZ7BW3TE8g=
-  app: ngVideo
+    secure: El216+2f58AXkInfx5f5oiLnEhcoPPAVeLx7wIaxlqEx2dvYZdUQ6gmGK7kcl5jamslTZyo9UOCr9evIMfhxnILaqPPOEkDsrkHfDt9lCBeXkXtKZi5UP31Rr0xcci7op3pB8DkP1oIKeubLdQjszcUNbfDr1b4V5l9H2KZms88=
+  app: ng-video
   on:
     repo: Wildhoney/ngVideo
