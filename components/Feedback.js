@@ -8,7 +8,9 @@
      */
     var requiredProperties = ['duration', 'currentTime'];
 
-    $angular.module('ngVideo').directive('viFeedback', function ngVideoDirectiveScreen() {
+    $angular.module('ngVideo').directive('viFeedback', ['ngVideoOptions',
+
+    function ngVideoDirectiveScreen(ngVideoOptions) {
 
         return {
 
@@ -16,22 +18,28 @@
              * @property restrict
              * @type {String}
              */
-            restrict: 'CA',
+            restrict: ngVideoOptions.RESTRICT,
 
             /**
              * @property controller
              * @type {Function}
              * @param $scope {Object}
              */
-            controller: ['$scope', '$interval', 'ngVideoOptions',
+            controller: ['$scope', '$interval', '$window', 'ngVideoOptions',
 
-            function controller($scope, $interval, ngVideoOptions) {
+            function controller($scope, $interval, $window, ngVideoOptions) {
 
                 /**
                  * @property duration
                  * @type {Number}
                  */
                 $scope.duration = 0;
+
+                /**
+                 * @property lastUpdate
+                 * @type {Number}
+                 */
+                $scope.lastUpdate = 0;
 
                 /**
                  * @property currentTime
@@ -70,6 +78,9 @@
                         $scope.buffered = $math.round(player.buffered.end(0) / player.duration) * 100;
 
                     }
+
+                    // Notify everybody that the statistics have been updated!
+                    $scope.lastUpdate = new $window.Date().getTime();
 
                 };
 
@@ -114,6 +125,6 @@
 
         }
 
-    });
+    }]);
 
 })(window.angular, window.Math);
