@@ -35,9 +35,9 @@
             <a href="#" vi-controls-pause>Pause</a>
         </section>
 
-        <section vi-feedback>
-            <!--console.log($('video').currentTime / $('video').duration);-->
-            {{currentTime}} / {{duration}}
+        <section vi-feedback class="feedback">
+            <div>Time: {{currentTime}} / {{duration}}</div>
+            <div>Buffered: {{buffered}}%</div>
         </section>
 
     </section>

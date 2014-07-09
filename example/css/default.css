@@ -8,8 +8,19 @@ section.video {
     border: 1px solid lightgrey;
     width: 500px;
     height: 300px;
+    position: relative;
 }
 
 section.video video {
     width: 100%;
+}
+
+section.video section.feedback {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    color: white;
+    font-family: Arial, Tahoma, Helvetica;
+    font-size: 14px;
+    text-shadow: 1px 1px 0 rgba(0, 0, 0, .5);
 }

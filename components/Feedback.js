@@ -1,4 +1,4 @@
-(function($angular) {
+(function($angular, $math) {
 
     "use strict";
 
@@ -40,6 +40,12 @@
                 $scope.currentTime = 0;
 
                 /**
+                 * @property buffered
+                 * @type {Number}
+                 */
+                $scope.buffered = 0;
+
+                /**
                  * @property interval
                  * @type {Object}
                  */
@@ -51,10 +57,19 @@
                  */
                 $scope.grabStatistics = function grabStatistics() {
 
+                    var player = $scope.player;
+
                     // Iterate over each property we wish to listen to.
                     $angular.forEach(requiredProperties, function forEach(property) {
                         $scope[property] = $scope.player[property] || $scope[property];
                     });
+
+                    if ($scope.player.buffered.length !== 0) {
+
+                        // Update the buffered amount.
+                        $scope.buffered = $math.round(player.buffered.end(0) / player.duration) * 100;
+
+                    }
 
                 };
 
@@ -101,4 +116,4 @@
 
     });
 
-})(window.angular);
+})(window.angular, window.Math);
