@@ -52,16 +52,23 @@
     }]);
 
     /**
-     * @property directiveControlsName
-     * @type {String}
+     * @method createControlDirective
+     * @param name {String}
+     * @return {Object}
      */
-    var directiveControlsName = 'viControlsItem';
+    var createControlDirective = function createControlDirective(name) {
 
-    /**
-     * @directive ngVideoControlsButton
-     * @type {Function}
-     */
-    module.directive(directiveControlsName, ['video', 'ngVideoOptions',
+        /**
+         * @property directiveLabel
+         * @type {String}
+         */
+        var directiveLabel = name.charAt(0).toUpperCase() + name.slice(1);
+
+        /**
+         * @directive viControlsItem
+         * @type {Function}
+         */
+        module.directive('viControls' + directiveLabel, ['video', 'ngVideoOptions',
 
         function viControlsItem(video, ngVideoOptions) {
 
@@ -75,24 +82,29 @@
 
                 /**
                  * @method link
+                 * @param scope {Object}
+                 * @param element {Object}
                  * @return {void}
                  */
-                link: function link(scope, element, attrs) {
-
-                    // Discover the type of the control.
-                    var type = attrs[directiveControlsName];
+                link: function link(scope, element) {
 
                     // Ensure the control type is currently supported.
-                    if (typeof scope[type] !== 'function') {
-                        video.throwException("Control type '" + type + "' is unsupported");
+                    if (typeof scope[name] !== 'function') {
+                        video.throwException("Control type '" + name + "' is unsupported");
                     }
 
-                    element.bind('click', scope[type]);
+                    element.bind('click', scope[name]);
 
                 }
 
             }
 
         }]);
+
+    };
+
+    // Attach all of our control item directives.
+    createControlDirective('play');
+    createControlDirective('pause');
 
 })(window.angular);
