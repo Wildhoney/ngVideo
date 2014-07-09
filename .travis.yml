@@ -1,10 +1,17 @@
 language: node_js
 node_js:
-  - '0.10'
+- '0.10'
 before_script:
-  - npm install -g grunt-cli
-  - npm install -g bower
+- npm install -g grunt-cli
+- npm install -g bower
 script:
-  - npm install
-  - bower install
-  - grunt test
+- npm install
+- bower install
+- grunt test
+deploy:
+  provider: heroku
+  api_key:
+    secure: bifdQlsvJLZrfOjLB414/NmrPBs9GElPrLh04tUBfZWl8MXvU3mQLf2jGGXWzebk5vcIeu/RrPOJn4F1aNIZCC2pDPDZZc2GqyMXbRhU4d39hFYfhe1Y1V84TgtWCPnV9Lx4blOAMbwKqfMzJf0D3MlodLsiEy9OyjZ7BW3TE8g=
+  app: ngVideo
+  on:
+    repo: Wildhoney/ngVideo
