@@ -34,15 +34,6 @@ section.video section.feedback ul {
     padding: 15px;
 }
 
-/*section.video section.feedback div.timeline input {*/
-    /*pointer-events: all;*/
-    /*outline: none;*/
-    /*position: absolute;*/
-    /*bottom: 40px;*/
-    /*width: 90%;*/
-    /*left: 5%;*/
-/*}*/
-
 section.video section.feedback div.timeline {
     background: rgba(0, 0, 0, .55);
     outline: none;
@@ -67,4 +58,15 @@ section.video section.feedback div.timeline input::-webkit-slider-thumb {
     outline: none;
     height: 15px;
     width: 15px;
+}
+
+section.video section.controls {
+    font-size: 12px;
+    font-family: Arial, Tahoma, Helvetica, sans-serif;
+    padding: 1px 8px 0 6px;
+}
+
+section.video section.controls a {
+    color: black;
+    margin: 0 5px;
 }
