@@ -17,6 +17,11 @@ section.video video {
     background-color: black;
 }
 
+section.video section.loading img {
+    float: left;
+    margin-right: 8px;
+}
+
 section.video section.feedback {
     position: absolute;
     width: 100%;
@@ -80,4 +85,19 @@ section.video section.playlist {
     width: 250px;
     height: 319px;
     right: -250px;
+}
+
+section.video section.playlist ul {
+    margin: 0;
+    font-family: Arial, Tahoma, Helvetica, sans-serif;
+    font-size: 12px;
+    list-style-type: none;
+    padding: 10px;
+}
+
+section.video section.playlist ul li {
+    padding: 3px 0;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
 }
