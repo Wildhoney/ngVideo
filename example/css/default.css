@@ -1,10 +1,5 @@
-body {
-    background-color: lightgrey;
-    padding: 40px;
-    text-align: center;
-}
-
-section.container {
-    max-width: 600px;
-    margin: auto;
+* {
+    padding: 0;
+    border: 0;
+    box-sizing: border-box;
 }

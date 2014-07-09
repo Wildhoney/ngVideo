@@ -1,8 +1,8 @@
 {
-  "name": "HTML5-Angular-Video",
-  "version": "0.0.1",
-  "description": "HTML5-Angular-Video",
-  "main": "example/index.html",
+  "name": "ng-video",
+  "version": "0.1.0",
+  "description": "Modularised HTML5 video implementation using Angular.",
+  "main": "dist/ng-video.js",
   "directories": {
     "example": "example"
   },
@@ -11,11 +11,20 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/Wildhoney/HTML5-Angular-Video.git"
+    "url": "git://github.com/Wildhoney/ngVideo.git"
   },
-  "author": "Adam Timberlake",
-  "license": "BSD-2-Clause",
+  "keywords": [
+      "angular video",
+      "ngvideo",
+      "html5 video",
+      "html5 angular video",
+      "angular video player",
+      "angular html5 video player"
+  ],
+  "author": "Adam Timberlake <adam.timberlake@gmail.com>",
+  "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Wildhoney/HTML5-Angular-Video/issues"
-  }
+    "url": "https://github.com/Wildhoney/ngVideo/issues"
+  },
+  "homepage": "https://github.com/Wildhoney/ngVideo"
 }

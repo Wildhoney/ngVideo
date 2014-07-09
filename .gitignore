@@ -1,4 +1,4 @@
 /.idea
 /node_modules
-/bower_components
-/.sass-cache
+/example/js/vendor/*
+!/example/js/vendor/.gitkeep
