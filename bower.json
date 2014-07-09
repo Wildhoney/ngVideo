@@ -8,12 +8,12 @@
   "description": "Modularised HTML5 video implementation using Angular.",
   "main": "dist/ng-video.js",
   "keywords": [
-      "angular video",
-      "ngvideo",
-      "html5 video",
-      "html5 angular video",
-      "angular video player",
-      "angular html5 video player"
+    "angular video",
+    "ngvideo",
+    "html5 video",
+    "html5 angular video",
+    "angular video player",
+    "angular html5 video player"
   ],
   "license": "MIT",
   "ignore": [
@@ -23,5 +23,8 @@
     "example/js/vendor",
     "test",
     "tests"
-  ]
+  ],
+  "dependencies": {
+    "angular": "~1.2.19"
+  }
 }
