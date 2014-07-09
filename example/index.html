@@ -37,10 +37,14 @@
 
         <section vi-feedback class="feedback">
 
-            <div>Time: {{currentTime}} / {{duration}}</div>
-            <div>Buffered: {{buffered}}%</div>
+            <ul class="data">
+                <li>Time: {{currentTime}} / {{duration}}</li>
+                <li>Buffered: {{buffered}}%</li>
+            </ul>
 
-            <section vi-timeline></section>
+            <div class="timeline">
+                <section vi-timeline></section>
+            </div>
 
         </section>
 
