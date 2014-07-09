@@ -2,7 +2,7 @@
 
     "use strict";
 
-    $angular.module('ngVideo').directive('ngVideoScreen', function ngVideoDirectiveScreen() {
+    $angular.module('ngVideo').directive('viScreen', function ngVideoDirectiveScreen() {
 
         return {
 
@@ -35,7 +35,7 @@
              * @return {void}
              */
             link: function link(scope, element) {
-                
+
                 element.append(scope.fetchHtml(scope.video));
 
             }

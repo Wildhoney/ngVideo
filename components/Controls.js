@@ -12,7 +12,7 @@
      * @directive ngVideoControls
      * @type {Function}
      */
-    module.directive('ngVideoControls', ['ngVideoOptions', function ngVideoControlsDirective(ngVideoOptions) {
+    module.directive('viControls', ['ngVideoOptions', function ngVideoControlsDirective(ngVideoOptions) {
 
         return {
 
@@ -55,7 +55,7 @@
      * @property directiveControlsName
      * @type {String}
      */
-    var directiveControlsName = 'ngVideoControlsButton';
+    var directiveControlsName = 'viControlsItem';
 
     /**
      * @directive ngVideoControlsButton
@@ -63,7 +63,7 @@
      */
     module.directive(directiveControlsName, ['video', 'ngVideoOptions',
 
-        function ngVideoControlsButton(video, ngVideoOptions) {
+        function viControlsItem(video, ngVideoOptions) {
 
             return {
 
