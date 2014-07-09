@@ -2,7 +2,14 @@
 
     "use strict";
 
-    $angular.module('ngVideo').directive('viScreen', function ngVideoDirectiveScreen() {
+    /**
+     * @directive viScreen
+     * @type {Function}
+     * @param ngVideoOptions {Object}
+     */
+    $angular.module('ngVideo').directive('viScreen', ['ngVideoOptions',
+
+    function ngScreenDirective(ngVideoOptions) {
 
         return {
 
@@ -10,7 +17,7 @@
              * @property restrict
              * @type {String}
              */
-            restrict: 'CA',
+            restrict: ngVideoOptions.RESTRICT,
 
             /**
              * @property controller
@@ -42,6 +49,6 @@
 
         }
 
-    });
+    }]);
 
 })(window.angular);

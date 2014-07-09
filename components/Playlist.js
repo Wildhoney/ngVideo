@@ -3,58 +3,54 @@
     "use strict";
 
     /**
-     * @property module
-     * @type {Object}
-     */
-    var module = $angular.module('ngVideo');
-
-    /**
-     * @directive ngVideoControls
+     * @directive viPlaylist
      * @type {Function}
+     * @param ngVideoPlaylist {Array}
+     * @param ngVideoOptions {Object}
      */
-    module.directive('viPlaylist', ['ngVideoPlaylist', 'ngVideoOptions',
+    $angular.module('ngVideo').directive('viPlaylist', ['ngVideoPlaylist', 'ngVideoOptions',
 
-        function ngVideoPlaylistDirective(ngVideoPlaylist, ngVideoOptions) {
+    function ngPlaylistDirective(ngVideoPlaylist, ngVideoOptions) {
 
-            return {
+        return {
+
+            /**
+             * @property restrict
+             * @type {String}
+             */
+            restrict: ngVideoOptions.RESTRICT,
+
+            /**
+             * @property controller
+             * @type {Function}
+             * @param $scope {Object}
+             */
+            controller: ['$scope', function controller($scope) {
 
                 /**
-                 * @property restrict
-                 * @type {String}
+                 * @property videos
+                 * @type {Array}
                  */
-                restrict: ngVideoOptions.RESTRICT,
+                $scope.videos = ngVideoPlaylist;
 
                 /**
-                 * @property controller
-                 * @type {Function}
-                 * @param $scope {Object}
+                 * @method playVideo
+                 * @param model {Object}
+                 * @return {void}
                  */
-                controller: ['$scope', function controller($scope) {
+                $scope.playVideo = function playVideo(model) {
 
-                    /**
-                     * @property videos
-                     * @type {Array}
-                     */
-                    $scope.videos = ngVideoPlaylist;
+                    // Change the source of the video, and type if necessary.
+                    $scope.player.setAttribute('src', model.src);
+                    $scope.player.setAttribute('type', model.type);
+                    $scope.player.load();
 
-                    /**
-                     * @method playVideo
-                     * @param model {Object}
-                     * @return {void}
-                     */
-                    $scope.playVideo = function playVideo(model) {
+                };
 
-                        // Change the source of the video, and type if necessary.
-                        $scope.player.setAttribute('src', model.src);
-                        $scope.player.setAttribute('type', model.type);
-                        $scope.player.load();
+            }]
 
-                    };
+        }
 
-                }]
-
-            }
-
-        }]);
+    }]);
 
 })(window.angular);

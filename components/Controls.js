@@ -17,10 +17,13 @@
     var actions = ['play', 'pause'];
 
     /**
-     * @directive ngVideoControls
+     * @directive viControls
      * @type {Function}
+     * @param ngVideoOptions {Object}
      */
-    module.directive('viControls', ['ngVideoOptions', function ngVideoControlsDirective(ngVideoOptions) {
+    module.directive('viControls', ['ngVideoOptions',
+
+    function ngControlsDirective(ngVideoOptions) {
 
         return {
 

@@ -31,6 +31,9 @@
     /**
      * @service video
      * @type {Function}
+     * @param $rootScope {Object}
+     * @param $timeout {Function|Object}
+     * @param ngVideoPlaylist {Array}
      */
     module.service('video', ['$rootScope', '$timeout', 'ngVideoPlaylist',
 
@@ -63,23 +66,6 @@
                 throw 'ngVideo: ' + message + '.';
             };
 
-            /**
-             * @method play
-             * @return {Boolean}
-             */
-            service.play = function play() {
-
-                if (ngVideoPlaylist.length === 0) {
-
-                    // Unable to process the video if we have zero sources.
-                    return false;
-
-                }
-
-                return true;
-
-            };
-
             return service;
 
         }]);
@@ -87,142 +73,145 @@
     /**
      * @directive ngVideo
      * @type {Function}
+     * @param video {Object}
+     * @param ngVideoPlaylist {Array}
+     * @param ngVideoOptions {Object}
      */
     module.directive('ngVideo', ['video', 'ngVideoPlaylist', 'ngVideoOptions',
 
-        function ngVideoDirective(video, ngVideoPlaylist, ngVideoOptions) {
+    function ngVideoDirective(video, ngVideoPlaylist, ngVideoOptions) {
 
-            return {
+        return {
+
+            /**
+             * @property restrict
+             * @type {String}
+             * @default "CA"
+             */
+            restrict: ngVideoOptions.RESTRICT,
+
+            /**
+             * @property scope
+             * @type {Boolean}
+             * @default true
+             */
+            scope: true,
+
+            /**
+             * @property controller
+             * @type {Function}
+             * @param $scope {Object}
+             */
+            controller: ['$rootScope', '$scope', function controller($rootScope, $scope) {
 
                 /**
-                 * @property restrict
+                 * @constant SOURCE_HTML
                  * @type {String}
-                 * @default "CA"
                  */
-                restrict: ngVideoOptions.RESTRICT,
+                $scope.SOURCE_HTML = '<source src="{{src}}" type="video/{{type}}" />';
 
                 /**
-                 * @property scope
+                 * @property video
+                 * @type {Object|null}
+                 */
+                $scope.video = ngVideoPlaylist[0] || null;
+
+                /**
+                 * @property player
+                 * @type {Object}
+                 */
+                $scope.player = {};
+
+                /**
+                 * @property playing
+                 * @type {Boolean}
+                 * @default false
+                 */
+                $scope.playing = false;
+
+                /**
+                 * @property loading
                  * @type {Boolean}
                  * @default true
                  */
-                scope: true,
+                $scope.loading = true;
 
                 /**
-                 * @property controller
-                 * @type {Function}
-                 * @param $scope {Object}
-                 */
-                controller: ['$rootScope', '$scope', function controller($rootScope, $scope) {
-
-                    /**
-                     * @constant SOURCE_HTML
-                     * @type {String}
-                     */
-                    $scope.SOURCE_HTML = '<source src="{{src}}" type="video/{{type}}" />';
-
-                    /**
-                     * @property video
-                     * @type {Object|null}
-                     */
-                    $scope.video = ngVideoPlaylist[0] || null;
-
-                    /**
-                     * @property player
-                     * @type {Object}
-                     */
-                    $scope.player = {};
-
-                    /**
-                     * @property playing
-                     * @type {Boolean}
-                     * @default false
-                     */
-                    $scope.playing = false;
-
-                    /**
-                     * @property loading
-                     * @type {Boolean}
-                     * @default true
-                     */
-                    $scope.loading = true;
-
-                    /**
-                     * Responsible for setting up the events to be fired based on
-                     * the video's state.
-                     *
-                     * @method setupEvents
-                     * @param player {Object}
-                     * @return {void}
-                     */
-                    $scope.setupEvents = function setupEvents(player) {
-
-                        player.bind('play', function onPlay() {
-                            $scope.playing = true;
-                            $scope.$apply();
-                        });
-
-                        player.bind('pause', function onPause() {
-                            $scope.playing = false;
-                            $scope.$apply();
-                        });
-
-                        player.bind('ended', function onEnded() {
-                            $scope.playing = false;
-                            $scope.$apply();
-                        });
-
-                        player.bind('loadstart', function onLoadStart() {
-
-                            $scope.loading = true;
-                            $scope.$apply();
-
-                        });
-
-                        player.bind('loadeddata', function onLoadEnd() {
-
-                            $scope.loading = false;
-                            $rootScope.$broadcast('ng-video/reset');
-                            $scope.$apply();
-
-                            if ($scope.playing) {
-
-                                // If we're already determined to be playing then force
-                                // the starting of the video.
-                                $scope.play();
-
-                            }
-
-                        });
-
-                    };
-
-                }],
-
-                /**
-                 * @method link
+                 * Responsible for setting up the events to be fired based on
+                 * the video's state.
+                 *
+                 * @method setupEvents
+                 * @param player {Object}
                  * @return {void}
                  */
-                link: function link(scope, element) {
+                $scope.setupEvents = function setupEvents(player) {
 
-                    // Attempt to find the video node.
-                    var player = element.find('video');
+                    player.bind('play', function onPlay() {
+                        $scope.playing = true;
+                        $scope.$apply();
+                    });
 
-                    // Ensure the video player exists.
-                    if (player.length === 0 || typeof player.attr('vi-screen') === 'undefined') {
-                        video.throwException("Must add ng-video-screen directive");
-                    }
+                    player.bind('pause', function onPause() {
+                        $scope.playing = false;
+                        $scope.$apply();
+                    });
 
-                    // We have the video player so store its instance.
-                    scope.player = player[0];
+                    player.bind('ended', function onEnded() {
+                        $scope.playing = false;
+                        $scope.$apply();
+                    });
 
-                    // Set-up the events to be fired.
-                    scope.setupEvents(player);
+                    player.bind('loadstart', function onLoadStart() {
 
+                        $scope.loading = true;
+                        $scope.$apply();
+
+                    });
+
+                    player.bind('loadeddata', function onLoadEnd() {
+
+                        $scope.loading = false;
+                        $rootScope.$broadcast('ng-video/reset');
+                        $scope.$apply();
+
+                        if ($scope.playing) {
+
+                            // If we're already determined to be playing then force
+                            // the starting of the video.
+                            $scope.play();
+
+                        }
+
+                    });
+
+                };
+
+            }],
+
+            /**
+             * @method link
+             * @return {void}
+             */
+            link: function link(scope, element) {
+
+                // Attempt to find the video node.
+                var player = element.find('video');
+
+                // Ensure the video player exists.
+                if (player.length === 0 || typeof player.attr('vi-screen') === 'undefined') {
+                    video.throwException("Must add ng-video-screen directive");
                 }
+
+                // We have the video player so store its instance.
+                scope.player = player[0];
+
+                // Set-up the events to be fired.
+                scope.setupEvents(player);
 
             }
 
-        }]);
+        }
+
+    }]);
 
 })(window.angular);

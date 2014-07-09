@@ -8,9 +8,14 @@
      */
     var requiredProperties = ['duration', 'currentTime'];
 
+    /**
+     * @directive viFeedback
+     * @type {Function}
+     * @param ngVideoOptions {Object}
+     */
     $angular.module('ngVideo').directive('viFeedback', ['ngVideoOptions',
 
-    function ngVideoDirectiveScreen(ngVideoOptions) {
+    function ngFeedbackDirective(ngVideoOptions) {
 
         return {
 
@@ -24,6 +29,9 @@
              * @property controller
              * @type {Function}
              * @param $scope {Object}
+             * @param $interval {Function|Object}
+             * @param $window {Object}
+             * @param ngVideoOptions {Object}
              */
             controller: ['$scope', '$interval', '$window', 'ngVideoOptions',
 
