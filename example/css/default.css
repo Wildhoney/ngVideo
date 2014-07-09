@@ -7,12 +7,14 @@
 section.video {
     border: 1px solid lightgrey;
     width: 500px;
-    height: 300px;
+    height: 320px;
     position: relative;
 }
 
 section.video video {
     width: 100%;
+    height: 290px;
+    background-color: black;
 }
 
 section.video section.feedback {
@@ -38,7 +40,7 @@ section.video section.feedback div.timeline {
     background: rgba(0, 0, 0, .55);
     outline: none;
     position: absolute;
-    bottom: 40px;
+    bottom: 55px;
     width: 90%;
     left: 5%;
 }
@@ -63,10 +65,19 @@ section.video section.feedback div.timeline input::-webkit-slider-thumb {
 section.video section.controls {
     font-size: 12px;
     font-family: Arial, Tahoma, Helvetica, sans-serif;
-    padding: 1px 8px 0 6px;
+    padding: 3px 8px 0 6px;
 }
 
 section.video section.controls a {
     color: black;
     margin: 0 5px;
+}
+
+section.video section.playlist {
+    border: 1px solid lightgray;
+    position: absolute;
+    top: 0;
+    width: 250px;
+    height: 319px;
+    right: -250px;
 }

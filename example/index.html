@@ -38,13 +38,25 @@
         <section vi-feedback class="feedback">
 
             <ul class="data">
-                <li>Time: {{currentTime}} / {{duration}}</li>
+                <li>Time: {{currentTime}}s / {{duration}}s</li>
                 <li>Buffered: {{buffered}}%</li>
+                <li>Loading: {{loading ? "Yes" : "No"}}</li>
+                <li>Playing: {{playing ? "Yes" : "No"}}</li>
             </ul>
 
             <div class="timeline">
                 <section vi-timeline></section>
             </div>
+
+        </section>
+
+        <section vi-playlist class="playlist">
+
+            <ul>
+                <li ng-repeat="video in videos">
+                    <a href="#" ng-click="playVideo(video)">{{video.src}}</a>
+                </li>
+            </ul>
 
         </section>
 

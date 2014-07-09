@@ -34,6 +34,18 @@
                  */
                 link: function(scope, element) {
 
+                    /**
+                     * @property wasPlaying
+                     * @type {Boolean}
+                     * @default false
+                     */
+                    scope.wasPlaying = false;
+
+                    // When we need to force the resetting of the range.
+                    scope.$on('ng-video/reset', function resetRange() {
+                        element.val(0);
+                    });
+
                     // Listen for when the statistics have been updated.
                     scope.$watch('lastUpdate', function onUpdate() {
 
@@ -49,12 +61,17 @@
                         // Whenever the user attempts to seek we'll pause to allow them to
                         // change it in peace.
                         element.bind('mousedown', function onMouseDown() {
+                            scope.wasPlaying = scope.playing;
                             scope.pause();
                         });
 
                         // Whenever the user finishes seeking, we'll continue playing the video.
                         element.bind('mouseup', function onMouseUp() {
-                            scope.play();
+
+                            // Only resume if the video was playing before.
+                            if (scope.wasPlaying) {
+                                scope.play();
+                            }
                         });
 
                         element.bind('change', function() {

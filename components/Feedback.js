@@ -69,7 +69,10 @@
 
                     // Iterate over each property we wish to listen to.
                     $angular.forEach(requiredProperties, function forEach(property) {
-                        $scope[property] = $scope.player[property] || $scope[property];
+
+                        $scope[property] = !isNaN($scope.player[property]) ? $scope.player[property]
+                                                                           : $scope[property];
+
                     });
 
                     if ($scope.player.buffered.length !== 0) {
@@ -102,6 +105,14 @@
                 $scope.endPolling = function endPolling() {
                     $interval.cancel($scope.interval);
                 };
+
+                // When we need to force the refreshing of the statistics.
+                $scope.$on('ng-video/reset', function() {
+
+                    $scope.player.currentTime = 0;
+                    $scope.grabStatistics();
+
+                });
 
                 // Monitor the status of the video player.
                 $scope.$watch('playing', function isPlaying(playing) {

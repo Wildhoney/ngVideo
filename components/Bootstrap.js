@@ -113,7 +113,7 @@
                  * @type {Function}
                  * @param $scope {Object}
                  */
-                controller: ['$scope', function controller($scope) {
+                controller: ['$rootScope', '$scope', function controller($rootScope, $scope) {
 
                     /**
                      * @constant SOURCE_HTML
@@ -141,6 +141,13 @@
                     $scope.playing = false;
 
                     /**
+                     * @property loading
+                     * @type {Boolean}
+                     * @default true
+                     */
+                    $scope.loading = true;
+
+                    /**
                      * Responsible for setting up the events to be fired based on
                      * the video's state.
                      *
@@ -150,14 +157,42 @@
                      */
                     $scope.setupEvents = function setupEvents(player) {
 
-                        player.bind('play pause', function onPlayPause() {
-                            $scope.playing = !$scope.playing;
+                        player.bind('play', function onPlay() {
+                            $scope.playing = true;
+                            $scope.$apply();
+                        });
+
+                        player.bind('pause', function onPause() {
+                            $scope.playing = false;
                             $scope.$apply();
                         });
 
                         player.bind('ended', function onEnded() {
                             $scope.playing = false;
                             $scope.$apply();
+                        });
+
+                        player.bind('loadstart', function onLoadStart() {
+
+                            $scope.loading = true;
+                            $scope.$apply();
+
+                        });
+
+                        player.bind('loadeddata', function onLoadEnd() {
+
+                            $scope.loading = false;
+                            $rootScope.$broadcast('ng-video/reset');
+                            $scope.$apply();
+
+                            if ($scope.playing) {
+
+                                // If we're already determined to be playing then force
+                                // the starting of the video.
+                                $scope.play();
+
+                            }
+
                         });
 
                     };

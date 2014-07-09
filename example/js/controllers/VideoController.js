@@ -16,15 +16,15 @@
          * @type {Object}
          */
         $scope.videos = {
-            mp4: 'http://www.w3schools.com/html/mov_bbb.mp4',
-            ogg: 'http://www.w3schools.com/html/mov_bbb.ogg'
+            first: 'http://www.w3schools.com/html/mov_bbb.mp4',
+            second: 'http://techslides.com/demos/sample-videos/small.mp4'
         };
 
-        video.addSource('mp4', $scope.videos.mp4);
+        video.addSource('mp4', $scope.videos.first);
 
-//        $timeout(function() {
-//            video.addSource('ogg', $scope.videos.ogg);
-//        }, 1);
+        $timeout(function() {
+            video.addSource('ogg', $scope.videos.second);
+        }, 1);
 
     });
 
