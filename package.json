@@ -14,17 +14,25 @@
     "url": "git://github.com/Wildhoney/ngVideo.git"
   },
   "keywords": [
-      "angular video",
-      "ngvideo",
-      "html5 video",
-      "html5 angular video",
-      "angular video player",
-      "angular html5 video player"
+    "angular video",
+    "ngvideo",
+    "html5 video",
+    "html5 angular video",
+    "angular video player",
+    "angular html5 video player"
   ],
   "author": "Adam Timberlake <adam.timberlake@gmail.com>",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/Wildhoney/ngVideo/issues"
   },
-  "homepage": "https://github.com/Wildhoney/ngVideo"
+  "homepage": "https://github.com/Wildhoney/ngVideo",
+  "dependencies": {
+    "grunt": "~0.4.5",
+    "grunt-contrib-copy": "~0.5.0",
+    "grunt-contrib-uglify": "~0.5.0",
+    "grunt-contrib-compress": "~0.9.1",
+    "grunt-contrib-jshint": "~0.10.0",
+    "grunt-contrib-jasmine": "~0.6.5"
+  }
 }
