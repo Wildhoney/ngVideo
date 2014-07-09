@@ -18,7 +18,8 @@
      * @type {Object}
      */
     module.constant('ngVideoOptions', {
-        RESTRICT: 'CA'
+        RESTRICT: 'CA',
+        REFRESH: 50
     });
 
     /**
@@ -132,6 +133,35 @@
                      */
                     $scope.player = {};
 
+                    /**
+                     * @property playing
+                     * @type {Boolean}
+                     * @default false
+                     */
+                    $scope.playing = false;
+
+                    /**
+                     * Responsible for setting up the events to be fired based on
+                     * the video's state.
+                     *
+                     * @method setupEvents
+                     * @param player {Object}
+                     * @return {void}
+                     */
+                    $scope.setupEvents = function setupEvents(player) {
+
+                        player.bind('play pause', function onPlayPause() {
+                            $scope.playing = !$scope.playing;
+                            $scope.$apply();
+                        });
+
+                        player.bind('ended', function onEnded() {
+                            $scope.playing = false;
+                            $scope.$apply();
+                        });
+
+                    };
+
                 }],
 
                 /**
@@ -150,6 +180,9 @@
 
                     // We have the video player so store its instance.
                     scope.player = player[0];
+
+                    // Set-up the events to be fired.
+                    scope.setupEvents(player);
 
                 }
 

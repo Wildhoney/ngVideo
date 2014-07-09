@@ -26,13 +26,6 @@
 //            video.addSource('ogg', $scope.videos.ogg);
 //        }, 1);
 
-
-        $scope.play = function() {
-
-//            video.play();
-
-        };
-
     });
 
 })(window.angular);

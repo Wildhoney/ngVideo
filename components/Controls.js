@@ -9,6 +9,14 @@
     var module = $angular.module('ngVideo');
 
     /**
+     * List of actions that are available on the video player.
+     *
+     * @property actions
+     * @type {String[]}
+     */
+    var actions = ['play', 'pause'];
+
+    /**
      * @directive ngVideoControls
      * @type {Function}
      */
@@ -104,7 +112,8 @@
     };
 
     // Attach all of our control item directives.
-    createControlDirective('play');
-    createControlDirective('pause');
+    $angular.forEach(actions, function forEach(actionName) {
+        createControlDirective(actionName);
+    });
 
 })(window.angular);
