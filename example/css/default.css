@@ -3,3 +3,13 @@
     border: 0;
     box-sizing: border-box;
 }
+
+section.video {
+    border: 1px solid lightgrey;
+    width: 500px;
+    height: 300px;
+}
+
+section.video video {
+    width: 100%;
+}

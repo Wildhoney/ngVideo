@@ -43,10 +43,7 @@ module.exports = function(grunt) {
                     { flatten: true, src: ['components/*.js'], dest: 'dist/ng-video.js' }
                 ]
             },
-            test: {
-                src: 'components/*.js',
-                dest: 'example/js/vendor/ng-video/ng-video.js'
-            },
+            test: { expand: true, cwd: 'components/', src: ['**'], dest: 'example/js/vendor/ng-video' },
             release: {
                 src: 'releases/<%= pkg.version %>.zip',
                 dest: 'releases/master.zip'
