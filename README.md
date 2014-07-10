@@ -63,7 +63,7 @@ Directives
 With the buffer directive you can display a bar similar to the timeline which displays the buffered segments of the video &ndash; using the `canvas` element.
 
 ```html
-<section vi-buffer class="buffer"></section>
+<section vi-buffer></section>
 ```
 
 Use the `ngVideoOptions` for modifying the necessary values pertaining to the `vi-buffer` directive: `BUFFER_COLOUR`, `BUFFER_HEIGHT`, `BUFFER_WIDTH`.
