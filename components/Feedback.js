@@ -27,7 +27,7 @@
 
             /**
              * @property controller
-             * @type {Function}
+             * @type {Array}
              * @param $scope {Object}
              * @param $interval {Function|Object}
              * @param $window {Object}

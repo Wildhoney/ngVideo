@@ -100,7 +100,8 @@
 
             /**
              * @property controller
-             * @type {Function}
+             * @type {Array}
+             * @param $rootScope {Object}
              * @param $scope {Object}
              */
             controller: ['$rootScope', '$scope', function controller($rootScope, $scope) {

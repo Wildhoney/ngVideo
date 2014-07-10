@@ -35,7 +35,7 @@
 
             /**
              * @property controller
-             * @type {Function}
+             * @type {Array}
              * @param $scope {Object}
              */
             controller: ['$scope', function controller($scope) {
