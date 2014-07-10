@@ -58,6 +58,18 @@ At this point you *should* notice that the video is visible in the player, but n
 Directives
 -------------------
 
+### Buffer ######
+
+With the buffer directive you can display a bar similar to the timeline which displays the buffered segments of the video &ndash; using the `canvas` element.
+
+```html
+<section vi-buffer class="buffer"></section>
+```
+
+Use the `ngVideoOptions` for modifying the necessary values pertaining to the `vi-buffer` directive: `BUFFER_COLOUR`, `BUFFER_HEIGHT`, `BUFFER_WIDTH`.
+
+**Note:** `ngVideoOptions` can be injected into your controllers in the same way as services.
+
 ### Controls ######
 
 The `vi-controls` directive allows you to add a play button and a pause button to your player &ndash; `vi-controls-play` and `vi-controls-pause` respectively, where `vi-controls` serves as the parent which contains the logic.
