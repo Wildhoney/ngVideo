@@ -925,10 +925,10 @@
 
     // Create all of the necessary volume directives.
 
-    createVolumeDirective('decrease', function viVolumeDirectiveDecrease(scope) {
+    createVolumeDirective('decrease', ['scope', function viVolumeDirectiveDecrease(scope) {
 
         console.log('Hre');
 
-    });
+    }]);
 
 })(window.angular);

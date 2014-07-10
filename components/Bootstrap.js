@@ -20,7 +20,8 @@
     module.constant('ngVideoOptions', {
         RESTRICT: 'CA',
         REFRESH: 50,
-        SCREEN: 'vi-screen'
+        SCREEN_DIRECTIVE: 'vi-screen',
+        VOLUME_STEPS: .1
     });
 
     /**
@@ -286,7 +287,7 @@
                 var player = element.find('video');
 
                 // Ensure the video player exists.
-                if (player.length === 0 || typeof player.attr(ngVideoOptions.SCREEN) === 'undefined') {
+                if (player.length === 0 || typeof player.attr(ngVideoOptions.SCREEN_DIRECTIVE) === 'undefined') {
                     video.throwException("Must add ng-video-screen directive");
                 }
 

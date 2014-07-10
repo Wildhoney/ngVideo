@@ -36,7 +36,13 @@
                  * @return {void}
                  */
                 $scope.setVolume = function setVolume(volume) {
+
+                    // Constrain the volume parameter.
+                    if (volume > 1) volume = 1;
+                    if (volume < 0) volume = 0;
+
                     $scope.player.volume = volume;
+
                 };
 
             }]
@@ -48,10 +54,10 @@
     /**
      * @method createVolumeDirective
      * @param name {String}
-     * @param linkFn {Function}
+     * @param clickFn {Function}
      * @return {Object}
      */
-    var createVolumeDirective = function createVolumeDirective(name, linkFn) {
+    var createVolumeDirective = function createVolumeDirective(name, clickFn) {
 
         /**
          * @property directiveLabel
@@ -77,22 +83,57 @@
 
                 /**
                  * @method link
+                 * @param scope {Object}
+                 * @param element {Object}
                  * @return {void}
                  */
-                link: linkFn
+                link: function link(scope, element) {
+
+                    element.bind('click', function onClick() {
+
+                        // Invoke the `clickFn` callback when the element has been clicked.
+                        clickFn.call(this, scope, scope.player.volume, ngVideoOptions.VOLUME_STEPS);
+                        scope.$apply();
+
+                    });
+
+                }
 
             }
 
-        }])
+        }]);
 
     };
 
-    // Create all of the necessary volume directives.
+    /**
+     * @directive viVolumeDecrease
+     * @type {Function}
+     * @param scope {Object}
+     * @param currentVolume {Number}
+     * @param volumeSteps {Number}
+     */
+    createVolumeDirective('decrease', function onDecreaseClick(scope, currentVolume, volumeSteps) {
+        scope.setVolume(currentVolume - volumeSteps);
+    });
 
-    createVolumeDirective('decrease', function viVolumeDirectiveDecrease(scope) {
+    /**
+     * @directive viVolumeIncrease
+     * @type {Function}
+     * @param scope {Object}
+     * @param currentVolume {Number}
+     * @param volumeSteps {Number}
+     */
+    createVolumeDirective('increase', function onIncreaseClick(scope, currentVolume, volumeSteps) {
+        scope.setVolume(currentVolume + volumeSteps);
+    });
 
-        console.log('Hre');
-
+    /**
+     * @directive viVolumeMute
+     * @type {Function}
+     * @param scope {Object}
+     */
+    createVolumeDirective('mute', function onMuteClick(scope) {
+        scope.setVolume(0);
     });
 
 })(window.angular);

@@ -1,6 +1,6 @@
 {
   "name": "ng-video",
-  "version": "0.1.18",
+  "version": "0.1.19",
   "description": "Modularised HTML5 video implementation using Angular.",
   "main": "dist/ng-video.js",
   "directories": {
