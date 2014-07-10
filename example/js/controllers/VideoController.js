@@ -16,7 +16,7 @@
          * @type {Boolean}
          * @default false
          */
-        $scope.playlistOpen = true;
+        $scope.playlistOpen = false;
 
         /**
          * @property videos
