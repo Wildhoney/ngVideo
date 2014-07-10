@@ -12,6 +12,13 @@
     function videoController($scope, $timeout, video) {
 
         /**
+         * @property playlistOpen
+         * @type {Boolean}
+         * @default true
+         */
+        $scope.playlistOpen = true;
+
+        /**
          * @property videos
          * @type {Object}
          */
@@ -20,11 +27,24 @@
             second: 'http://techslides.com/demos/sample-videos/small.mp4'
         };
 
-        video.addSource('mp4', $scope.videos.first);
+        /**
+         * @method videoName
+         * @param videoModel {Object}
+         * @return {String}
+         */
+        $scope.videoName = function videoName(videoModel) {
 
-        $timeout(function() {
-            video.addSource('ogg', $scope.videos.second);
-        }, 1);
+            switch (videoModel.src) {
+                case ($scope.videos.first): return "Bunny and Butterfly";
+                case ($scope.videos.second): return "Lego Mechanics";
+                default: return "Unknown Video";
+            }
+
+        };
+
+        // Add some video sources for the player!
+        video.addSource('mp4', $scope.videos.first);
+        video.addSource('ogg', $scope.videos.second);
 
     });
 

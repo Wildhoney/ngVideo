@@ -6,6 +6,7 @@
 
     <!-- Styles! -->
     <link rel="stylesheet" type="text/css" href="css/default.css" />
+    <link rel="stylesheet" type="text/css" href="js/vendor/bootstrap/dist/css/bootstrap.css" />
 
     <!-- Dependencies! -->
     <script type="text/javascript" src="js/vendor/angular/angular.js"></script>
@@ -31,41 +32,74 @@
         <video vi-screen></video>
 
         <section vi-controls class="controls">
-            <a href="#" vi-controls-play>Play</a>
-            <a href="#" vi-controls-pause>Pause</a>
-        </section>
-
-        <section vi-volume class="volume">
-            <a href="#" vi-volume-decrease="0.1">-</a>
-            <a href="#" vi-volume-increase="0.1">+</a>
-            <a href="#" vi-volume-mute>Mute</a>
+            <span vi-controls-play title="Play" class="glyphicon glyphicon-play"></span>
+            <span vi-controls-pause title="Pause" class="glyphicon glyphicon-pause"></span>
         </section>
 
         <section vi-feedback class="feedback">
 
-            <ul class="data">
-                <li>Time: {{currentTime}}s / {{duration}}s</li>
-                <li>Volume: {{volume}}</li>
-                <li>Buffered: {{buffered}}%</li>
-                <li>Loading: {{loading ? "Yes" : "No"}}</li>
-                <li>Playing: {{playing ? "Yes" : "No"}}</li>
-            </ul>
+            <!--<section class="loading">-->
+                <!--Loading&hellip;-->
+            <!--</section>-->
 
-            <div class="timeline">
-                <section vi-timeline></section>
-            </div>
+            <section vi-volume class="volume">
+
+                <div class="scale">
+                    <div class="bar" style="width: {{volume * 100}}%"></div>
+                </div>
+
+                <span vi-volume-decrease title="Decrease Volume" class="decrease glyphicon glyphicon-minus"></span>
+                <span vi-volume-increase title="Increase Volume" class="increase glyphicon glyphicon-plus"></span>
+
+            </section>
+
+            <section class="duration">
+                {{currentTime}}s of {{duration}}s
+            </section>
+
+            <section class="timeline">
+                <input vi-timeline />
+            </section>
 
         </section>
 
-        <section vi-playlist class="playlist">
+        <span title="Open Playlist"
+              ng-show="!playlistOpen"
+              ng-click="playlistOpen = !playlistOpen"
+              class="open-playlist glyphicon glyphicon-facetime-video">
+
+        </span>
+
+        <section vi-playlist class="playlist" ng-show="playlistOpen">
 
             <ul>
-                <li ng-repeat="video in videos">
-                    <a href="#" ng-click="open(video)">{{video.src}}</a>
+                <li class="title">
+                    <span class="glyphicon glyphicon-facetime-video"></span> &nbsp;
+                    Playlist
+                    <div class="close-playlist"
+                         title="Close Playlist"
+                         ng-click="playlistOpen = !playlistOpen">
+                        &times;
+                    </div>
+                </li>
+                <li ng-repeat="video in videos" ng-click="open(video)">
+                    {{videoName(video)}}
                 </li>
             </ul>
 
         </section>
+
+        <!--<section vi-feedback class="feedback">-->
+
+            <!--<ul class="data">-->
+                <!--<li>Time: {{currentTime}}s / {{duration}}s</li>-->
+                <!--<li>Volume: {{volume}}</li>-->
+                <!--<li>Buffered: {{buffered}}%</li>-->
+                <!--<li>Loading: {{loading ? "Yes" : "No"}}</li>-->
+                <!--<li>Playing: {{playing ? "Yes" : "No"}}</li>-->
+            <!--</ul>-->
+
+        <!--</section>-->
 
     </section>
 

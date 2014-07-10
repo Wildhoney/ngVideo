@@ -4,100 +4,207 @@
     box-sizing: border-box;
 }
 
+body {
+    text-align: center;
+}
+
 section.video {
-    border: 1px solid lightgrey;
-    width: 500px;
-    height: 320px;
+    text-align: left;
+    padding: 5px;
     position: relative;
+    background-color: white;
+    width: 550px;
+    height: 310px;
+    margin: 80px auto auto auto;
+    border: 1px solid lightgray;
+}
+
+section.video section.loading {
+    position: absolute;
+    background-color: rgba(0, 0, 0, .15);
+    overflow: hidden;
+    top: 5px;
+    left: 5px;
+    width: 538px;
+    height: 348px;
+    padding: 15px;
+    color: white;
+    text-shadow: 1px 1px 0 rgba(0, 0, 0, .25);
 }
 
 section.video video {
-    width: 100%;
-    height: 290px;
-    background-color: black;
-}
-
-section.video section.loading img {
-    float: left;
-    margin-right: 8px;
-}
-
-section.video section.feedback {
-    position: absolute;
+    background-color: rgba(0, 0, 0, .25);
     width: 100%;
     height: 100%;
-    pointer-events: none;
-    top: 0;
-    left: 0;
-    color: white;
-    font-family: Arial, Tahoma, Helvetica, sans-serif;
-    font-size: 14px;
-    text-shadow: 1px 1px 0 rgba(0, 0, 0, .5);
-}
-
-section.video section.feedback ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 15px;
-}
-
-section.video section.feedback div.timeline {
-    background: rgba(0, 0, 0, .55);
-    outline: none;
-    position: absolute;
-    bottom: 55px;
-    width: 90%;
-    left: 5%;
-}
-
-section.video section.feedback div.timeline input {
-    width: 100%;
-    pointer-events: all;
-    -webkit-appearance: none;
-    outline: none;
-    height: 12px;
-    background-color: transparent;
-}
-
-section.video section.feedback div.timeline input::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    background-color: white;
-    outline: none;
-    height: 15px;
-    width: 15px;
 }
 
 section.video section.controls {
-    font-size: 12px;
-    font-family: Arial, Tahoma, Helvetica, sans-serif;
-    padding: 3px 8px 0 6px;
+    position: absolute;
+    top: 15px;
+    right: 25px;
+    width: 48px;
+    z-index: 5;
+    text-align: center;
+    color: white;
 }
 
-section.video section.controls a {
-    color: black;
-    margin: 0 5px;
+section.video section.controls span {
+    margin: 0;
+    padding: 0;
+    cursor: pointer;
+    line-height: 48px;
+    padding-left: 2px;
+    width: 48px;
+    height: 48px;
+    font-size: 20px;
+    transition: background-color .35s;
+    border-radius: 3px;
+    margin-bottom: 10px;
+}
+
+section.video section.controls span:hover {
+    background-color: rgba(255, 255, 255, .25);
+}
+
+section.video section.volume {
+    position: absolute;
+    top: 145px;
+    right: 25px;
+    width: 48px;
+}
+
+section.video section.volume div.scale {
+    background-color: rgba(0, 0, 0, .15);
+    width: 48px;
+    height: 5px;
+    position: relative;
+}
+
+section.video section.volume div.scale div.bar {
+    background-color: rgba(255, 255, 255, .75);
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 5px;
+    width: 50%;
+    transition: width .25s;
+}
+
+section.video section.volume span {
+    color: rgba(0, 0, 0, .25);
+    font-size: 15px;
+    pointer-events: all;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+section.video section.volume span.increase {
+    float: right;
+}
+
+section.video section.feedback {
+    top: 0;
+    left: 0;
+    position: absolute;
+    pointer-events: none;
+    z-index: 4;
+    width: 100%;
+    height: 100%;
+}
+
+section.video section.timeline {
+    position: absolute;
+    width: 485px;
+    left: 30px;
+    bottom: 30px;
+}
+
+section.video section.timeline input {
+    width: 100%;
+    pointer-events: all;
+    -webkit-appearance: none;
+    background-color: transparent;
+    outline: none;
+    height: 12px;
+    border-bottom: 1px solid rgba(0, 0, 0, .15);
+}
+
+section.video section.timeline input::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    background-color: white;
+    margin-bottom: 20px;
+    border-radius: 2px;
+    outline: none;
+    height: 15px;
+    width: 45px;
+}
+
+section.video section.duration {
+    background-color: rgba(0, 0, 0, .15);
+    color: rgba(255, 255, 255, .5);
+    padding: 2px 5px;
+    border-radius: 3px;
+    position: absolute;
+    font-size: 11px;
+    bottom: 62px;
+    right: 33px;
 }
 
 section.video section.playlist {
-    border: 1px solid lightgray;
+    height: 297px;
     position: absolute;
-    top: 0;
-    width: 250px;
-    height: 319px;
-    right: -250px;
+    width: 200px;
+    top: 5px;
+    left: 5px;
+    background-color: rgba(0, 0, 0, .35);
 }
 
 section.video section.playlist ul {
-    margin: 0;
-    font-family: Arial, Tahoma, Helvetica, sans-serif;
-    font-size: 12px;
     list-style-type: none;
-    padding: 10px;
+    margin: 0;
+    padding: 0;
 }
 
 section.video section.playlist ul li {
-    padding: 3px 0;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
+    height: 32px;
+    line-height: 32px;
+    cursor: pointer;
+    position: relative;
+    padding: 0 12px;
+    text-shadow: 1px 1px 0 rgba(0, 0, 0, .25);
+    color: white;
+    font-size: 12px;
+}
+
+section.video section.playlist ul li.title {
+    margin-bottom: 10px;
+    border-bottom: 1px solid rgba(0, 0, 0, .25);
+}
+
+section.video section.playlist ul li:not(.title):hover {
+    background: rgba(0, 0, 0, .25);
+}
+
+section.video section.playlist ul li.title div.close-playlist {
+    position: absolute;
+    top: -1px;
+    font-size: 20px;
+    right: 0;
+    cursor: pointer;
+    width: 35px;
+    text-align: center;
+    color: white;
+}
+
+section.video span.open-playlist {
+    color: white;
+    position: absolute;
+    cursor: pointer;
+    top: 5px;
+    left: 5px;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    font-size: 18px;
 }
