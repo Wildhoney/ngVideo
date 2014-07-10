@@ -5,8 +5,8 @@ ngVideo
 &nbsp;
 ![npm](https://badge.fury.io/js/ng-video.png)
 
-**Heroku**: [http://ng-video.herokuapp.com/](http://ng-video.herokuapp.com/)
-**Bower:** `bower install ngvideo`
+* **Heroku**: [http://ng-video.herokuapp.com/](http://ng-video.herokuapp.com/)
+* **Bower:** `bower install ngvideo`
 
 ---
 
