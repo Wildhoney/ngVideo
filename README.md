@@ -37,12 +37,10 @@ You then need to fulfill the only other requirement for `ngVideo` &ndash; the `v
 
 After that you have all that's necessary to begin playing videos &ndash; albeit without any user control.
 
-`ngVideo` ships with a simple service that can be injected into your controllers, directives, services, et cetera...
-
-Since the `video` service is what's used for adding video sources, we'll inject `video` into one of our controllers:
+`ngVideo` ships with a simple service that can be injected into your controllers, directives, services, et cetera... Since the `video` service is what's used for adding video sources, we'll inject `video` into one of our controllers:
 
 ```javascript
-myApp.controller('VideoController', ['video', function(video) {
+myApp.controller('VideoController', ['$scope', 'video', function($scope, video) {
 
     /* Controller... */
     
