@@ -1,4 +1,4 @@
-(function($angular) {
+(function($angular, $math) {
 
     "use strict";
 
@@ -28,7 +28,7 @@
              * @type {Array}
              * @param $scope {Object}
              */
-            controller: ['$scope', function controller($scope) {
+            controller: ['$rootScope', '$scope', function controller($rootScope, $scope) {
 
                 /**
                  * @method setVolume
@@ -37,11 +37,17 @@
                  */
                 $scope.setVolume = function setVolume(volume) {
 
-                    // Constrain the volume parameter.
-                    if (volume > 1) volume = 1;
-                    if (volume < 0) volume = 0;
+                    if (volume < ngVideoOptions.VOLUME_MINIMUM) {
+                        volume = ngVideoOptions.VOLUME_MINIMUM;
+                    }
 
-                    $scope.player.volume = volume;
+                    if (volume > ngVideoOptions.VOLUME_MAXIMUM) {
+                        volume = ngVideoOptions.VOLUME_MAXIMUM;
+                    }
+
+                    // Set the constrained volume parameter.
+                    $scope.player.volume = +(volume).toFixed(2);
+                    $rootScope.$broadcast('ng-video/volume', $scope.player.volume);
 
                 };
 
@@ -136,4 +142,4 @@
         scope.setVolume(0);
     });
 
-})(window.angular);
+})(window.angular, window.Math);

@@ -21,7 +21,9 @@
         RESTRICT: 'CA',
         REFRESH: 50,
         SCREEN_DIRECTIVE: 'vi-screen',
-        VOLUME_STEPS: .1
+        VOLUME_STEPS: 0.1,
+        VOLUME_MINIMUM: 0,
+        VOLUME_MAXIMUM: 1
     });
 
     /**
@@ -198,8 +200,11 @@
                              * @return {void}
                              */
                             var $play = function $play(index) {
+
                                 $scope.open(ngVideoPlaylist[index]);
+                                $scope.video = ngVideoPlaylist[index];
                                 $scope.player.play();
+
                             };
 
                             // Attempt to find the current video.

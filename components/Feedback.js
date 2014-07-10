@@ -6,7 +6,7 @@
      * @property requiredProperties
      * @type {String[]}
      */
-    var requiredProperties = ['duration', 'currentTime'];
+    var requiredProperties = ['duration', 'currentTime', 'volume'];
 
     /**
      * @directive viFeedback
@@ -42,6 +42,12 @@
                  * @type {Number}
                  */
                 $scope.duration = 0;
+
+                /**
+                 * @property volume
+                 * @type {Number}
+                 */
+                $scope.volume = 1;
 
                 /**
                  * @property lastUpdate
@@ -115,11 +121,16 @@
                 };
 
                 // When we need to force the refreshing of the statistics.
-                $scope.$on('ng-video/reset', function() {
+                $scope.$on('ng-video/reset', function forceReset() {
 
                     $scope.player.currentTime = 0;
                     $scope.grabStatistics();
 
+                });
+
+                // When we need to force the refreshing of the volume.
+                $scope.$on('ng-video/volume', function forceVolume(event, volume) {
+                    $scope.volume = volume;
                 });
 
                 // Monitor the status of the video player.

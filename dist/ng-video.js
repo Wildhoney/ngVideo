@@ -20,7 +20,10 @@
     module.constant('ngVideoOptions', {
         RESTRICT: 'CA',
         REFRESH: 50,
-        SCREEN: 'vi-screen'
+        SCREEN_DIRECTIVE: 'vi-screen',
+        VOLUME_STEPS: 0.1,
+        VOLUME_MINIMUM: 0,
+        VOLUME_MAXIMUM: 1
     });
 
     /**
@@ -197,8 +200,12 @@
                              * @return {void}
                              */
                             var $play = function $play(index) {
+
+                                console.log(ngVideoPlaylist[index]);
                                 $scope.open(ngVideoPlaylist[index]);
+                                $scope.video = ngVideoPlaylist[index];
                                 $scope.player.play();
+
                             };
 
                             // Attempt to find the current video.
@@ -286,7 +293,7 @@
                 var player = element.find('video');
 
                 // Ensure the video player exists.
-                if (player.length === 0 || typeof player.attr(ngVideoOptions.SCREEN) === 'undefined') {
+                if (player.length === 0 || typeof player.attr(ngVideoOptions.SCREEN_DIRECTIVE) === 'undefined') {
                     video.throwException("Must add ng-video-screen directive");
                 }
 
@@ -442,7 +449,7 @@
      * @property requiredProperties
      * @type {String[]}
      */
-    var requiredProperties = ['duration', 'currentTime'];
+    var requiredProperties = ['duration', 'currentTime', 'volume'];
 
     /**
      * @directive viFeedback
@@ -478,6 +485,12 @@
                  * @type {Number}
                  */
                 $scope.duration = 0;
+
+                /**
+                 * @property volume
+                 * @type {Number}
+                 */
+                $scope.volume = 1;
 
                 /**
                  * @property lastUpdate
@@ -551,11 +564,16 @@
                 };
 
                 // When we need to force the refreshing of the statistics.
-                $scope.$on('ng-video/reset', function() {
+                $scope.$on('ng-video/reset', function forceReset() {
 
                     $scope.player.currentTime = 0;
                     $scope.grabStatistics();
 
+                });
+
+                // When we need to force the refreshing of the volume.
+                $scope.$on('ng-video/volume', function forceVolume(event, volume) {
+                    $scope.volume = volume;
                 });
 
                 // Monitor the status of the video player.
@@ -834,7 +852,7 @@
 
 })(window.angular);
 
-(function($angular) {
+(function($angular, $math) {
 
     "use strict";
 
@@ -864,7 +882,7 @@
              * @type {Array}
              * @param $scope {Object}
              */
-            controller: ['$scope', function controller($scope) {
+            controller: ['$rootScope', '$scope', function controller($rootScope, $scope) {
 
                 /**
                  * @method setVolume
@@ -872,7 +890,19 @@
                  * @return {void}
                  */
                 $scope.setVolume = function setVolume(volume) {
-                    $scope.player.volume = volume;
+
+                    if (volume < ngVideoOptions.VOLUME_MINIMUM) {
+                        volume = ngVideoOptions.VOLUME_MINIMUM;
+                    }
+
+                    if (volume > ngVideoOptions.VOLUME_MAXIMUM) {
+                        volume = ngVideoOptions.VOLUME_MAXIMUM;
+                    }
+
+                    // Set the constrained volume parameter.
+                    $scope.player.volume = +(volume).toFixed(2);
+                    $rootScope.$broadcast('ng-video/volume', $scope.player.volume);
+
                 };
 
             }]
@@ -884,10 +914,10 @@
     /**
      * @method createVolumeDirective
      * @param name {String}
-     * @param linkFn {Function}
+     * @param clickFn {Function}
      * @return {Object}
      */
-    var createVolumeDirective = function createVolumeDirective(name, linkFn) {
+    var createVolumeDirective = function createVolumeDirective(name, clickFn) {
 
         /**
          * @property directiveLabel
@@ -913,22 +943,57 @@
 
                 /**
                  * @method link
+                 * @param scope {Object}
+                 * @param element {Object}
                  * @return {void}
                  */
-                link: linkFn
+                link: function link(scope, element) {
+
+                    element.bind('click', function onClick() {
+
+                        // Invoke the `clickFn` callback when the element has been clicked.
+                        clickFn.call(this, scope, scope.player.volume, ngVideoOptions.VOLUME_STEPS);
+                        scope.$apply();
+
+                    });
+
+                }
 
             }
 
-        }])
+        }]);
 
     };
 
-    // Create all of the necessary volume directives.
+    /**
+     * @directive viVolumeDecrease
+     * @type {Function}
+     * @param scope {Object}
+     * @param currentVolume {Number}
+     * @param volumeSteps {Number}
+     */
+    createVolumeDirective('decrease', function onDecreaseClick(scope, currentVolume, volumeSteps) {
+        scope.setVolume(currentVolume - volumeSteps);
+    });
 
-    createVolumeDirective('decrease', ['scope', function viVolumeDirectiveDecrease(scope) {
+    /**
+     * @directive viVolumeIncrease
+     * @type {Function}
+     * @param scope {Object}
+     * @param currentVolume {Number}
+     * @param volumeSteps {Number}
+     */
+    createVolumeDirective('increase', function onIncreaseClick(scope, currentVolume, volumeSteps) {
+        scope.setVolume(currentVolume + volumeSteps);
+    });
 
-        console.log('Hre');
+    /**
+     * @directive viVolumeMute
+     * @type {Function}
+     * @param scope {Object}
+     */
+    createVolumeDirective('mute', function onMuteClick(scope) {
+        scope.setVolume(0);
+    });
 
-    }]);
-
-})(window.angular);
+})(window.angular, window.Math);
