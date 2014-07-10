@@ -309,7 +309,9 @@
 
     }]);
 
-})(window.angular);;(function($angular) {
+})(window.angular);
+
+(function($angular) {
 
     "use strict";
 
@@ -430,7 +432,9 @@
         createControlDirective(actionName);
     });
 
-})(window.angular);;(function($angular, $math) {
+})(window.angular);
+
+(function($angular, $math) {
 
     "use strict";
 
@@ -578,7 +582,9 @@
 
     }]);
 
-})(window.angular, window.Math);;(function($angular) {
+})(window.angular, window.Math);
+
+(function($angular) {
 
     "use strict";
 
@@ -622,11 +628,11 @@
                 };
 
                 /**
-                 * @method safelyOpen
+                 * @method tentativelyOpen
                  * @param index {Number}
                  * @return {void}
                  */
-                $scope.safelyOpen = function safelyOpen(index) {
+                $scope.tentativelyOpen = function tentativelyOpen(index) {
 
                     if (typeof ngVideoPlaylist[index] === 'undefined') {
 
@@ -646,7 +652,7 @@
                  * @return {void}
                  */
                 $scope.next = function next() {
-                    $scope.safelyOpen($scope.currentIndex() + 1);
+                    $scope.tentativelyOpen($scope.currentIndex() + 1);
                 };
 
                 /**
@@ -654,7 +660,7 @@
                  * @return {void}
                  */
                 $scope.previous = function previous() {
-                    $scope.safelyOpen($scope.currentIndex() - 1);
+                    $scope.tentativelyOpen($scope.currentIndex() - 1);
                 };
 
                 /**
@@ -662,7 +668,7 @@
                  * @return {void}
                  */
                 $scope.first = function first() {
-                    $scope.safelyOpen(0);
+                    $scope.tentativelyOpen(0);
                 };
 
                 /**
@@ -670,7 +676,7 @@
                  * @return {void}
                  */
                 $scope.last = function last() {
-                    $scope.safelyOpen(ngVideoPlaylist.length - 1);
+                    $scope.tentativelyOpen(ngVideoPlaylist.length - 1);
                 };
 
             }]
@@ -679,7 +685,9 @@
 
     }]);
 
-})(window.angular);;(function($angular) {
+})(window.angular);
+
+(function($angular) {
 
     "use strict";
 
@@ -724,7 +732,9 @@
 
     }]);
 
-})(window.angular);;(function($angular) {
+})(window.angular);
+
+(function($angular) {
 
     "use strict";
 
@@ -803,6 +813,7 @@
                         if (scope.wasPlaying) {
                             scope.play();
                         }
+
                     });
 
                     element.bind('change', function() {
@@ -821,18 +832,24 @@
 
     }]);
 
-})(window.angular);;(function($angular) {
+})(window.angular);
+
+(function($angular) {
 
     "use strict";
+
+    /**
+     * @property module
+     * @type {Object}
+     */
+    var module = $angular.module('ngVideo');
 
     /**
      * @directive viVolume
      * @type {Function}
      * @param ngVideoOptions {Object}
      */
-    $angular.module('ngVideo').directive('viVolume', ['ngVideoOptions',
-
-    function ngVolumeDirective(ngVideoOptions) {
+    module.directive('viVolume', ['ngVideoOptions', function ngVolumeDirective(ngVideoOptions) {
 
         return {
 
@@ -849,12 +866,69 @@
              */
             controller: ['$scope', function controller($scope) {
 
-                return $scope;
+                /**
+                 * @method setVolume
+                 * @param volume {Number}
+                 * @return {void}
+                 */
+                $scope.setVolume = function setVolume(volume) {
+                    $scope.player.volume = volume;
+                };
 
             }]
 
         }
 
     }]);
+
+    /**
+     * @method createVolumeDirective
+     * @param name {String}
+     * @param linkFn {Function}
+     * @return {Object}
+     */
+    var createVolumeDirective = function createVolumeDirective(name, linkFn) {
+
+        /**
+         * @property directiveLabel
+         * @type {String}
+         */
+        var directiveLabel = name.charAt(0).toUpperCase() + name.slice(1);
+
+        /**
+         * @directive viVolumeItem
+         * @type {Function}
+         */
+        module.directive('viVolume' + directiveLabel, ['ngVideoOptions',
+
+        function viVolumeItem(ngVideoOptions) {
+
+            return {
+
+                /**
+                 * @property restrict
+                 * @type {String}
+                 */
+                restrict: ngVideoOptions.RESTRICT,
+
+                /**
+                 * @method link
+                 * @return {void}
+                 */
+                link: linkFn
+
+            }
+
+        }])
+
+    };
+
+    // Create all of the necessary volume directives.
+
+    createVolumeDirective('decrease', function viVolumeDirectiveDecrease(scope) {
+
+        console.log('Hre');
+
+    });
 
 })(window.angular);

@@ -77,6 +77,7 @@
                         if (scope.wasPlaying) {
                             scope.play();
                         }
+
                     });
 
                     element.bind('change', function() {

@@ -42,11 +42,11 @@
                 };
 
                 /**
-                 * @method safelyOpen
+                 * @method tentativelyOpen
                  * @param index {Number}
                  * @return {void}
                  */
-                $scope.safelyOpen = function safelyOpen(index) {
+                $scope.tentativelyOpen = function tentativelyOpen(index) {
 
                     if (typeof ngVideoPlaylist[index] === 'undefined') {
 
@@ -66,7 +66,7 @@
                  * @return {void}
                  */
                 $scope.next = function next() {
-                    $scope.safelyOpen($scope.currentIndex() + 1);
+                    $scope.tentativelyOpen($scope.currentIndex() + 1);
                 };
 
                 /**
@@ -74,7 +74,7 @@
                  * @return {void}
                  */
                 $scope.previous = function previous() {
-                    $scope.safelyOpen($scope.currentIndex() - 1);
+                    $scope.tentativelyOpen($scope.currentIndex() - 1);
                 };
 
                 /**
@@ -82,7 +82,7 @@
                  * @return {void}
                  */
                 $scope.first = function first() {
-                    $scope.safelyOpen(0);
+                    $scope.tentativelyOpen(0);
                 };
 
                 /**
@@ -90,7 +90,7 @@
                  * @return {void}
                  */
                 $scope.last = function last() {
-                    $scope.safelyOpen(ngVideoPlaylist.length - 1);
+                    $scope.tentativelyOpen(ngVideoPlaylist.length - 1);
                 };
 
             }]

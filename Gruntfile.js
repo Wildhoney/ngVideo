@@ -71,12 +71,31 @@ module.exports = function(grunt) {
          */
         concat: {
             options: {
-                separator: ';'
+                separator: '\n\n'
             },
             dist: {
                 src: ['components/Bootstrap.js', 'components/*.js'],
                 dest: 'dist/<%= pkg.name %>.js'
             }
+        },
+
+        /**
+         * @property copy
+         * @type {Object}
+         */
+        copy: {
+            vendor: {
+                expand: true,
+                flatten: true,
+                src: ['components/*'],
+                dest: 'example/js/vendor/ng-video',
+                filter: 'isFile'
+            },
+            release: {
+                src: 'releases/<%= pkg.version %>.zip',
+                dest: 'releases/master.zip'
+            }
+
         }
 
     });
@@ -86,9 +105,10 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-compress');
     grunt.loadNpmTasks('grunt-contrib-concat');
+    grunt.loadNpmTasks('grunt-contrib-copy');
 
-    grunt.registerTask('build', ['concat', 'uglify', 'compress']);
+    grunt.registerTask('build', ['concat', 'uglify', 'copy', 'compress']);
     grunt.registerTask('test', ['jasmine', 'jshint']);
-    grunt.registerTask('default', ['jshint', 'jasmine', 'concat', 'uglify', 'compress']);
+    grunt.registerTask('default', ['jasmine', 'concat', 'copy', 'uglify', 'compress']);
 
 };
