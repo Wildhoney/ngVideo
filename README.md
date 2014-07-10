@@ -24,6 +24,8 @@ When using `ngVideo`, the **only** required directive is the main `ng-video` dir
 Getting Started
 -------------------
 
+**Terminology:** When we mention `videoModel` we meant the `object` that is returned from the `addSource` method.
+
 Starting to use `ngVideo` is a breeze! Firstly you **must** define the container which will contain your *video* node.
 
 ```html
@@ -55,6 +57,8 @@ video.addSource('mp4', 'http://www.example.com/alice-in-wonderland.mp4');
 ```
 
 At this point you *should* notice that the video is visible in the player, but not actually playing &ndash; unless you specify the `autoplay` attribute on the `video` node &ndash; for the user to begin playing the video, you need to add the [`vi-controls` directive](#controls).
+
+---
 
 Directives
 -------------------
@@ -185,13 +189,17 @@ Directive has the ability of modifying the volume and bundles with three useful 
 
 **Note:** For access to the `volume` property, it is necessary for the `vi-volume` directive to be a child of the `vi-feedback` directive.
 
+---
+
 Configuration
 -------------------
 
 `ngVideo` uses `ngVideoOptions` for its configuration parameters &ndash; `ngVideoOptions` is injectable into a controller in the same way as a service is.
 
 ```javascript
-myApp.controller('VideoController', ['$scope', 'ngVideoOptions', function($scope, ngVideoOptions) {
+myApp.controller('VideoController', ['$scope', 'ngVideoOptions',
+
+function($scope, ngVideoOptions) {
 
     // Change the colour of the buffer bar to blue.
     ngVideoOptions.BUFFER_COLOUR = '#00f';
