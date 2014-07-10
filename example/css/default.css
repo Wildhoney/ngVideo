@@ -36,6 +36,7 @@ section.video video {
     background-color: rgba(0, 0, 0, .25);
     width: 100%;
     height: 100%;
+    object-fit: fill;
 }
 
 section.video section.controls {
@@ -126,7 +127,7 @@ section.video section.generic {
 
 section.video section.generic a {
     text-transform: none;
-    color: lightgoldenrodyellow;
+    color: rgba(255, 255, 255, .75);
     pointer-events: all;
 }
 
@@ -165,11 +166,27 @@ section.video section.duration {
     background-color: rgba(0, 0, 0, .15);
     color: rgba(255, 255, 255, .5);
     padding: 2px 5px;
-    border-radius: 3px;
+    border-radius: 3px 0 0 3px;
     position: absolute;
     font-size: 11px;
     bottom: 62px;
+    right: 83px;
+}
+
+section.video section.title {
+    background-color: #dd4b39;
+    font-size: 11px;
+    position: absolute;
+    color: white;
+    opacity: .8;
+    padding: 2px 5px;
+    border-radius: 0 3px 3px 0;
+    bottom: 62px;
     right: 33px;
+}
+
+section.video section.duration span.title {
+    background-color: green;
 }
 
 section.video section.playlist {
@@ -196,6 +213,13 @@ section.video section.playlist ul li {
     text-shadow: 1px 1px 0 rgba(0, 0, 0, .25);
     color: white;
     font-size: 12px;
+}
+
+section.video section.playlist ul li span.meta {
+    margin-right: 8px;
+    padding: 1px 5px;
+    border-radius: 2px;
+    background-color: rgba(0, 0, 0, .25);
 }
 
 section.video section.playlist ul li.title {

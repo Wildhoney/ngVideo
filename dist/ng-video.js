@@ -384,9 +384,10 @@
                         while (count--) {
 
                             // Fill in the rectangle according to the buffered object.
-                            var x1 = buffered.start(count) / duration * width;
-                            var x2 = buffered.end(count) / duration * width;
-                            context.fillRect(x1, 0, x2 - x1, height);
+                            var x = buffered.start(count) / duration * width,
+                                y = buffered.end(count) / duration * width;
+
+                            context.fillRect(x, 0, y - x, height);
 
                         }
 
@@ -531,7 +532,7 @@
      * @property requiredProperties
      * @type {String[]}
      */
-    var requiredProperties = ['duration', 'currentTime', 'volume'];
+    var requiredProperties = ['duration', 'currentTime', 'volume', 'playbackRate'];
 
     /**
      * @directive viFeedback
@@ -581,6 +582,12 @@
                 $scope.volume = 1;
 
                 /**
+                 * @property playbackRate
+                 * @type {Number}
+                 */
+                $scope.playbackRate = 1;
+
+                /**
                  * @property lastUpdate
                  * @type {Number}
                  */
@@ -591,6 +598,12 @@
                  * @type {Number}
                  */
                 $scope.currentTime = 0;
+
+                /**
+                 * @property percentagePlayed
+                 * @type {Number}
+                 */
+                $scope.percentagePlayed = 0;
 
                 /**
                  * @property buffered
@@ -626,6 +639,9 @@
                         $scope.buffered = $math.round(player.buffered.end(0) / player.duration) * 100;
 
                     }
+
+                    // Calculate other miscellaneous properties.
+                    $scope.percentagePlayed = ($scope.currentTime / $scope.duration) * 100;
 
                     // Notify everybody that the statistics have been updated!
                     $scope.lastUpdate = new $window.Date().getTime();
@@ -695,12 +711,116 @@
     "use strict";
 
     /**
+     * @directive viMeta
+     * @type {Function}
+     * @param ngVideoMeta {Array}
+     * @param ngVideoOptions {Object}
+     */
+    $angular.module('ngVideo').directive('viMeta', ['$window', 'ngVideoOptions',
+
+    function ngMetaDirective($window, ngVideoOptions) {
+
+        return {
+
+            /**
+             * @property restrict
+             * @type {String}
+             */
+            restrict: ngVideoOptions.RESTRICT,
+
+            /**
+             * @property scope
+             * @type {Boolean}
+             */
+            scope: true,
+
+            /**
+             * @property require
+             * @type {String}
+             */
+            require: 'ngModel',
+
+            /**
+             * @property controller
+             * @type {Array}
+             * @param $scope {Object}
+             */
+            controller: ['$scope', function controller($scope) {
+
+                /**
+                 * @property duration
+                 * @type {Number}
+                 * @default 0
+                 */
+                $scope.duration = 0;
+
+            }],
+
+            /**
+             * @method link
+             * @param scope {Object}
+             * @param element {Object}
+             * @param attr {Object}
+             * @param ngModel {Object}
+             * @return {void}
+             */
+            link: function link(scope, element, attr, ngModel) {
+
+                // Create the video node for reading the meta data.
+                scope.player = $window.document.createElement('video');
+                var video    = $angular.element(scope.player);
+
+                // Prevent the preloading of the video content to save bandwidth.
+                scope.player.setAttribute('preload', false);
+
+                // Once the meta data for the video has been retrieved.
+                video.bind('loadedmetadata', function onLoadedMetaData() {
+
+                    // Read in the meta values.
+                    scope.duration = scope.player.duration;
+                    scope.$apply();
+                    
+                    delete scope.player;
+
+                });
+
+                scope.$watch(function watchProperty() {
+
+                    // Watch the ngModel and react once it updates.
+                    return ngModel.$modelValue;
+
+                }, function valueChanged(videoModel) {
+
+                    scope.player.setAttribute('src', videoModel.src);
+                    scope.player.load();
+
+                });
+
+            }
+
+        }
+
+    }]);
+
+})(window.angular);
+
+(function($angular) {
+
+    "use strict";
+
+    /**
+     * @property module
+     * @type {Object}
+     */
+    var module = $angular.module('ngVideo');
+
+    /**
      * @directive viPlaylist
      * @type {Function}
      * @param ngVideoPlaylist {Array}
      * @param ngVideoOptions {Object}
      */
-    $angular.module('ngVideo').directive('viPlaylist', ['ngVideoPlaylist', 'ngVideoOptions',
+    module.directive('viPlaylist', ['ngVideoPlaylist', 'ngVideoOptions',
 
     function ngPlaylistDirective(ngVideoPlaylist, ngVideoOptions) {
 
@@ -796,6 +916,64 @@
         }
 
     }]);
+
+    /**
+     * @directive viPlaylistVideo
+     * @type {Function}
+     * @param ngVideoPlaylist {Array}
+     * @param ngVideoOptions {Object}
+     */
+    module.directive('viPlaylistVideo', function ngPlaylistVideoDirective(ngVideoPlaylist, ngVideoOptions) {
+
+        return {
+
+            /**
+             * @property restrict
+             * @type {String}
+             */
+            restrict: ngVideoOptions.RESTRICT,
+
+            /**
+             * @property require
+             * @type {String}
+             */
+            require: 'ngModel',
+
+            /**
+             * @method link
+             * @param scope {Object}
+             * @param element {Object}
+             * @param attr {Object}
+             * @param ngModel {Object}
+             * @return {void}
+             */
+            link: function link(scope, element, attr, ngModel) {
+
+                scope.$watch(function watchProperty() {
+
+                    // Watch the ngModel and react once it updates.
+                    return ngModel.$modelValue;
+
+                }, function valueChanged(videoModel) {
+
+                    element.bind('click', function onClick() {
+
+                        scope.$apply(function apply() {
+
+                            // Open the video when the user clicks on the item in the playlist.
+                            scope.open(videoModel);
+
+                        });
+
+                    });
+
+                });
+
+            }
+
+        }
+
+    });
 
 })(window.angular);
 
@@ -1100,6 +1278,15 @@
      */
     createVolumeDirective('mute', function onMuteClick(scope) {
         scope.setVolume(0);
+    });
+
+    /**
+     * @directive viVolumeLoudest
+     * @type {Function}
+     * @param scope {Object}
+     */
+    createVolumeDirective('loudest', function onLoudestClick(scope) {
+        scope.setVolume(1);
     });
 
 })(window.angular);

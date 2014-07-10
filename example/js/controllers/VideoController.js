@@ -9,14 +9,14 @@
      */
     $angular.module(APP_NAME).controller('VideoController',
 
-    function videoController($scope, $timeout, video) {
+    function videoController($scope, $timeout, video, ngVideoOptions) {
 
         /**
          * @property playlistOpen
          * @type {Boolean}
          * @default false
          */
-        $scope.playlistOpen = false;
+        $scope.playlistOpen = true;
 
         /**
          * @property videos

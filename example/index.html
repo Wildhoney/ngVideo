@@ -18,6 +18,7 @@
     <script type="text/javascript" src="js/vendor/ng-video/Playlist.js"></script>
     <script type="text/javascript" src="js/vendor/ng-video/Screen.js"></script>
     <script type="text/javascript" src="js/vendor/ng-video/Feedback.js"></script>
+    <script type="text/javascript" src="js/vendor/ng-video/Meta.js"></script>
     <script type="text/javascript" src="js/vendor/ng-video/Timeline.js"></script>
     <script type="text/javascript" src="js/vendor/ng-video/Volume.js"></script>
 
@@ -60,8 +61,11 @@
 
             <!-- Duration Directive -->
             <section class="duration">
-                {{currentTime}}s of {{duration}}s
+                {{currentTime | number: 2}}s of {{duration | number: 2}}s
+                [{{percentagePlayed | number: 0}}%]
             </section>
+
+            <section class="title">ngVideo</section>
 
             <!-- Timeline Directive -->
             <section class="timeline">
@@ -72,8 +76,7 @@
             <section vi-buffer class="buffer"></section>
 
             <section class="generic">
-                ngVideo
-                V{{volume}} P{{playing ? 1 : 0}} L{{loading ? 1 : 0}} B{{buffered}}%
+                V{{volume}} R{{playbackRate}} P{{playing ? 1 : 0}} L{{loading ? 1 : 0}} B{{buffered}}%
                 <a href="https://github.com/Wildhoney/ngVideo" target="_blank">
                     GitHub.com/Wildhoney/ngVideo
                 </a>
@@ -101,8 +104,14 @@
                         &times;
                     </div>
                 </li>
-                <li ng-repeat="video in videos" ng-click="open(video)">
+                <li vi-playlist-video ng-repeat="video in videos" ng-model="video">
+
+                    <span vi-meta ng-model="video" class="meta">
+                        {{duration | number: 2}}s
+                    </span>
+
                     {{videoName(video)}}
+
                 </li>
             </ul>
 

@@ -62,9 +62,10 @@
                         while (count--) {
 
                             // Fill in the rectangle according to the buffered object.
-                            var x1 = buffered.start(count) / duration * width;
-                            var x2 = buffered.end(count) / duration * width;
-                            context.fillRect(x1, 0, x2 - x1, height);
+                            var x = buffered.start(count) / duration * width,
+                                y = buffered.end(count) / duration * width;
+
+                            context.fillRect(x, 0, y - x, height);
 
                         }
 

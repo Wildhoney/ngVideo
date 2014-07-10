@@ -148,4 +148,13 @@
         scope.setVolume(0);
     });
 
+    /**
+     * @directive viVolumeLoudest
+     * @type {Function}
+     * @param scope {Object}
+     */
+    createVolumeDirective('loudest', function onLoudestClick(scope) {
+        scope.setVolume(1);
+    });
+
 })(window.angular);

@@ -69,7 +69,7 @@ With the buffer directive you can display a bar similar to the timeline which di
 
 Use the `ngVideoOptions` for modifying the necessary values pertaining to the `vi-buffer` directive: `BUFFER_COLOUR`, `BUFFER_HEIGHT`, `BUFFER_WIDTH`.
 
-**Note:** `ngVideoOptions` can be injected into your controllers in the same way as services.
+**Note:** `ngVideoOptions` can be injected into your controllers in the same way as services: see [`ngVideoOptions`](#Configuration).
 
 Example of two buffering segments from Safari with `ngVideo@0.2.2` &ndash; notice the two red lines:
 
@@ -153,7 +153,7 @@ Keeping with the simplicity of the `vi-screen` directive, the `vi-timeline` is e
 
 ### Volume #####
 
-Directive has the ability of modifying the volume and bundles with three useful directives for common tasks: `vi-volume-decrease` for decreasing the volume, `vi-volume-increase` for increasing, and the `vi-volume-mute` directive for muting the audio. However, the `vi-volume` directive has access to the `setVolume` method which allows you to specify the audio level.
+Directive has the ability of modifying the volume and bundles with three useful directives for common tasks: `vi-volume-decrease` for decreasing the volume, `vi-volume-increase` for increasing, `vi-volume-loudest` for the maximum volume, and the `vi-volume-mute` directive for muting the audio. However, the `vi-volume` directive has access to the `setVolume` method which allows you to specify the audio level.
 
 ```html
 <section vi-volume>
@@ -161,8 +161,35 @@ Directive has the ability of modifying the volume and bundles with three useful 
     <a vi-volume-decrease>Decrease</a>
     <a vi-volume-increase>Increase</a>
     <a vi-volume-mute>Mute</a>
+    <a vi-volume-loudest>Loudest</a>
 
 </section>
 ```
 
 **Note:** For access to the `volume` property, it is necessary for the `vi-volume` directive to be a child of the `vi-feedback` directive.
+
+Configuration
+-------------------
+
+`ngVideo` uses `ngVideoOptions` for its configuration parameters &ndash; `ngVideoOptions` is injectable into a controller in the same way as a service is.
+
+```javascript
+myApp.controller('VideoController', ['$scope', 'ngVideoOptions', function($scope, ngVideoOptions) {
+
+    // Change the colour of the buffer bar to blue.
+    ngVideoOptions.BUFFER_COLOUR = '#00f';
+    
+}]);
+```
+
+You can inspect the `ngVideoOptions` object using your favourite debugger.
+
+Below are a few of the parameters you may wish to play with:
+
+ * `REFRESH`: Properties refresh `interval` in milliseconds &ndash; default being 50 milliseconds;
+ * `VOLUME_STEPS`: Incremental and decremental steps of the volume &ndash; default 0.1;
+ * `VOLUME_MAXIMUM`: Maximum volume that can be set &ndash; default is 1;
+ * `VOLUME_MINIMUM`: Minimum volume that can be set &ndash; default is 0;
+ * `BUFFER_COLOUR`: Colour of the `canvas` element in the `vi-buffer` directive;
+ * `BUFFER_HEIGHT`: Height of the `canvas` node in the aforementioned directive;
+ * `BUFFER_WIDTH`: Width of the `canvas` node in the aforementioned directive;

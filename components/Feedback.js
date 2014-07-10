@@ -6,7 +6,7 @@
      * @property requiredProperties
      * @type {String[]}
      */
-    var requiredProperties = ['duration', 'currentTime', 'volume'];
+    var requiredProperties = ['duration', 'currentTime', 'volume', 'playbackRate'];
 
     /**
      * @directive viFeedback
@@ -56,6 +56,12 @@
                 $scope.volume = 1;
 
                 /**
+                 * @property playbackRate
+                 * @type {Number}
+                 */
+                $scope.playbackRate = 1;
+
+                /**
                  * @property lastUpdate
                  * @type {Number}
                  */
@@ -66,6 +72,12 @@
                  * @type {Number}
                  */
                 $scope.currentTime = 0;
+
+                /**
+                 * @property percentagePlayed
+                 * @type {Number}
+                 */
+                $scope.percentagePlayed = 0;
 
                 /**
                  * @property buffered
@@ -101,6 +113,9 @@
                         $scope.buffered = $math.round(player.buffered.end(0) / player.duration) * 100;
 
                     }
+
+                    // Calculate other miscellaneous properties.
+                    $scope.percentagePlayed = ($scope.currentTime / $scope.duration) * 100;
 
                     // Notify everybody that the statistics have been updated!
                     $scope.lastUpdate = new $window.Date().getTime();
