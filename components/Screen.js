@@ -22,9 +22,20 @@
             /**
              * @method link
              * @param scope {Object}
+             * @param element {Object}
              * @return {void}
              */
-            link: function link() {
+            link: function link(scope, element) {
+
+                // When the video player screen is clicked, we'll toggle the playing
+                // state of the current video, if there is one.
+                element.bind('click', function() {
+
+                    if (!scope.loading) {
+                        scope.toggleState();
+                    }
+
+                });
 
             }
 

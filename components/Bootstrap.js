@@ -211,7 +211,25 @@
                     $scope.player.setAttribute('type', videoModel.type);
                     $scope.player.load();
 
-                }
+                };
+
+                /**
+                 * Responsible for toggling the state of the video. If the video is currently
+                 * playing, then we'll pause it, and vice-versa!
+                 *
+                 * @method toggleState
+                 * @return {void}
+                 */
+                $scope.toggleState = function toggleState() {
+
+                    if ($scope.playing) {
+                        $scope.player.pause();
+                        return;
+                    }
+
+                    $scope.player.play();
+
+                };
 
             }],
 
