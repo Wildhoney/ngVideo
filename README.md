@@ -86,7 +86,7 @@ Provides information relating to the video itself &ndash; such as the `duration`
 
 </section>
 ```
-Currently the `vi-feedback` supports the following properties &ndash; as of `ngVideo@0.2.0`:
+Currently the `vi-feedback` supports the following properties &ndash; as of `ngVideo@0.2.1`:
 
  * `currentTime`;
  * `duration`;

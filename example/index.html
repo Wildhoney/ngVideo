@@ -29,7 +29,7 @@
 
     <section class="video" ng-video>
 
-        <video vi-screen></video>
+        <video autoplay="autoplay" vi-screen></video>
 
         <section vi-controls class="controls">
             <span vi-controls-play title="Play" class="glyphicon glyphicon-play"></span>
@@ -38,9 +38,9 @@
 
         <section vi-feedback class="feedback">
 
-            <!--<section class="loading">-->
-                <!--Loading&hellip;-->
-            <!--</section>-->
+            <section class="loading" ng-show="loading">
+                Loading...
+            </section>
 
             <section vi-volume class="volume">
 
@@ -59,6 +59,14 @@
 
             <section class="timeline">
                 <input vi-timeline />
+            </section>
+
+            <section class="generic">
+                ngVideo
+                V{{volume}} P{{playing ? 1 : 0}} L{{loading ? 1 : 0}} B{{buffered}}%
+                <a href="https://github.com/Wildhoney/ngVideo" target="_blank">
+                    GitHub.com/Wildhoney/ngVideo
+                </a>
             </section>
 
         </section>
@@ -88,18 +96,6 @@
             </ul>
 
         </section>
-
-        <!--<section vi-feedback class="feedback">-->
-
-            <!--<ul class="data">-->
-                <!--<li>Time: {{currentTime}}s / {{duration}}s</li>-->
-                <!--<li>Volume: {{volume}}</li>-->
-                <!--<li>Buffered: {{buffered}}%</li>-->
-                <!--<li>Loading: {{loading ? "Yes" : "No"}}</li>-->
-                <!--<li>Playing: {{playing ? "Yes" : "No"}}</li>-->
-            <!--</ul>-->
-
-        <!--</section>-->
 
     </section>
 

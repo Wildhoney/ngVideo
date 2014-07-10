@@ -21,15 +21,15 @@ section.video {
 
 section.video section.loading {
     position: absolute;
-    background-color: rgba(0, 0, 0, .15);
-    overflow: hidden;
     top: 5px;
     left: 5px;
     width: 538px;
-    height: 348px;
-    padding: 15px;
+    height: 298px;
     color: white;
-    text-shadow: 1px 1px 0 rgba(0, 0, 0, .25);
+    font-size: 11px;
+    z-index: 15;
+    padding: 20px;
+    background-color: rgba(0, 0, 0, .75);
 }
 
 section.video video {
@@ -110,6 +110,28 @@ section.video section.feedback {
     z-index: 4;
     width: 100%;
     height: 100%;
+}
+
+section.video section.generic {
+    position: absolute;
+    bottom: 11px;
+    right: 10px;
+    z-index: 90;
+    width: 100%;
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 10px;
+    color: rgba(255, 255, 255, .5);
+}
+
+section.video section.generic a {
+    text-transform: none;
+    color: lightgoldenrodyellow;
+    pointer-events: all;
+}
+
+section.video section.generic a:hover {
+    text-decoration: none;
 }
 
 section.video section.timeline {
