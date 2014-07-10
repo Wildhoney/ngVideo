@@ -112,17 +112,32 @@ Currently the `vi-feedback` supports the following properties &ndash; as of `ngV
  * `loading`;
  * `playing`;
  
+### Meta #####
+
+In some cases you may wish to read the meta data of a video without actually loading it. For example, you may wish to know the duration of a video for the playlist &ndash; just so the user knows!
+
+Simply wrap the `videoModel` in the `vi-meta` directive and you will have access to the video's meta data:
+
+```html
+<span vi-meta ng-model="video">
+    {{duration}} seconds.
+</span>
+```
+ 
 ### Playlist #####
 
-With the `vi-playlist` directive you can manage your list of videos &ndash; by applying the `vi-playlist` directive, it overrides the `videos` array, which now contains valid models that can be passed into the `open` method:
+With the `vi-playlist` directive you can manage your list of videos &ndash; by applying the `vi-playlist` directive; it overrides the `videos` array. With your `videoModel` you should attach it to the directive using the `ng-model` attribute.
 
 ```html
 <section vi-playlist>
 
     <ul>
-        <li ng-repeat="video in videos" ng-click="open(video)">
-            {{video}}
+        <li vi-playlist-video ng-repeat="video in videos" ng-model="video">
+            
+            Play: {{video.src}}
+            
         </li>
+            
     </ul>
 
 </section>
@@ -134,6 +149,8 @@ As well as listing the videos in the current playlist, the `vi-playlist` contain
  * `previous()`;
  * `first()`;
  * `last()`;
+ 
+**Note:** You don't need to use the `ng-model` approach; `vi-playlist` has access to the `open` method which requires the passing in of the `videoModel`.
  
 ### Screen #####
 
