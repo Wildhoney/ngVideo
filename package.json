@@ -39,6 +39,8 @@
     "grunt-contrib-compress": "~0.9.1",
     "grunt-contrib-jshint": "~0.10.0",
     "grunt-contrib-jasmine": "~0.6.5",
-    "express": "~4.5.1"
+    "express": "~4.5.1",
+    "grunt-cli": "~0.1.13",
+    "bower": "~1.3.7"
   }
 }
