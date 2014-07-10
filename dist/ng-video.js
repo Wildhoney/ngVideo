@@ -779,7 +779,7 @@
                     // Read in the meta values.
                     scope.duration = scope.player.duration;
                     scope.$apply();
-                    
+
                     delete scope.player;
 
                 });
