@@ -13,7 +13,7 @@ ngVideo
 
 ![ngVideo 0.2.0](http://i.imgur.com/dTJDd3u.png)
 
-`ngVideo` utilises [Angular.js directives](https://docs.angularjs.org/guide/directive) extensively which compartmentalise the various components that make-up the overall `ngVideo` experience &ndash; meaning you get to pick and choose which you components you wish to utilise.
+`ngVideo` utilises [Angular.js directives](https://docs.angularjs.org/guide/directive) extensively which compartmentalises the various components that make-up the overall `ngVideo` experience &ndash; meaning you get to pick and choose which you components you wish to utilise.
 
 Directive Requirements
 -------------------
@@ -49,7 +49,7 @@ myApp.controller('VideoController', ['video', function(video) {
 }]);
 ```
 
-We can then subsequently add video sources to be played. For this grab yourself a [http://www.w3schools.com/html/mov_bbb.mp4](valid video source) and add it:
+We can then subsequently add video sources to be played. For this grab yourself a [valid video source](http://www.w3schools.com/html/mov_bbb.mp4) and add it:
 
 ```javascript
 video.addSource('mp4', 'http://www.example.com/alice-in-wonderland.mp4');
