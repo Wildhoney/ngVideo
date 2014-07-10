@@ -14,17 +14,17 @@
         /**
          * @property playlistOpen
          * @type {Boolean}
-         * @default true
+         * @default false
          */
-        $scope.playlistOpen = true;
+        $scope.playlistOpen = false;
 
         /**
          * @property videos
          * @type {Object}
          */
         $scope.videos = {
-            first: 'http://www.w3schools.com/html/mov_bbb.mp4',
-            second: 'http://techslides.com/demos/sample-videos/small.mp4'
+            first: 'http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4',
+            second: 'http://www.w3schools.com/html/mov_bbb.mp4'
         };
 
         /**
@@ -35,8 +35,8 @@
         $scope.videoName = function videoName(videoModel) {
 
             switch (videoModel.src) {
-                case ($scope.videos.first): return "Bunny and Butterfly";
-                case ($scope.videos.second): return "Lego Mechanics";
+                case ($scope.videos.first): return "Big Buck Bunny";
+                case ($scope.videos.second): return "Bunny and Butterfly";
                 default: return "Unknown Video";
             }
 

@@ -32,6 +32,12 @@
             replace: true,
 
             /**
+             * @property scope
+             * @type {Boolean}
+             */
+            scope: true,
+
+            /**
              * @property link
              * @param scope {Object}
              * @param element {Object}

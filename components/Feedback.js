@@ -26,6 +26,12 @@
             restrict: ngVideoOptions.RESTRICT,
 
             /**
+             * @property scope
+             * @type {Boolean}
+             */
+            scope: true,
+
+            /**
              * @property controller
              * @type {Array}
              * @param $scope {Object}

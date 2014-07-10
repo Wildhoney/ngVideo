@@ -13,6 +13,7 @@
 
     <!-- ngVideo! -->
     <script type="text/javascript" src="js/vendor/ng-video/Bootstrap.js"></script>
+    <script type="text/javascript" src="js/vendor/ng-video/Buffer.js"></script>
     <script type="text/javascript" src="js/vendor/ng-video/Controls.js"></script>
     <script type="text/javascript" src="js/vendor/ng-video/Playlist.js"></script>
     <script type="text/javascript" src="js/vendor/ng-video/Screen.js"></script>
@@ -27,21 +28,25 @@
 </head>
 <body ng-app="videoApp" ng-controller="VideoController">
 
+    <!-- Base Directive -->
     <section class="video" ng-video>
 
-        <video autoplay="autoplay" vi-screen></video>
+        <!-- Screen Directive -->
+        <video vi-screen></video>
 
         <section vi-controls class="controls">
             <span vi-controls-play title="Play" class="glyphicon glyphicon-play"></span>
             <span vi-controls-pause title="Pause" class="glyphicon glyphicon-pause"></span>
         </section>
 
+        <!-- Feedback Directive -->
         <section vi-feedback class="feedback">
 
             <section class="loading" ng-show="loading">
                 Loading...
             </section>
 
+            <!-- Volume Directive -->
             <section vi-volume class="volume">
 
                 <div class="scale">
@@ -53,13 +58,18 @@
 
             </section>
 
+            <!-- Duration Directive -->
             <section class="duration">
                 {{currentTime}}s of {{duration}}s
             </section>
 
+            <!-- Timeline Directive -->
             <section class="timeline">
                 <input vi-timeline />
             </section>
+
+            <!-- Buffer Directive -->
+            <section vi-buffer class="buffer"></section>
 
             <section class="generic">
                 ngVideo
@@ -78,6 +88,7 @@
 
         </span>
 
+        <!-- Playlist Directive -->
         <section vi-playlist class="playlist" ng-show="playlistOpen">
 
             <ul>

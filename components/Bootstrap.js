@@ -23,7 +23,10 @@
         SCREEN_DIRECTIVE: 'vi-screen',
         VOLUME_STEPS: 0.1,
         VOLUME_MINIMUM: 0,
-        VOLUME_MAXIMUM: 1
+        VOLUME_MAXIMUM: 1,
+        BUFFER_COLOUR: '#dd4b39',
+        BUFFER_HEIGHT: 1,
+        BUFFER_WIDTH: 485
     });
 
     /**
