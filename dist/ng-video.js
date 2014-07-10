@@ -201,7 +201,6 @@
                              */
                             var $play = function $play(index) {
 
-                                console.log(ngVideoPlaylist[index]);
                                 $scope.open(ngVideoPlaylist[index]);
                                 $scope.video = ngVideoPlaylist[index];
                                 $scope.player.play();
