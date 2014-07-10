@@ -63,14 +63,14 @@ At this point you *should* notice that the video is visible in the player, but n
 Directives
 -------------------
 
- * ![Buffer](#buffer): Buffered segments of video;
- * ![Controls](#controls): Play and pause buttons;
- * ![Feedback](#feedback): Real-time video data;
- * ![Meta](#meta): Reading meta data from videos;
- * ![Playlist](#playlist): Managing a video/audio playlist;
- * ![Screen](#screen): Appending the `screen` element;
- * ![Timeline](#timeline): `input` representing current time;
- * ![Volume](#volume): Managing the volume control;
+ * [Buffer](#buffer): Buffered segments of video;
+ * [Controls](#controls): Play and pause buttons;
+ * [Feedback](#feedback): Real-time video data;
+ * [Meta](#meta): Reading meta data from videos;
+ * [Playlist](#playlist): Managing a video/audio playlist;
+ * [Screen](#screen): Appending the `screen` element;
+ * [Timeline](#timeline): `input` representing current time;
+ * [Volume](#volume): Managing the volume control;
 
 ### Buffer ######
 
