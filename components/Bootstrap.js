@@ -19,7 +19,8 @@
      */
     module.constant('ngVideoOptions', {
         RESTRICT: 'CA',
-        REFRESH: 50
+        REFRESH: 50,
+        SCREEN: 'vi-screen'
     });
 
     /**
@@ -105,12 +106,6 @@
             controller: ['$rootScope', '$scope', function controller($rootScope, $scope) {
 
                 /**
-                 * @constant SOURCE_HTML
-                 * @type {String}
-                 */
-                $scope.SOURCE_HTML = '<source src="{{src}}" type="video/{{type}}" />';
-
-                /**
                  * @property video
                  * @type {Object|null}
                  */
@@ -140,56 +135,90 @@
                  * Responsible for setting up the events to be fired based on
                  * the video's state.
                  *
-                 * @method setupEvents
+                 * @method attachEvents
                  * @param player {Object}
                  * @return {void}
                  */
-                $scope.setupEvents = function setupEvents(player) {
+                $scope.attachEvents = function attachEvents(player) {
 
-                    player.bind('play', function onPlay() {
-                        $scope.playing = true;
-                        $scope.$apply();
-                    });
+                    (function setupBasicEvents() {
 
-                    player.bind('pause', function onPause() {
-                        $scope.playing = false;
-                        $scope.$apply();
-                    });
+                        /**
+                         * @method $setProperty
+                         * @param property {String}
+                         * @param value {String|Number|Boolean}
+                         * @return {Function}
+                         */
+                        var $setProperty = function $setProperty(property, value) {
 
-                    player.bind('ended', function onEnded() {
-                        $scope.playing = false;
-                        $scope.$apply();
-                    });
+                            return function() {
+                                $scope[property] = value;
+                                $scope.$apply();
+                            };
 
-                    player.bind('loadstart', function onLoadStart() {
+                        };
 
-                        $scope.loading = true;
-                        $scope.$apply();
+                        // Configure the simple events that respond to the player's state.
+                        player.bind('play', $setProperty('playing', true));
+                        player.bind('pause', $setProperty('playing', false));
+                        player.bind('ended', $setProperty('playing', false));
+                        player.bind('loadstart', $setProperty('loading', true));
 
-                    });
+                    }());
 
+                    // Once the video data has been loaded and the video is ready to be played.
                     player.bind('loadeddata', function onLoadEnd() {
 
-                        $scope.loading = false;
-                        $rootScope.$broadcast('ng-video/reset');
-                        $scope.$apply();
+                        $scope.$apply(function apply() {
 
-                        if ($scope.playing) {
+                            $scope.loading = false;
+                            $rootScope.$broadcast('ng-video/reset');
 
-                            // If we're already determined to be playing then force
-                            // the starting of the video.
-                            $scope.play();
+                            if ($scope.playing) {
 
-                        }
+                                // If we're already determined to be playing then force
+                                // the starting of the video.
+                                $scope.play();
+
+                            }
+
+                        });
 
                     });
 
                 };
 
+                /**
+                 * Responsible for taking a video model and loading it
+                 * into the video node.
+                 *
+                 * @method open
+                 * @param videoModel {Object}
+                 * @return {void}
+                 */
+                $scope.open = function open(videoModel) {
+
+                    if (!('src' in videoModel) || !('type' in videoModel)) {
+
+                        // Ensure a valid video model has been passed to open.
+                        video.throwException("Passed an invalid video model to open");
+
+                    }
+
+                    // Attach the video's source to the video node, and load the video
+                    // for playing.
+                    $scope.player.setAttribute('src', videoModel.src);
+                    $scope.player.setAttribute('type', videoModel.type);
+                    $scope.player.load();
+
+                }
+
             }],
 
             /**
              * @method link
+             * @param scope {Object}
+             * @param element {Object}
              * @return {void}
              */
             link: function link(scope, element) {
@@ -198,7 +227,7 @@
                 var player = element.find('video');
 
                 // Ensure the video player exists.
-                if (player.length === 0 || typeof player.attr('vi-screen') === 'undefined') {
+                if (player.length === 0 || typeof player.attr(ngVideoOptions.SCREEN) === 'undefined') {
                     video.throwException("Must add ng-video-screen directive");
                 }
 
@@ -206,7 +235,14 @@
                 scope.player = player[0];
 
                 // Set-up the events to be fired.
-                scope.setupEvents(player);
+                scope.attachEvents(player);
+
+                if (scope.video) {
+
+                    // Change the source of the video, and type if necessary.
+                    scope.open(scope.video)
+
+                }
 
             }
 

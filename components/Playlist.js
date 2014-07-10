@@ -33,20 +33,6 @@
                  */
                 $scope.videos = ngVideoPlaylist;
 
-                /**
-                 * @method playVideo
-                 * @param model {Object}
-                 * @return {void}
-                 */
-                $scope.playVideo = function playVideo(model) {
-
-                    // Change the source of the video, and type if necessary.
-                    $scope.player.setAttribute('src', model.src);
-                    $scope.player.setAttribute('type', model.type);
-                    $scope.player.load();
-
-                };
-
             }]
 
         }
