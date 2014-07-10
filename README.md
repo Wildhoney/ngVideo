@@ -24,7 +24,7 @@ When using `ngVideo`, the **only** required directive is the main `ng-video` dir
 Getting Started
 -------------------
 
-**Terminology:** When we mention `videoModel` we meant the `object` that is returned from the `addSource` method.
+**Terminology:** When we mention `videoModel` we mean the `object` that is returned from `addSource`.
 
 Starting to use `ngVideo` is a breeze! Firstly you **must** define the container which will contain your *video* node.
 
@@ -63,6 +63,15 @@ At this point you *should* notice that the video is visible in the player, but n
 Directives
 -------------------
 
+ * ![Buffer](#buffer): Buffered segments of video;
+ * ![Controls](#controls): Play and pause buttons;
+ * ![Feedback](#feedback): Real-time video data;
+ * ![Meta](#meta): Reading meta data from videos;
+ * ![Playlist](#playlist): Managing a video/audio playlist;
+ * ![Screen](#screen): Appending the `screen` element;
+ * ![Timeline](#timeline): `input` representing current time;
+ * ![Volume](#volume): Managing the volume control;
+
 ### Buffer ######
 
 With the buffer directive you can display a bar similar to the timeline which displays the buffered segments of the video &ndash; using the `canvas` element.
@@ -73,7 +82,7 @@ With the buffer directive you can display a bar similar to the timeline which di
 
 Use the `ngVideoOptions` for modifying the necessary values pertaining to the `vi-buffer` directive: `BUFFER_COLOUR`, `BUFFER_HEIGHT`, `BUFFER_WIDTH`.
 
-**Note:** `ngVideoOptions` can be injected into your controllers in the same way as services: see [`ngVideoOptions`](#Configuration).
+**Note:** `ngVideoOptions` can be injected into your controllers in the same way as services: see [`ngVideoOptions`](#configuration).
 
 Example of two buffering segments from Safari with `ngVideo@0.2.2` &ndash; notice the two red lines:
 
@@ -118,7 +127,7 @@ Currently the `vi-feedback` supports the following properties &ndash; as of `ngV
  
 ### Meta #####
 
-In some cases you may wish to read the meta data of a video without actually loading it. For example, you may wish to know the duration of a video for the playlist &ndash; just so the user knows!
+In some cases you may wish to read the meta data of a video **without** actually playing it. For example, you may wish to know the duration of a video for the playlist &ndash; just so the user knows!
 
 Simply wrap the `videoModel` in the `vi-meta` directive and you will have access to the video's meta data:
 
