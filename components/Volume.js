@@ -20,12 +20,15 @@
             restrict: ngVideoOptions.RESTRICT,
 
             /**
-             * @property link
-             * @return {void}
+             * @property controller
+             * @type {Array}
+             * @param $scope {Object}
              */
-            link: function() {
+            controller: ['$scope', function controller($scope) {
 
-            }
+                return $scope;
+
+            }]
 
         }
 
