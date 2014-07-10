@@ -161,7 +161,6 @@
                         // Configure the simple events that respond to the player's state.
                         player.bind('play', $setProperty('playing', true));
                         player.bind('pause', $setProperty('playing', false));
-                        player.bind('ended', $setProperty('playing', false));
                         player.bind('loadstart', $setProperty('loading', true));
 
                     }());
@@ -181,6 +180,48 @@
                                 $scope.play();
 
                             }
+
+                        });
+
+                    });
+
+                    // Once the video has finished playing.
+                    player.bind('ended', function onEnded() {
+
+                        $scope.$apply(function apply() {
+
+                            /**
+                             * @method $play
+                             * @param index {Number}
+                             * @return {void}
+                             */
+                            var $play = function $play(index) {
+                                $scope.open(ngVideoPlaylist[index]);
+                                $scope.player.play();
+                            };
+
+                            // Attempt to find the current video.
+                            var index = ngVideoPlaylist.indexOf($scope.video);
+
+                            if (index === -1 || typeof ngVideoPlaylist[index + 1] === 'undefined') {
+
+                                if ($scope.player.loop) {
+
+                                    // Determine if we should keep looping the playlist.
+                                    $play(0);
+                                    return;
+
+                                }
+
+                                // We're unable to find the next video, therefore we'll pause
+                                // the whole process of updating the statistics.
+                                $scope.player.pause();
+                                return;
+
+                            }
+
+                            // Voila! Load the next video.
+                            $play(index + 1);
 
                         });
 
