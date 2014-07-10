@@ -70,6 +70,10 @@ Use the `ngVideoOptions` for modifying the necessary values pertaining to the `v
 
 **Note:** `ngVideoOptions` can be injected into your controllers in the same way as services.
 
+Example of two buffering segments from Safari with `ngVideo@0.2.2` &ndash; notice the two red lines:
+
+![ngVideo 0.2.2](http://i.imgur.com/uyNp5Xc.png)
+
 ### Controls ######
 
 The `vi-controls` directive allows you to add a play button and a pause button to your player &ndash; `vi-controls-play` and `vi-controls-pause` respectively, where `vi-controls` serves as the parent which contains the logic.
