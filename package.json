@@ -6,8 +6,13 @@
   "directories": {
     "example": "example"
   },
+  "engines": {
+    "node": "0.10.x"
+  },
   "scripts": {
-    "test": "grunt test"
+    "test": "grunt test",
+    "start": "node example/server/default.js",
+    "postinstall": "bower install; grunt build"
   },
   "repository": {
     "type": "git",
@@ -21,6 +26,7 @@
     "angular video player",
     "angular html5 video player"
   ],
+
   "author": "Adam Timberlake <adam.timberlake@gmail.com>",
   "license": "MIT",
   "bugs": {

@@ -38,38 +38,38 @@
      */
     module.service('video', ['$rootScope', '$timeout', 'ngVideoPlaylist',
 
-        function videoService($rootScope, $timeout, ngVideoPlaylist) {
+    function videoService($rootScope, $timeout, ngVideoPlaylist) {
 
-            var service = {};
+        var service = {};
 
-            /**
-             * @method addSource
-             * @param type {String}
-             * @param src {String}
-             * @return {Object}
-             */
-            service.addSource = function addSource(type, src) {
+        /**
+         * @method addSource
+         * @param type {String}
+         * @param src {String}
+         * @return {Object}
+         */
+        service.addSource = function addSource(type, src) {
 
-                // Add a new video to the playlist, and broadcast the success.
-                var model = { type: type, src: src },
-                    video = ngVideoPlaylist.push(model);
+            // Add a new video to the playlist, and broadcast the success.
+            var model = { type: type, src: src },
+                video = ngVideoPlaylist.push(model);
 
-                $rootScope.$broadcast('ng-video/add', model);
-                return video;
+            $rootScope.$broadcast('ng-video/add', model);
+            return video;
 
-            };
+        };
 
-            /**
-             * @method throwException
-             * @param message {String}
-             */
-            service.throwException = function throwException(message) {
-                throw 'ngVideo: ' + message + '.';
-            };
+        /**
+         * @method throwException
+         * @param message {String}
+         */
+        service.throwException = function throwException(message) {
+            throw 'ngVideo: ' + message + '.';
+        };
 
-            return service;
+        return service;
 
-        }]);
+    }]);
 
     /**
      * @directive ngVideo
@@ -173,7 +173,7 @@
                             $scope.loading = false;
                             $rootScope.$broadcast('ng-video/reset');
 
-                            if ($scope.playing) {
+                            if ($scope.playing || $scope.player.autoplay) {
 
                                 // If we're already determined to be playing then force
                                 // the starting of the video.
@@ -230,8 +230,7 @@
                 };
 
                 /**
-                 * Responsible for taking a video model and loading it
-                 * into the video node.
+                 * Responsible for taking a video model and loading it into the video node.
                  *
                  * @method open
                  * @param videoModel {Object}

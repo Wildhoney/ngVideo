@@ -33,6 +33,30 @@
                  */
                 $scope.videos = ngVideoPlaylist;
 
+                /**
+                 * @method next
+                 * @return {void}
+                 */
+                $scope.next = function next() {};
+
+                /**
+                 * @method previous
+                 * @return {void}
+                 */
+                $scope.previous = function previous() {};
+
+                /**
+                 * @method first
+                 * @return {void}
+                 */
+                $scope.first = function first() {};
+
+                /**
+                 * @method last
+                 * @return {void}
+                 */
+                $scope.last = function last() {};
+
             }]
 
         }
