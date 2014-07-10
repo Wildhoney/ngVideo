@@ -851,7 +851,7 @@
 
 })(window.angular);
 
-(function($angular, $math) {
+(function($angular) {
 
     "use strict";
 
@@ -995,4 +995,4 @@
         scope.setVolume(0);
     });
 
-})(window.angular, window.Math);
+})(window.angular);
