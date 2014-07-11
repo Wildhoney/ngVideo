@@ -347,10 +347,15 @@
                         scope.container.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
 
                     }
+
                 };
 
                 // Attempt to find the video node.
                 var player = element.find('video');
+
+//                player.bind('stalled', function() {
+//                    console.log('Stalled');
+//                });
 
                 // Ensure the video player exists.
                 if (player.length === 0 || typeof player.attr(ngVideoOptions.SCREEN_DIRECTIVE) === 'undefined') {
@@ -1215,65 +1220,53 @@
      */
     $angular.module('ngVideo').directive('viTimeline', ['ngVideoOptions',
 
-    function ngTimelineDirective(ngVideoOptions) {
+        function ngTimelineDirective(ngVideoOptions) {
 
-        return {
-
-            /**
-             * @property restrict
-             * @type {String}
-             */
-            restrict: ngVideoOptions.RESTRICT,
-
-            /**
-             * @property template
-             * @type {String}
-             */
-            template: '<input type="range" value="0" />',
-
-            /**
-             * @property replace
-             * @type {Boolean}
-             */
-            replace: true,
-
-            /**
-             * @property scope
-             * @type {Boolean}
-             */
-            scope: true,
-
-            /**
-             * @property link
-             * @param scope {Object}
-             * @param element {Object}
-             * @return {void}
-             */
-            link: function(scope, element) {
+            return {
 
                 /**
-                 * @property wasPlaying
-                 * @type {Boolean}
-                 * @default false
+                 * @property restrict
+                 * @type {String}
                  */
-                scope.wasPlaying = false;
+                restrict: ngVideoOptions.RESTRICT,
 
-                // When we need to force the resetting of the range.
-                scope.$on('ng-video/reset', function resetRange() {
-                    element.val(0);
-                });
+                /**
+                 * @property template
+                 * @type {String}
+                 */
+                template: '<input type="range" value="0" />',
 
-                // Listen for when the statistics have been updated.
-                scope.$watch('lastUpdate', function onUpdate() {
+                /**
+                 * @property replace
+                 * @type {Boolean}
+                 */
+                replace: true,
 
-                    if (scope.playing) {
+                /**
+                 * @property scope
+                 * @type {Boolean}
+                 */
+                scope: true,
 
-                        // Calculate the percentage for the range node, and update
-                        // it accordingly.
-                        var percentage = (scope.currentTime / scope.duration) * 100;
-                        element.val(percentage);
+                /**
+                 * @property link
+                 * @param scope {Object}
+                 * @param element {Object}
+                 * @return {void}
+                 */
+                link: function(scope, element) {
 
-                    }
+                    /**
+                     * @property wasPlaying
+                     * @type {Boolean}
+                     * @default false
+                     */
+                    scope.wasPlaying = false;
+
+                    // When we need to force the resetting of the range.
+                    scope.$on('ng-video/reset', function resetRange() {
+                        element.val(0);
+                    });
 
                     // Whenever the user attempts to seek we'll pause to allow them to
                     // change it in peace.
@@ -1300,13 +1293,25 @@
 
                     });
 
-                });
+                    // Listen for when the statistics have been updated.
+                    scope.$watch('lastUpdate', function onUpdate() {
+
+                        if (scope.playing) {
+
+                            // Calculate the percentage for the range node, and update
+                            // it accordingly.
+                            var percentage = (scope.currentTime / scope.duration) * 100;
+                            element.val(percentage);
+
+                        }
+
+                    });
+
+                }
 
             }
 
-        }
-
-    }]);
+        }]);
 
 })(window.angular);
 

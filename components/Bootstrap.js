@@ -347,10 +347,15 @@
                         scope.container.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
 
                     }
+
                 };
 
                 // Attempt to find the video node.
                 var player = element.find('video');
+
+//                player.bind('stalled', function() {
+//                    console.log('Stalled');
+//                });
 
                 // Ensure the video player exists.
                 if (player.length === 0 || typeof player.attr(ngVideoOptions.SCREEN_DIRECTIVE) === 'undefined') {
