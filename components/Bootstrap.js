@@ -291,6 +291,36 @@
              */
             link: function link(scope, element) {
 
+                /**
+                 * @property container
+                 * @type {Object}
+                 */
+                scope.container = element[0];
+
+                /**
+                 * @method fullScreen
+                 * @return {void}
+                 */
+                scope.fullScreen = function fullScreen() {
+
+                    if (scope.container.requestFullscreen) {
+
+                        // W3C.
+                        scope.container.requestFullscreen();
+
+                    } else if (scope.container.mozRequestFullScreen) {
+
+                        // Mozilla.
+                        scope.container.mozRequestFullScreen();
+
+                    } else if (scope.container.webkitRequestFullscreen) {
+
+                        // Webkit
+                        scope.container.webkitRequestFullscreen();
+
+                    }
+                };
+
                 // Attempt to find the video node.
                 var player = element.find('video');
 

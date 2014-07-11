@@ -291,6 +291,36 @@
              */
             link: function link(scope, element) {
 
+                /**
+                 * @property container
+                 * @type {Object}
+                 */
+                scope.container = element[0];
+
+                /**
+                 * @method fullScreen
+                 * @return {void}
+                 */
+                scope.fullScreen = function fullScreen() {
+
+                    if (scope.container.requestFullscreen) {
+
+                        // W3C.
+                        scope.container.requestFullscreen();
+
+                    } else if (scope.container.mozRequestFullScreen) {
+
+                        // Mozilla.
+                        scope.container.mozRequestFullScreen();
+
+                    } else if (scope.container.webkitRequestFullscreen) {
+
+                        // Webkit
+                        scope.container.webkitRequestFullscreen();
+
+                    }
+                };
+
                 // Attempt to find the video node.
                 var player = element.find('video');
 
@@ -711,9 +741,59 @@
     "use strict";
 
     /**
+     * @directive viFullScreen
+     * @type {Function}
+     * @param ngVideoOptions {Object}
+     */
+    $angular.module('ngVideo').directive('viFullScreen', ['ngVideoOptions',
+
+    function ngFullScreenDirective(ngVideoOptions) {
+
+        return {
+
+            /**
+             * @property restrict
+             * @type {String}
+             */
+            restrict: ngVideoOptions.RESTRICT,
+
+            /**
+             * @property scope
+             * @type {Boolean}
+             */
+            scope: true,
+
+            /**
+             * @method link
+             * @param scope {Object}
+             * @param element {Object}
+             * @param attr {Object}
+             * @param ngModel {Object}
+             * @return {void}
+             */
+            link: function link(scope, element, attr, ngModel) {
+
+                element.bind('click', function onClick() {
+
+                    scope.fullScreen();
+
+                });
+
+            }
+
+        }
+
+    }]);
+
+})(window.angular);
+
+(function($angular) {
+
+    "use strict";
+
+    /**
      * @directive viMeta
      * @type {Function}
-     * @param ngVideoMeta {Array}
      * @param ngVideoOptions {Object}
      */
     $angular.module('ngVideo').directive('viMeta', ['$window', 'ngVideoOptions',

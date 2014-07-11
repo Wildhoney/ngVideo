@@ -8,14 +8,20 @@ body {
     text-align: center;
 }
 
+section.ng-video {
+    width: 550px;
+    height: 310px;
+    margin: 40px auto auto auto;
+}
+
 section.video {
     text-align: left;
     padding: 5px;
     position: relative;
     background-color: white;
-    width: 550px;
-    height: 310px;
-    margin: 20px auto auto auto;
+    width: 100%;
+    height: 100%;
+    box-shadow: 0 0 15px rgba(0, 0, 0, .25);
     border: 1px solid lightgray;
 }
 
@@ -138,6 +144,7 @@ section.video section.generic a:hover {
 section.video section.timeline {
     position: absolute;
     width: 485px;
+    width: calc(100% - 60px);
     left: 30px;
     bottom: 32px;
 }
@@ -145,6 +152,9 @@ section.video section.timeline {
 section.video section.timeline input {
     width: 100%;
     pointer-events: all;
+    appearance: none;
+    -o-appearance: none;
+    -moz-appearance: none;
     -webkit-appearance: none;
     background-color: transparent;
     outline: none;
@@ -153,6 +163,16 @@ section.video section.timeline input {
 }
 
 section.video section.timeline input::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    background-color: white;
+    margin-bottom: 20px;
+    border-radius: 2px;
+    outline: none;
+    height: 15px;
+    width: 45px;
+}
+
+section.video section.timeline input::-moz-range-thumb {
     -webkit-appearance: none;
     background-color: white;
     margin-bottom: 20px;
@@ -183,10 +203,6 @@ section.video section.title {
     border-radius: 0 3px 3px 0;
     bottom: 62px;
     right: 33px;
-}
-
-section.video section.duration span.title {
-    background-color: green;
 }
 
 section.video section.playlist {
@@ -258,6 +274,7 @@ section.video span.open-playlist {
 section.video section.buffer {
     position: absolute;
     width: 485px;
+    width: calc(100% - 60px);
     left: 30px;
     bottom: 30px;
     background-color: rgba(255, 255, 255, .5);
@@ -267,5 +284,15 @@ section.video section.buffer {
 section.video section.buffer canvas {
     margin: 0;
     position: absolute;
+    width: 100%;
     top: 0;
+}
+
+section.video section.full-screen {
+    position: absolute;
+    top: 40px;
+    left: 6px;
+    cursor: pointer;
+    padding: 10px;
+    color: white;
 }

@@ -5,7 +5,6 @@
     /**
      * @directive viMeta
      * @type {Function}
-     * @param ngVideoMeta {Array}
      * @param ngVideoOptions {Object}
      */
     $angular.module('ngVideo').directive('viMeta', ['$window', 'ngVideoOptions',

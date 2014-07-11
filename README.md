@@ -14,7 +14,7 @@ ngVideo
 
 ![ngVideo 0.2.0](http://i.imgur.com/dTJDd3u.png)
 
-`ngVideo` utilises [Angular.js directives](https://docs.angularjs.org/guide/directive) extensively which compartmentalises the various components that make-up the overall `ngVideo` experience &ndash; meaning you get to pick and choose which you components you wish to utilise.
+`ngVideo` utilises [Angular.js directives](https://docs.angularjs.org/guide/directive) extensively which compartmentalises the various components that make-up the overall `ngVideo` experience &ndash; meaning you get to pick and choose which components you wish to utilise.
 
 Directive Requirements
 -------------------
@@ -66,6 +66,7 @@ Directives
  * [Buffer](#buffer): Buffered segments of video;
  * [Controls](#controls): Play and pause buttons;
  * [Feedback](#feedback): Real-time video data;
+ * [FullScreen](#fullscreen): Open player in full-screen;
  * [Meta](#meta): Reading meta data from videos;
  * [Playlist](#playlist): Managing a video/audio playlist;
  * [Screen](#screen): Appending the `screen` element;
@@ -125,6 +126,15 @@ Currently the `vi-feedback` supports the following properties &ndash; as of `ngV
  * `loading`;
  * `playing`;
  
+ 
+### FullScreen ###
+
+With the `vi-fullscreen` directive you can open the player into full-screen mode depending on browser support.
+
+```html
+<a vi-full-screen>Open Full-Screen!</a>
+```
+ 
 ### Meta #####
 
 In some cases you may wish to read the meta data of a video **without** actually playing it. For example, you may wish to know the duration of a video for the playlist &ndash; just so the user knows!
@@ -167,7 +177,7 @@ As well as listing the videos in the current playlist, the `vi-playlist` contain
  
 ### Screen #####
 
-The `vi-screen` directive is the **only** mandatory directive &ndash; along with the core `ng-video` directive for managing the core logic. It is also one of the simplest directives, because it simply outputs the `video` note &ndash; with a little behaviour thrown in.
+The `vi-screen` directive is the **only** mandatory directive &ndash; along with the core `ng-video` directive for managing the core logic. It is also one of the simplest directives, because it simply outputs the `video` node &ndash; with a little behaviour thrown in.
 
 ```html
 <video vi-screen></video>
@@ -183,7 +193,7 @@ Keeping with the simplicity of the `vi-screen` directive, the `vi-timeline` is e
 
 ### Volume #####
 
-Directive has the ability of modifying the volume and bundles with three useful directives for common tasks: `vi-volume-decrease` for decreasing the volume, `vi-volume-increase` for increasing, `vi-volume-loudest` for the maximum volume, and the `vi-volume-mute` directive for muting the audio. However, the `vi-volume` directive has access to the `setVolume` method which allows you to specify the audio level.
+Directive has the ability of modifying the volume and bundles with four useful directives for common tasks: `vi-volume-decrease` for decreasing the volume, `vi-volume-increase` for increasing, `vi-volume-loudest` for the maximum volume, and the `vi-volume-mute` directive for muting the audio. However, the `vi-volume` directive has access to the `setVolume` method which allows you to specify the audio level.
 
 ```html
 <section vi-volume>
