@@ -66,7 +66,7 @@ Directives
  * [Buffer](#buffer): Buffered segments of video;
  * [Controls](#controls): Play and pause buttons;
  * [Feedback](#feedback): Real-time video data;
- * [FullScreen](#fullscreen): Open player in full-screen;
+ * [Full Screen](#full-screen): Open player in full screen;
  * [Meta](#meta): Reading meta data from videos;
  * [Playlist](#playlist): Managing a video/audio playlist;
  * [Screen](#screen): Appending the `screen` element;
@@ -127,13 +127,15 @@ Currently the `vi-feedback` supports the following properties &ndash; as of `ngV
  * `playing`;
  
  
-### FullScreen ###
+### Full Screen ###
 
-With the `vi-fullscreen` directive you can open the player into full-screen mode depending on browser support.
+With the `vi-full-screen` directive you can open the player into full-screen mode depending on [browser support](http://caniuse.com/#search=full%20screen).
 
 ```html
-<a vi-full-screen>Open Full-Screen!</a>
+<a vi-full-screen-toggle>Toggle Full-Screen!</a>
 ```
+
+With the `vi-full-screen-toggle` directive, `ngVideo` whether it should open or close the full screen mode. If you wish to force either the open and close, or have two different buttons for each action, then you can use `vi-full-screen-open` and `vi-full-screen-close` in place of vi-full-screen-toggle.
  
 ### Meta #####
 

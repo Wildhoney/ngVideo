@@ -110,7 +110,9 @@
              * @param $rootScope {Object}
              * @param $scope {Object}
              */
-            controller: ['$rootScope', '$scope', function controller($rootScope, $scope) {
+            controller: ['$window', '$rootScope', '$scope',
+
+            function controller($window, $rootScope, $scope) {
 
                 /**
                  * @property video
@@ -281,6 +283,32 @@
 
                 };
 
+                /**
+                 * @method closeFullScreen
+                 * @return {void}
+                 */
+                $scope.closeFullScreen = function openFullScreen() {
+
+                    var document = $window.document;
+
+                    if (document.exitFullscreen) {
+
+                        // W3C.
+                        document.exitFullscreen();
+
+                    } else if (document.mozExitFullscreen) {
+
+                        // Mozilla.
+                        document.mozExitFullscreen();
+
+                    } else if (document.webkitExitFullscreen) {
+
+                        // Webkit.
+                        document.webkitExitFullscreen();
+
+                    }
+                };
+
             }],
 
             /**
@@ -298,10 +326,10 @@
                 scope.container = element[0];
 
                 /**
-                 * @method fullScreen
+                 * @method openFullScreen
                  * @return {void}
                  */
-                scope.fullScreen = function fullScreen() {
+                scope.openFullScreen = function openFullScreen() {
 
                     if (scope.container.requestFullscreen) {
 
@@ -315,8 +343,8 @@
 
                     } else if (scope.container.webkitRequestFullscreen) {
 
-                        // Webkit
-                        scope.container.webkitRequestFullscreen();
+                        // Webkit.
+                        scope.container.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
 
                     }
                 };
@@ -739,47 +767,123 @@
 (function($angular) {
 
     "use strict";
-
     /**
-     * @directive viFullScreen
-     * @type {Function}
-     * @param ngVideoOptions {Object}
+     * @method createFullScreenDirective
+     * @param name {String}
+     * @param clickFn {Function}
+     * @return {Object}
      */
-    $angular.module('ngVideo').directive('viFullScreen', ['ngVideoOptions',
+    var createFullScreenDirective = function createFullScreenDirective(name, clickFn) {
 
-    function ngFullScreenDirective(ngVideoOptions) {
+        /**
+         * @property directiveLabel
+         * @type {String}
+         */
+        var directiveLabel = name.charAt(0).toUpperCase() + name.slice(1);
 
-        return {
+        /**
+         * @directive viVolumeItem
+         * @type {Function}
+         */
+        $angular.module('ngVideo').directive('viFullScreen' + directiveLabel, ['$window', 'ngVideoOptions',
 
-            /**
-             * @property restrict
-             * @type {String}
-             */
-            restrict: ngVideoOptions.RESTRICT,
+        function viVolumeItem($window, ngVideoOptions) {
 
-            /**
-             * @property scope
-             * @type {Boolean}
-             */
-            scope: true,
+            return {
 
-            /**
-             * @method link
-             * @param scope {Object}
-             * @param element {Object}
-             * @return {void}
-             */
-            link: function link(scope, element) {
+                /**
+                 * @property restrict
+                 * @type {String}
+                 */
+                restrict: ngVideoOptions.RESTRICT,
 
-                element.bind('click', function onClick() {
-                    scope.fullScreen();
-                });
+                /**
+                 * @method link
+                 * @param scope {Object}
+                 * @param element {Object}
+                 * @return {void}
+                 */
+                link: function link(scope, element) {
+
+                    element.bind('click', function onClick() {
+
+                        // Invoke the `clickFn` callback when the element has been clicked.
+                        clickFn.call(this, scope, $window.document);
+                        scope.$apply();
+
+                    });
+
+                }
 
             }
 
+        }]);
+
+    };
+
+    /**
+     * @directive viFullScreenOpen
+     * @type {Function}
+     * @param scope {Object}
+     */
+    createFullScreenDirective('open', function onFullScreenOpenClick(scope) {
+        scope.openFullScreen();
+    });
+
+    /**
+     * @directive viFullScreenClose
+     * @type {Function}
+     * @param scope {Object}
+     */
+    createFullScreenDirective('close', function onFullScreenCloseClick(scope) {
+        scope.closeFullScreen();
+    });
+
+    /**
+     * @directive viFullScreenToggle
+     * @type {Function}
+     * @param scope {Object}
+     */
+    createFullScreenDirective('toggle', function onFullScreenToggleClick(scope, document) {
+
+        /**
+         * @method inFullScreen
+         * @return {Boolean}
+         */
+        var inFullScreen = function inFullScreen() {
+
+            if (document.fullscreenElement) {
+
+                // W3C.
+                return !!document.fullscreenElement;
+
+            } else if (document.mozFullscreenElement) {
+
+                // Mozilla.
+                return !!document.mozFullscreenElement;
+
+            } else if (document.webkitFullscreenElement) {
+
+                // Webkit.
+                return !!document.webkitFullscreenElement;
+
+            }
+
+        };
+
+        if (!inFullScreen()) {
+
+            // Determine if we're currently in full-screen mode, and then deduce which method
+            // to call based on the result.
+            scope.openFullScreen();
+            return;
+
         }
 
-    }]);
+        // Close the full screen mode if we're still full screen.
+        scope.closeFullScreen();
+
+    });
 
 })(window.angular);
 

@@ -110,7 +110,9 @@
              * @param $rootScope {Object}
              * @param $scope {Object}
              */
-            controller: ['$rootScope', '$scope', function controller($rootScope, $scope) {
+            controller: ['$window', '$rootScope', '$scope',
+
+            function controller($window, $rootScope, $scope) {
 
                 /**
                  * @property video
@@ -281,6 +283,32 @@
 
                 };
 
+                /**
+                 * @method closeFullScreen
+                 * @return {void}
+                 */
+                $scope.closeFullScreen = function openFullScreen() {
+
+                    var document = $window.document;
+
+                    if (document.exitFullscreen) {
+
+                        // W3C.
+                        document.exitFullscreen();
+
+                    } else if (document.mozExitFullscreen) {
+
+                        // Mozilla.
+                        document.mozExitFullscreen();
+
+                    } else if (document.webkitExitFullscreen) {
+
+                        // Webkit.
+                        document.webkitExitFullscreen();
+
+                    }
+                };
+
             }],
 
             /**
@@ -298,10 +326,10 @@
                 scope.container = element[0];
 
                 /**
-                 * @method fullScreen
+                 * @method openFullScreen
                  * @return {void}
                  */
-                scope.fullScreen = function fullScreen() {
+                scope.openFullScreen = function openFullScreen() {
 
                     if (scope.container.requestFullscreen) {
 
@@ -315,8 +343,8 @@
 
                     } else if (scope.container.webkitRequestFullscreen) {
 
-                        // Webkit
-                        scope.container.webkitRequestFullscreen();
+                        // Webkit.
+                        scope.container.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
 
                     }
                 };
