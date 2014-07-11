@@ -767,16 +767,12 @@
              * @method link
              * @param scope {Object}
              * @param element {Object}
-             * @param attr {Object}
-             * @param ngModel {Object}
              * @return {void}
              */
-            link: function link(scope, element, attr, ngModel) {
+            link: function link(scope, element) {
 
                 element.bind('click', function onClick() {
-
                     scope.fullScreen();
-
                 });
 
             }
