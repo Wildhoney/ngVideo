@@ -86,7 +86,7 @@ Directives
  * [Feedback](#feedback): Real-time video data;
  * [Full Screen](#full-screen): Open player in full screen;
  * [Meta](#meta): Reading meta data from videos;
- * [Messages](#meta): Subscribes to various `video` callbacks;
+ * [Messages](#messages): Subscribes to various `video` callbacks;
  * [Playlist](#playlist): Managing a video/audio playlist;
  * [Screen](#screen): Appending the `screen` element;
  * [Timeline](#timeline): `input` representing current time;
