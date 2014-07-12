@@ -32,7 +32,7 @@ Starting to use `ngVideo` is a breeze! Firstly you **must** define the container
 <section class="video" ng-video>
 ```
 
-**Note:** You can load multi-sources for each video for fallback purposes with [`multiSource`](#multi-source)`.
+**Note:** You can load multi-sources for each video for fallback purposes with [`multiSource`](#multi-source).
 
 You then need to fulfill the only other requirement for `ngVideo` &ndash; the `video` node:
 
@@ -86,6 +86,7 @@ Directives
  * [Feedback](#feedback): Real-time video data;
  * [Full Screen](#full-screen): Open player in full screen;
  * [Meta](#meta): Reading meta data from videos;
+ * [Messages](#meta): Subscribes to various `video` callbacks;
  * [Playlist](#playlist): Managing a video/audio playlist;
  * [Screen](#screen): Appending the `screen` element;
  * [Timeline](#timeline): `input` representing current time;
@@ -165,6 +166,27 @@ Simply wrap the `videoModel` in the `vi-meta` directive and you will have access
 <span vi-meta ng-model="video">
     {{duration}} seconds.
 </span>
+```
+
+### Messages #####
+
+With the `vi-messages` directive you can subscribe to all of the native `video` events and filter them depending on whether they're informational or a more serious error.
+
+```html
+<section vi-messages>
+
+    <ul>
+        <li vi-messages ng-repeat="message in messages">
+            
+            Date: {{message.date}}
+            Text: {{message.text}}
+            Type: {{message.type}}
+            
+        </li>
+            
+    </ul>
+
+</section>
 ```
  
 ### Playlist #####
