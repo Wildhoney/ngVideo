@@ -1,4 +1,4 @@
-(function($angular) {
+(function Controls($angular) {
 
     "use strict";
 

@@ -1,4 +1,4 @@
-(function($angular) {
+(function FullScreen($angular) {
 
     "use strict";
     /**

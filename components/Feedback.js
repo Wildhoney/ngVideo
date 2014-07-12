@@ -1,4 +1,4 @@
-(function($angular, $math) {
+(function Feedback($angular, $math) {
 
     "use strict";
 

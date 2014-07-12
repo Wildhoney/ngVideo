@@ -1,4 +1,4 @@
-(function($angular) {
+(function Timeline($angular) {
 
     "use strict";
 

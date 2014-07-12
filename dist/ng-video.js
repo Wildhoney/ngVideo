@@ -3,7 +3,7 @@
  * @author Adam Timberlake
  * @link https://github.com/Wildhoney/ngVideo
  */
-(function Bootstrap($angular) {
+(function Service($angular) {
 
     "use strict";
 
@@ -44,38 +44,101 @@
      */
     module.service('video', ['$rootScope', '$timeout', 'ngVideoPlaylist',
 
-    function videoService($rootScope, $timeout, ngVideoPlaylist) {
+        function videoService($rootScope, $timeout, ngVideoPlaylist) {
 
-        var service = {};
+            var service = {};
 
-        /**
-         * @method addSource
-         * @param type {String}
-         * @param src {String}
-         * @return {Object}
-         */
-        service.addSource = function addSource(type, src) {
+            /**
+             * @method addSource
+             * @param type {String}
+             * @param src {String}
+             * @return {Object}
+             */
+            service.addSource = function addSource(type, src) {
 
-            // Add a new video to the playlist, and broadcast the success.
-            var model = { type: type, src: src },
-                video = ngVideoPlaylist.push(model);
+                // Add a new video to the playlist, and broadcast the success.
+                var model = { type: type, src: src };
+                ngVideoPlaylist.push(model);
 
-            $rootScope.$broadcast('ng-video/add', model);
-            return video;
+                $rootScope.$broadcast('ng-video/add', model);
+                return model;
 
-        };
+            };
 
-        /**
-         * @method throwException
-         * @param message {String}
-         */
-        service.throwException = function throwException(message) {
-            throw 'ngVideo: ' + message + '.';
-        };
+            /**
+             * @method multiSource
+             * @return {MultiSource}
+             */
+            service.multiSource = function multiSource() {
 
-        return service;
+                /**
+                 * @class MultiSource
+                 * @constructor
+                 */
+                function MultiSource() {}
 
-    }]);
+                /**
+                 * @property prototype
+                 * @type {Object}
+                 */
+                MultiSource.prototype = {
+
+                    /**
+                     * @property sources
+                     * @type {Array}
+                     */
+                    sources: [],
+
+                    /**
+                     * @method addSource
+                     * @param type {String}
+                     * @param src {String}
+                     * @return {Object}
+                     */
+                    addSource: function addSource(type, src) {
+                        var model = { type: type, src: src };
+                        this.sources.push(model);
+                        return model;
+                    },
+
+                    /**
+                     * @method save
+                     * @return {void}
+                     */
+                    save: function save() {
+                        ngVideoPlaylist.push(this.sources);
+                        $rootScope.$broadcast('ng-video/add', this.sources);
+                    }
+
+                };
+
+                return new MultiSource();
+
+            };
+
+            /**
+             * @method throwException
+             * @param message {String}
+             * @return {void}
+             */
+            service.throwException = function throwException(message) {
+                throw 'ngVideo: ' + message + '.';
+            };
+
+            return service;
+
+        }]);
+
+})(window.angular);
+
+/**
+ * @module ngVideo
+ * @author Adam Timberlake
+ * @link https://github.com/Wildhoney/ngVideo
+ */
+(function Bootstrap($angular) {
+
+    "use strict";
 
     /**
      * @directive ngVideo
@@ -84,9 +147,9 @@
      * @param ngVideoPlaylist {Array}
      * @param ngVideoOptions {Object}
      */
-    module.directive('ngVideo', ['video', 'ngVideoPlaylist', 'ngVideoOptions',
+    $angular.module('ngVideo').directive('ngVideo', ['$rootScope', 'video', 'ngVideoPlaylist', 'ngVideoOptions',
 
-    function ngVideoDirective(video, ngVideoPlaylist, ngVideoOptions) {
+    function ngVideoDirective($rootScope, video, ngVideoPlaylist, ngVideoOptions) {
 
         return {
 
@@ -110,9 +173,7 @@
              * @param $rootScope {Object}
              * @param $scope {Object}
              */
-            controller: ['$window', '$rootScope', '$scope',
-
-            function controller($window, $rootScope, $scope) {
+            controller: ['$window', '$rootScope', '$scope', function controller($window, $rootScope, $scope) {
 
                 /**
                  * @property video
@@ -353,10 +414,6 @@
                 // Attempt to find the video node.
                 var player = element.find('video');
 
-                player.bind('stalled', function() {
-                    console.log('Stalled');
-                });
-
                 // Ensure the video player exists.
                 if (player.length === 0 || typeof player.attr(ngVideoOptions.SCREEN_DIRECTIVE) === 'undefined') {
                     video.throwException("Must add ng-video-screen directive");
@@ -365,8 +422,10 @@
                 // We have the video player so store its instance.
                 scope.player = player[0];
 
-                // Set-up the events to be fired.
+                // Set-up the events to be fired, and the event for notifying the message module
+                // to set-up its own events.
                 scope.attachEvents(player);
+                $rootScope.$broadcast('ng-video/message/events', player);
 
                 if (scope.video) {
 
@@ -383,7 +442,7 @@
 
 })(window.angular);
 
-(function($angular) {
+(function Buffer($angular) {
 
     "use strict";
 
@@ -464,7 +523,7 @@
 
 })(window.angular);
 
-(function($angular) {
+(function Controls($angular) {
 
     "use strict";
 
@@ -587,7 +646,7 @@
 
 })(window.angular);
 
-(function($angular, $math) {
+(function Feedback($angular, $math) {
 
     "use strict";
 
@@ -769,7 +828,7 @@
 
 })(window.angular, window.Math);
 
-(function($angular) {
+(function FullScreen($angular) {
 
     "use strict";
     /**
@@ -892,7 +951,7 @@
 
 })(window.angular);
 
-(function($angular) {
+(function Messages($angular) {
 
     "use strict";
 
@@ -926,9 +985,9 @@
      * @param ngVideoOptions {Object}
      * @param ngVideoMessages {Object}
      */
-    module.directive('viMessages', ['ngVideoOptions', 'ngVideoMessages',
+    module.directive('viMessages', ['$window', 'ngVideoOptions', 'ngVideoMessages',
 
-        function ngMessagesDirective(ngVideoOptions, ngVideoMessages) {
+        function ngMessagesDirective($window, ngVideoOptions, ngVideoMessages) {
 
             return {
 
@@ -949,7 +1008,7 @@
                  * @type {Array}
                  * @param $scope {Object}
                  */
-                controller: ['$scope', function controller($scope) {
+                controller: ['$scope', '$timeout', function controller($scope, $timeout) {
 
                     /**
                      * @property messages
@@ -957,26 +1016,27 @@
                      */
                     $scope.messages = [];
 
-                }],
+                    // Listen for the moment in which we can safely register the message events.
+                    $scope.$on('ng-video/message/events', function registerMessageEvents(event, player) {
 
-                link: function link(scope) {
+                        // Iterate over our messages to register their events.
+                        $angular.forEach(ngVideoMessages, function forEach(messageModel) {
 
-                    console.log(scope.player);
+                            player.bind(messageModel.event, function eventTriggered() {
 
-                    // Iterate over our messages to register their events.
-                    $angular.forEach(ngVideoMessages, function forEach(messageModel) {
+                                // Push the message model into our messages array when it has been
+                                // triggered by the player.
+                                messageModel.date = new $window.Date();
+                                $scope.messages.push(messageModel);
+                                $scope.$apply();
 
-                        scope.player[messageModel.event] = function eventTriggered() {
+                            });
 
-                            // Push the message model into our messages array when it has been
-                            // triggered by the player.
-                            scope.messages.push(messageModel);
-
-                        };
+                        });
 
                     });
 
-                }
+                }]
 
             }
 
@@ -984,7 +1044,7 @@
 
 })(window.angular);
 
-(function($angular) {
+(function Meta($angular) {
 
     "use strict";
 
@@ -1081,7 +1141,7 @@
 
 })(window.angular);
 
-(function($angular) {
+(function Playlist($angular) {
 
     "use strict";
 
@@ -1254,7 +1314,7 @@
 
 })(window.angular);
 
-(function($angular) {
+(function Screen($angular) {
 
     "use strict";
 
@@ -1301,7 +1361,7 @@
 
 })(window.angular);
 
-(function($angular) {
+(function Timeline($angular) {
 
     "use strict";
 
@@ -1407,7 +1467,7 @@
 
 })(window.angular);
 
-(function($angular) {
+(function Volume($angular) {
 
     "use strict";
 

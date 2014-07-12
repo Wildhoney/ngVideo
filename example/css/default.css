@@ -8,7 +8,7 @@ body {
     text-align: center;
 }
 
-section.ng-video {
+section.ng-video-container {
     width: 550px;
     height: 310px;
     margin: 40px auto auto auto;
@@ -295,4 +295,35 @@ section.video section.full-screen {
     cursor: pointer;
     padding: 10px;
     color: white;
+}
+
+section.video section.messages {
+    width: 100%;
+    height: 140px;
+    padding: 5px 15px 15px 15px;
+    position: absolute;
+    left: 0;
+    overflow: hidden;
+    background-color: rgba(0, 0, 0, .075);
+}
+
+section.video section.messages ul {
+    list-style-type: none;
+    font-size: 10px;
+    overflow: scroll;
+    text-transform: uppercase;
+    height: 90px;
+    box-shadow: inset 0 -5px 5px -5px rgba(0, 0, 0, .15);
+}
+
+section.video section.messages ul li {
+    height: 25px;
+    line-height: 25px;
+    padding: 0 6px;
+    border-bottom: 1px solid rgba(0, 0, 0, .1);
+}
+
+section.video section.messages ul li span.date {
+    color: rgba(0, 0, 0, .5);
+    padding-left: 5px;
 }

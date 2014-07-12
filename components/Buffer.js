@@ -1,4 +1,4 @@
-(function($angular) {
+(function Buffer($angular) {
 
     "use strict";
 

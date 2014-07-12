@@ -1,4 +1,4 @@
-(function($angular) {
+(function Volume($angular) {
 
     "use strict";
 

@@ -1,4 +1,4 @@
-(function($angular) {
+(function Playlist($angular) {
 
     "use strict";
 

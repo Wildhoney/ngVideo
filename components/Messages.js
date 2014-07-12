@@ -1,4 +1,4 @@
-(function($angular) {
+(function Messages($angular) {
 
     "use strict";
 
@@ -32,9 +32,9 @@
      * @param ngVideoOptions {Object}
      * @param ngVideoMessages {Object}
      */
-    module.directive('viMessages', ['ngVideoOptions', 'ngVideoMessages',
+    module.directive('viMessages', ['$window', 'ngVideoOptions', 'ngVideoMessages',
 
-        function ngMessagesDirective(ngVideoOptions, ngVideoMessages) {
+        function ngMessagesDirective($window, ngVideoOptions, ngVideoMessages) {
 
             return {
 
@@ -55,7 +55,7 @@
                  * @type {Array}
                  * @param $scope {Object}
                  */
-                controller: ['$scope', function controller($scope) {
+                controller: ['$scope', '$timeout', function controller($scope, $timeout) {
 
                     /**
                      * @property messages
@@ -63,26 +63,27 @@
                      */
                     $scope.messages = [];
 
-                }],
+                    // Listen for the moment in which we can safely register the message events.
+                    $scope.$on('ng-video/message/events', function registerMessageEvents(event, player) {
 
-                link: function link(scope) {
+                        // Iterate over our messages to register their events.
+                        $angular.forEach(ngVideoMessages, function forEach(messageModel) {
 
-                    console.log(scope.player);
+                            player.bind(messageModel.event, function eventTriggered() {
 
-                    // Iterate over our messages to register their events.
-                    $angular.forEach(ngVideoMessages, function forEach(messageModel) {
+                                // Push the message model into our messages array when it has been
+                                // triggered by the player.
+                                messageModel.date = new $window.Date();
+                                $scope.messages.push(messageModel);
+                                $scope.$apply();
 
-                        scope.player[messageModel.event] = function eventTriggered() {
+                            });
 
-                            // Push the message model into our messages array when it has been
-                            // triggered by the player.
-                            scope.messages.push(messageModel);
-
-                        };
+                        });
 
                     });
 
-                }
+                }]
 
             }
 

@@ -1,4 +1,4 @@
-(function($angular) {
+(function Screen($angular) {
 
     "use strict";
 

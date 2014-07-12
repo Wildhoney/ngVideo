@@ -54,7 +54,7 @@ module.exports = function(grunt) {
          */
         jasmine: {
             pivotal: {
-                src: 'components/*.js',
+                src: ['components/Service.js', 'components/*.js'],
                 options: {
                     specs: 'tests/spec.js',
                     helpers: [
@@ -74,7 +74,7 @@ module.exports = function(grunt) {
                 separator: '\n\n'
             },
             dist: {
-                src: ['components/Bootstrap.js', 'components/*.js'],
+                src: ['components/Service.js', 'components/*.js'],
                 dest: 'dist/<%= pkg.name %>.js'
             }
         },

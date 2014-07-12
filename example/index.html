@@ -12,6 +12,7 @@
     <script type="text/javascript" src="js/vendor/angular/angular.js"></script>
 
     <!-- ngVideo! -->
+    <script type="text/javascript" src="js/vendor/ng-video/Service.js"></script>
     <script type="text/javascript" src="js/vendor/ng-video/Bootstrap.js"></script>
     <script type="text/javascript" src="js/vendor/ng-video/Buffer.js"></script>
     <script type="text/javascript" src="js/vendor/ng-video/Controls.js"></script>
@@ -31,7 +32,7 @@
 </head>
 <body ng-app="videoApp" ng-controller="VideoController">
 
-    <section class="ng-video">
+    <section class="ng-video-container">
 
         <!-- Base Directive -->
         <section class="video" ng-video>
@@ -39,8 +40,18 @@
             <!-- Screen Directive -->
             <video vi-screen></video>
 
-            <section vi-messages>
-                {{messages}}
+            <section vi-messages class="messages">
+
+                <h5>Messages</h5>
+
+                <ul>
+                    <li ng-repeat="message in messages | orderBy: 'date': true">
+                        <span class="glyphicon glyphicon-record"></span>
+                        <span class="date">{{message.date | date: 'HH:mm:ss'}}</span>
+                        {{message.text}}...
+                    </li>
+                </ul>
+
             </section>
 
             <section vi-controls class="controls">
