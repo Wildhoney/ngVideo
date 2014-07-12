@@ -311,18 +311,71 @@
                  */
                 $scope.open = function open(videoModel) {
 
-                    if (!('src' in videoModel) || !('type' in videoModel)) {
+                    /**
+                     * Responsible for determining if the video model that is about to be played
+                     * is a valid model.
+                     *
+                     * @method assertValid
+                     * @param videoModel {Object}
+                     * @returns {Boolean}
+                     */
+                    var assertValid = function assertValid(videoModel) {
 
-                        // Ensure a valid video model has been passed to open.
-                        video.throwException("Passed an invalid video model to open");
+                        var isValid = !!(!('src' in videoModel) || !('type' in videoModel));
+
+                        if (!isValid) {
+
+                            // Throw an exception since the video model is no longer valid.
+                            video.throwException("Passed an invalid video model to open");
+
+                        }
+
+                    };
+
+                    /**
+                     * @method loadVideo
+                     * @param videoModel {Object}
+                     * @return {void}
+                     */
+                    var loadVideo = function loadVideo(videoModel) {
+                        $scope.player.setAttribute('src', videoModel.src);
+                        $scope.player.setAttribute('type', videoModel.type);
+                        $scope.player.load();
+                    };
+
+                    // Determine if the user has passed in a multi-source array.
+                    if (videoModel instanceof Array) {
+
+                        var foundVideo = false;
+
+                        // Iterate over each video model to determine if it's playable.
+                        $angular.forEach(videoModel, function forEach(model) {
+
+                            if (foundVideo) {
+
+                                // We've already found a playable video in this collection.
+                                return;
+
+                            }
+
+                            // Determine if the browser can play this type of media.
+                            var canPlay = $scope.player.canPlayType('video/' + model.type);
+
+                            if (canPlay) {
+
+                                // Play the video since the browser most likely supports it.
+                                loadVideo(model);
+
+                            }
+
+                        });
+
+                        return;
 
                     }
 
-                    // Attach the video's source to the video node, and load the video
-                    // for playing.
-                    $scope.player.setAttribute('src', videoModel.src);
-                    $scope.player.setAttribute('type', videoModel.type);
-                    $scope.player.load();
+                    // Otherwise it's a plain video model object.
+                    loadVideo(videoModel);
 
                 };
 
@@ -1023,6 +1076,8 @@
                         $angular.forEach(ngVideoMessages, function forEach(messageModel) {
 
                             player.bind(messageModel.event, function eventTriggered() {
+
+                                delete messageModel.$$hashKey;
 
                                 // Push the message model into our messages array when it has been
                                 // triggered by the player.

@@ -40,20 +40,6 @@
             <!-- Screen Directive -->
             <video vi-screen></video>
 
-            <section vi-messages class="messages">
-
-                <h5>Messages</h5>
-
-                <ul>
-                    <li ng-repeat="message in messages | orderBy: 'date': true">
-                        <span class="glyphicon glyphicon-record"></span>
-                        <span class="date">{{message.date | date: 'HH:mm:ss'}}</span>
-                        {{message.text}}...
-                    </li>
-                </ul>
-
-            </section>
-
             <section vi-controls class="controls">
                 <span vi-controls-play title="Play" class="glyphicon glyphicon-play"></span>
                 <span vi-controls-pause title="Pause" class="glyphicon glyphicon-pause"></span>
@@ -100,7 +86,12 @@
                 <section vi-buffer class="buffer"></section>
 
                 <section class="generic">
-                    V{{volume}} R{{playbackRate}} P{{playing ? 1 : 0}} L{{loading ? 1 : 0}} B{{buffered}}%
+                    V{{volume}}
+                    <span vi-messages>M{{messages.length}}</span>
+                    R{{playbackRate}}
+                    P{{playing ? 1 : 0}}
+                    L{{loading ? 1 : 0}}
+                    B{{buffered}}%
                     <a href="https://github.com/Wildhoney/ngVideo" target="_blank">
                         GitHub.com/Wildhoney/ngVideo
                     </a>
