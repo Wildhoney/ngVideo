@@ -55,7 +55,7 @@
                  * @type {Array}
                  * @param $scope {Object}
                  */
-                controller: ['$scope', '$timeout', function controller($scope, $timeout) {
+                controller: ['$scope', function controller($scope) {
 
                     /**
                      * @property messages

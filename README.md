@@ -136,7 +136,7 @@ Provides information relating to the video itself &ndash; such as the `duration`
 
 </section>
 ```
-Currently the `vi-feedback` supports the following properties &ndash; as of `ngVideo@0.2.1`:
+Currently the `vi-feedback` supports the following properties &ndash; as of `ngVideo@0.3.0`:
 
  * `currentTime`;
  * `duration`;
@@ -144,6 +144,7 @@ Currently the `vi-feedback` supports the following properties &ndash; as of `ngV
  * `buffered`;
  * `loading`;
  * `playing`;
+ * `playbackRate`;
  
  
 ### Full Screen ###

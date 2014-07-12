@@ -351,6 +351,9 @@
                         // Iterate over each video model to determine if it's playable.
                         $angular.forEach(videoModel, function forEach(model) {
 
+                            // Assert the model is valid.
+                            assertValid(model);
+
                             if (foundVideo) {
 
                                 // We've already found a playable video in this collection.
@@ -373,6 +376,9 @@
                         return;
 
                     }
+
+                    // Assert the model is valid.
+                    assertValid(videoModel);
 
                     // Otherwise it's a plain video model object.
                     loadVideo(videoModel);
@@ -1061,7 +1067,7 @@
                  * @type {Array}
                  * @param $scope {Object}
                  */
-                controller: ['$scope', '$timeout', function controller($scope, $timeout) {
+                controller: ['$scope', function controller($scope) {
 
                     /**
                      * @property messages
