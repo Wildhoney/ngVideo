@@ -176,7 +176,7 @@ With the `vi-messages` directive you can subscribe to all of the native `video` 
 <section vi-messages>
 
     <ul>
-        <li vi-messages ng-repeat="message in messages">
+        <li ng-repeat="message in messages">
             
             Date: {{message.date}}
             Text: {{message.text}}
