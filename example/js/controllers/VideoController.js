@@ -42,19 +42,9 @@
 
         };
 
-        var source = video.multiSource();
-        source.addSource('mp4', $scope.videos.first);
-        source.addSource('ogg', $scope.videos.second);
-        source.save();
-
-        var source = video.multiSource();
-        source.addSource('mp4', $scope.videos.second);
-        source.addSource('ogg', $scope.videos.first);
-        source.save();
-
         // Add some video sources for the player!
-//        video.addSource('mp4', $scope.videos.first);
-//        video.addSource('ogg', $scope.videos.second);
+        video.addSource('mp4', $scope.videos.first);
+        video.addSource('ogg', $scope.videos.second);
 
     });
 

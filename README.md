@@ -32,6 +32,8 @@ Starting to use `ngVideo` is a breeze! Firstly you **must** define the container
 <section class="video" ng-video>
 ```
 
+**Note:** You can load multi-sources for each video for fallback purposes with `[multiSource](#multi-source)`.
+
 You then need to fulfill the only other requirement for `ngVideo` &ndash; the `video` node:
 
 ```html
@@ -57,6 +59,22 @@ video.addSource('mp4', 'http://www.example.com/alice-in-wonderland.mp4');
 ```
 
 At this point you *should* notice that the video is visible in the player, but not actually playing &ndash; unless you specify the `autoplay` attribute on the `video` node &ndash; for the user to begin playing the video, you need to add the [`vi-controls` directive](#controls).
+
+---
+
+Multi Source
+-------------------
+
+Not all browsers support the same media types, and therefore `ngVideo` comes bundled with a way to load multiple source types for each of your videos &ndash; `ngVideo` will attempt to play the first video in the source collection, and if unsupported, move to the next one.
+
+```javascript
+var source = video.multiSource();
+source.addSource('mp4', 'http://www.example.com/master-and-margarita.mp4');
+source.addSource('ogg', 'http://www.example.com/master-and-margarita.ogg');
+source.save();
+```
+
+Once you invoke the `save` method, the video will be either played, or added to the playlist for later.
 
 ---
 
