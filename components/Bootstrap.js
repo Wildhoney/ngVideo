@@ -110,9 +110,7 @@
              * @param $rootScope {Object}
              * @param $scope {Object}
              */
-            controller: ['$window', '$rootScope', '$scope',
-
-            function controller($window, $rootScope, $scope) {
+            controller: ['$window', '$rootScope', '$scope', function controller($window, $rootScope, $scope) {
 
                 /**
                  * @property video
@@ -353,10 +351,6 @@
                 // Attempt to find the video node.
                 var player = element.find('video');
 
-//                player.bind('stalled', function() {
-//                    console.log('Stalled');
-//                });
-
                 // Ensure the video player exists.
                 if (player.length === 0 || typeof player.attr(ngVideoOptions.SCREEN_DIRECTIVE) === 'undefined') {
                     video.throwException("Must add ng-video-screen directive");
@@ -365,8 +359,10 @@
                 // We have the video player so store its instance.
                 scope.player = player[0];
 
-                // Set-up the events to be fired.
+                // Set-up the events to be fired, and the event for notifying the message module
+                // to set-up its own events.
                 scope.attachEvents(player);
+                $rootScope.$broadcast('ng-video/message/events');
 
                 if (scope.video) {
 
