@@ -12,7 +12,7 @@ ngVideo
 
 `ngVideo` is a [HTML5 video player](http://www.html5rocks.com/en/tutorials/video/basics/) written in [Angular.js](https://angularjs.org/).
 
-![ngVideo 0.2.0](http://i.imgur.com/dTJDd3u.png)
+![ngVideo 0.3.2](http://i.imgur.com/PoF8j70.png)
 
 `ngVideo` utilises [Angular.js directives](https://docs.angularjs.org/guide/directive) extensively which compartmentalises the various components that make-up the overall `ngVideo` experience &ndash; meaning you get to pick and choose which components you wish to utilise.
 

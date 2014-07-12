@@ -188,14 +188,14 @@
                      */
                     var assertValid = function assertValid(videoModel) {
 
-                        var isValid = !!(!('src' in videoModel) || !('type' in videoModel));
+                        var isValid = ('src' in videoModel && 'type' in videoModel);
 
-//                        if (!isValid) {
-//
-//                            // Throw an exception since the video model is no longer valid.
-//                            video.throwException("Passed an invalid video model to open");
-//
-//                        }
+                        if (!isValid) {
+
+                            // Throw an exception since the video model is no longer valid.
+                            video.throwException("Passed an invalid video model to open");
+
+                        }
 
                     };
 

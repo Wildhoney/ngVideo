@@ -321,7 +321,7 @@
                      */
                     var assertValid = function assertValid(videoModel) {
 
-                        var isValid = !!(!('src' in videoModel) || !('type' in videoModel));
+                        var isValid = ('src' in videoModel && 'type' in videoModel);
 
                         if (!isValid) {
 
