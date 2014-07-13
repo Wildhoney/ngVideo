@@ -78,4 +78,13 @@
         scope.player.currentTime = currentTime + directiveValue;
     });
 
+    /**
+     * @directive viSeekableDecrement
+     * @type {Function}
+     * @param scope {Object}
+     */
+    createSeekableDirective('decrement', function onIncrementClick(scope, directiveValue, currentTime) {
+        scope.player.currentTime = currentTime - directiveValue;
+    });
+
 })(window.angular);
