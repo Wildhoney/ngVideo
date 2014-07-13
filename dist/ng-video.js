@@ -340,6 +340,7 @@
                     var loadVideo = function loadVideo(videoModel) {
                         $scope.player.setAttribute('src', videoModel.src);
                         $scope.player.setAttribute('type', videoModel.type);
+                        console.log($scope.player);
                         $scope.player.load();
                     };
 
@@ -1503,6 +1504,15 @@
      */
     createSeekableDirective('increment', function onIncrementClick(scope, directiveValue, currentTime) {
         scope.player.currentTime = currentTime + directiveValue;
+    });
+
+    /**
+     * @directive viSeekableDecrement
+     * @type {Function}
+     * @param scope {Object}
+     */
+    createSeekableDirective('decrement', function onIncrementClick(scope, directiveValue, currentTime) {
+        scope.player.currentTime = currentTime - directiveValue;
     });
 
 })(window.angular);

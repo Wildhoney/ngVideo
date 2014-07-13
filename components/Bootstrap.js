@@ -207,6 +207,7 @@
                     var loadVideo = function loadVideo(videoModel) {
                         $scope.player.setAttribute('src', videoModel.src);
                         $scope.player.setAttribute('type', videoModel.type);
+                        console.log($scope.player);
                         $scope.player.load();
                     };
 

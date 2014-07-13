@@ -33,7 +33,7 @@ section.video section.loading {
     height: 298px;
     color: white;
     font-size: 11px;
-    z-index: 15;
+    z-index: 101;
     padding: 20px;
     background-color: rgba(0, 0, 0, .75);
 }
