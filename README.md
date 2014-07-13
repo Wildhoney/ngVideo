@@ -87,6 +87,7 @@ Directives
  * [Full Screen](#full-screen): Open player in full screen;
  * [Meta](#meta): Reading meta data from videos;
  * [Messages](#messages): Subscribes to various `video` callbacks;
+ * [Playback Rate](#playback-rate): Adjusting the playback;
  * [Playlist](#playlist): Managing a video/audio playlist;
  * [Seekable](#seekable): Update the player's current time;
  * [Screen](#screen): Appending the `screen` element;
@@ -188,6 +189,19 @@ With the `vi-messages` directive you can subscribe to all of the native `video` 
             
     </ul>
 
+</section>
+```
+
+### Playback Rate ###
+
+By adjusting the playback rate you can increase of decrease the speed of the video &ndash; you can achieve this with the `vi-playback-rate` directive which sets the playback rate in absolute terms. You also have `vi-playback-rate-increment`, ``vi-playback-rate-decrement` and `vi-playback-rate-normalise`.
+
+```html
+<section>
+    <span vi-playback-rate="2">Double Speed</span>
+    <span vi-playback-rate-increment="1">Increment by 1</span>
+    <span vi-playback-rate-decrement="1">Decrement by 1</span>
+    <span vi-playback-rate-normalise>Normalise</span>
 </section>
 ```
  
