@@ -1541,7 +1541,7 @@
                  * @property template
                  * @type {String}
                  */
-                template: '<input type="range" value="0" />',
+                template: '<input type="range" value=0 />',
 
                 /**
                  * @property replace
@@ -1562,6 +1562,8 @@
                  * @return {void}
                  */
                 link: function(scope, element) {
+
+                    element.val(0);
 
                     /**
                      * @property wasPlaying

@@ -73,6 +73,9 @@
 
                                 delete messageModel.$$hashKey;
 
+                                // Create a copy to prevent duplicates.
+                                messageModel = $angular.copy(messageModel);
+
                                 // Push the message model into our messages array when it has been
                                 // triggered by the player.
                                 messageModel.date = new $window.Date();

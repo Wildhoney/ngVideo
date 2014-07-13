@@ -63,6 +63,7 @@ section.video section.controls span {
     padding-left: 2px;
     width: 48px;
     height: 48px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, .1);
     font-size: 20px;
     transition: background-color .35s;
     border-radius: 3px;
