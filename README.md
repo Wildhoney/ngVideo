@@ -194,7 +194,7 @@ With the `vi-messages` directive you can subscribe to all of the native `video` 
 
 ### Playback Rate ###
 
-By adjusting the playback rate you can increase of decrease the speed of the video &ndash; you can achieve this with the `vi-playback-rate` directive which sets the playback rate in absolute terms. You also have `vi-playback-rate-increment`, ``vi-playback-rate-decrement` and `vi-playback-rate-normalise`.
+By adjusting the playback rate you can increase of decrease the speed of the video &ndash; you can achieve this with the `vi-playback-rate` directive which sets the playback rate in absolute terms. You also have `vi-playback-rate-increment`, `vi-playback-rate-decrement` and `vi-playback-rate-normalise`.
 
 ```html
 <section>
