@@ -23,8 +23,8 @@
          * @type {Object}
          */
         $scope.videos = {
-            first: 'http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4',
-            second: 'http://www.w3schools.com/html/mov_bbb.mp4'
+            first: 'http://www.w3schools.com/html/mov_bbb.mp4',
+            second: 'http://www.w3schools.com/html/movie.mp4'
         };
 
         /**
@@ -36,7 +36,7 @@
 
             switch (videoModel.src) {
                 case ($scope.videos.first): return "Big Buck Bunny";
-                case ($scope.videos.second): return "Bunny and Butterfly";
+                case ($scope.videos.second): return "The Bear";
                 default: return "Unknown Video";
             }
 
@@ -44,7 +44,7 @@
 
         // Add some video sources for the player!
         video.addSource('mp4', $scope.videos.first);
-        video.addSource('ogg', $scope.videos.second);
+        video.addSource('mp4', $scope.videos.second);
 
     });
 
