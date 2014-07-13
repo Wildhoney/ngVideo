@@ -47,7 +47,7 @@
                         clickFn.call(this, scope, +attributes[directiveName], +scope.player.currentTime);
 
                         // Force the timeline directive to update.
-                        $rootScope.$broadcast('ng-video/seekable');
+                        $rootScope.$broadcast('ng-video/feedback/refresh');
                         scope.$apply();
 
                     });

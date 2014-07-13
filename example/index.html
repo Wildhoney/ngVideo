@@ -17,6 +17,7 @@
     <script type="text/javascript" src="js/vendor/ng-video/Buffer.js"></script>
     <script type="text/javascript" src="js/vendor/ng-video/Controls.js"></script>
     <script type="text/javascript" src="js/vendor/ng-video/FullScreen.js"></script>
+    <script type="text/javascript" src="js/vendor/ng-video/PlaybackRate.js"></script>
     <script type="text/javascript" src="js/vendor/ng-video/Playlist.js"></script>
     <script type="text/javascript" src="js/vendor/ng-video/Seekable.js"></script>
     <script type="text/javascript" src="js/vendor/ng-video/Screen.js"></script>
@@ -54,9 +55,9 @@
             <!-- Feedback Directive -->
             <section vi-feedback class="feedback">
 
-                <!--<section class="loading" ng-show="loading">-->
-                    <!--Loading...-->
-                <!--</section>-->
+                <section class="loading" ng-show="loading">
+                    Loading...
+                </section>
 
                 <!-- Volume Directive -->
                 <section vi-volume class="volume">
@@ -131,6 +132,13 @@
                   ng-click="playlistOpen = !playlistOpen"
                   class="open-playlist glyphicon glyphicon-facetime-video">
             </span>
+
+            <section>
+                <span vi-playback-rate="2">2</span>
+                <span vi-playback-rate-increment="1">Inc</span>
+                <span vi-playback-rate-decrement="1">Dec</span>
+                <span vi-playback-rate-normalise>Normal</span>
+            </section>
 
         </section>
 

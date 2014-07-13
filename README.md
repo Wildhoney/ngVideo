@@ -212,13 +212,13 @@ With the `vi-playlist` directive you can manage your list of videos &ndash; by a
 
 ### Seekable #####
 
-Using the `vi-seekable` directive you can update the player's current time either absolutely or relative to the current time. For this `ngVideo` has three directives: `vi-time`, `vi-increment`, and `vi-decrement`.
+Using the `vi-seekable` directive you can update the player's current time either absolutely or relative to the current time. For this `ngVideo` has three directives: `vi-seekable`, `vi-seekable-increment`, and `vi-seekable-decrement`.
 
-Each of the three directive accepts a parameter which is used to either set the time in seconds absolutely &ndash; as in the case of `vi-seekable-time`, or relatively, in the case of both `vi-increment` and `vi-decrement`
+Each of the three directive accepts a parameter which is used to either set the time in seconds absolutely &ndash; as in the case of `vi-seekable`, or relatively, in the case of both `vi-seekable-increment` and `vi-seekable-decrement`
 
 ```html
 <section>
-    <span vi-seekable-time="20">20 Seconds</span>
+    <span vi-seekable="20">20 Seconds</span>
     <span vi-seekable-decrement="10">Minus 10 Seconds</span>
     <span vi-seekable-increment="10">Plus 10 Seconds</span>
 </section>

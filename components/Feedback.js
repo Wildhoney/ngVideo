@@ -160,7 +160,7 @@
                 });
 
                 // When we need to force the refreshing of the properties.
-                $scope.$on('ng-video/seekable', $scope.grabStatistics);
+                $scope.$on('ng-video/feedback/refresh', $scope.grabStatistics);
 
                 // Monitor the status of the video player.
                 $scope.$watch('playing', function isPlaying(playing) {
