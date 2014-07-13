@@ -351,7 +351,7 @@
                 // Set-up the events to be fired, and the event for notifying the message module
                 // to set-up its own events.
                 scope.attachEvents(player);
-                $rootScope.$broadcast('ng-video/message/events', player);
+                $rootScope.$broadcast('ng-video/attach-events', player);
 
                 if (scope.video) {
 

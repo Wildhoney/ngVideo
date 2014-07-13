@@ -80,7 +80,7 @@
                     $scope.messages = [];
 
                     // Listen for the moment in which we can safely register the message events.
-                    $scope.$on('ng-video/message/events', function registerMessageEvents(event, player) {
+                    $scope.$on('ng-video/attach-events', function registerMessageEvents(event, player) {
 
                         // Iterate over our messages to register their events.
                         $angular.forEach(ngVideoMessages, function forEach(messageModel) {

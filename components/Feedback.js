@@ -133,6 +133,11 @@
 
                 };
 
+                // Also register the event natively from the player itself.
+                $scope.$on('ng-video/attach-events', function(event, player) {
+                    player.bind('timeupdate', $scope.grabStatistics);
+                });
+
                 /**
                  * @method endPolling
                  * @return {void}
