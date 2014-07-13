@@ -91,9 +91,8 @@
      * @directive viPlaybackRateNormalise
      * @type {Function}
      * @param scope {Object}
-     * @param directiveValue {Number}
      */
-    createPlaybackRateDirective('normalise', function onPlaybackRateNormaliseClick(scope, directiveValue) {
+    createPlaybackRateDirective('normalise', function onPlaybackRateNormaliseClick(scope) {
         scope.setPlaybackRate(1);
     });
 
