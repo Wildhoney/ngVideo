@@ -97,7 +97,7 @@
 
                     // Listen for when the statistics have been updated.
                     scope.$watch('lastUpdate', updatePosition);
-                    scope.$on('ng-video/timeline/update', updatePosition);
+                    scope.$on('ng-video/seekable', updatePosition);
 
                 }
 

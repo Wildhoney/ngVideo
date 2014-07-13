@@ -861,6 +861,9 @@
                     $scope.volume = volume;
                 });
 
+                // When we need to force the refreshing of the properties.
+                $scope.$on('ng-video/seekable', $scope.grabStatistics);
+
                 // Monitor the status of the video player.
                 $scope.$watch('playing', function isPlaying(playing) {
 
@@ -1427,67 +1430,6 @@
     "use strict";
 
     /**
-     * @property module
-     * @type {Object}
-     */
-    var module = $angular.module('ngVideo');
-
-    /**
-     * @directive viSeekable
-     * @type {Function}
-     * @param ngVideoOptions {Object}
-     */
-    module.directive('viSeekable', ['ngVideoOptions', function ngSeekableDirective(ngVideoOptions) {
-
-        return {
-
-            /**
-             * @property restrict
-             * @type {String}
-             */
-            restrict: ngVideoOptions.RESTRICT,
-
-            /**
-             * @property scope
-             * @type {Boolean}
-             */
-            scope: true,
-
-            /**
-             * @property controller
-             * @type {Array}
-             * @param $scope {Object}
-             */
-            controller: ['$rootScope', '$scope', function controller($rootScope, $scope) {
-
-                /**
-                 * @method setSeekable
-                 * @param Seekable {Number}
-                 * @return {void}
-                 */
-                $scope.setSeekable = function setSeekable(Seekable) {
-
-                    if (Seekable < ngVideoOptions.Seekable_MINIMUM) {
-                        Seekable = ngVideoOptions.Seekable_MINIMUM;
-                    }
-
-                    if (Seekable > ngVideoOptions.Seekable_MAXIMUM) {
-                        Seekable = ngVideoOptions.Seekable_MAXIMUM;
-                    }
-
-                    // Set the constrained Seekable parameter.
-                    $scope.player.Seekable = +(Seekable).toFixed(2);
-                    $rootScope.$broadcast('ng-video/Seekable', $scope.player.Seekable);
-
-                };
-
-            }]
-
-        }
-
-    }]);
-
-    /**
      * @method createSeekableDirective
      * @param name {String}
      * @param clickFn {Function}
@@ -1505,7 +1447,7 @@
          * @directive viSeekableItem
          * @type {Function}
          */
-        module.directive(directiveName, ['$rootScope', 'ngVideoOptions',
+        $angular.module('ngVideo').directive(directiveName, ['$rootScope', 'ngVideoOptions',
 
         function viSeekableItem($rootScope, ngVideoOptions) {
 
@@ -1529,11 +1471,10 @@
                     element.bind('click', function onClick() {
 
                         // Invoke the `clickFn` callback when the element has been clicked.
-                        clickFn.call(this, scope, attributes[directiveName], scope.player.currentTime);
+                        clickFn.call(this, scope, +attributes[directiveName], +scope.player.currentTime);
 
                         // Force the timeline directive to update.
-                        $rootScope.$broadcast('ng-video/timeline/update');
-
+                        $rootScope.$broadcast('ng-video/seekable');
                         scope.$apply();
 
                     });
@@ -1552,11 +1493,16 @@
      * @param scope {Object}
      */
     createSeekableDirective('time', function onTimeClick(scope, directiveValue) {
-
-        // Update the position of the player.
         scope.player.currentTime = directiveValue;
+    });
 
-
+    /**
+     * @directive viSeekableIncrement
+     * @type {Function}
+     * @param scope {Object}
+     */
+    createSeekableDirective('increment', function onIncrementClick(scope, directiveValue, currentTime) {
+        scope.player.currentTime = currentTime + directiveValue;
     });
 
 })(window.angular);
@@ -1651,20 +1597,16 @@
                      */
                     var updatePosition = function updatePosition() {
 
-//                        if (scope.playing) {
-
-                            // Calculate the percentage for the range node, and update
-                            // it accordingly.
-                            var percentage = (scope.player.currentTime / scope.duration) * 100;
-                            element.val(percentage);
-
-//                        }
+                        // Calculate the percentage for the range node, and update
+                        // it accordingly.
+                        var percentage = (scope.player.currentTime / scope.duration) * 100;
+                        element.val(percentage);
 
                     };
 
                     // Listen for when the statistics have been updated.
                     scope.$watch('lastUpdate', updatePosition);
-                    scope.$on('ng-video/timeline/update', updatePosition);
+                    scope.$on('ng-video/seekable', updatePosition);
 
                 }
 

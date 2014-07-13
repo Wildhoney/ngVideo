@@ -154,6 +154,9 @@
                     $scope.volume = volume;
                 });
 
+                // When we need to force the refreshing of the properties.
+                $scope.$on('ng-video/seekable', $scope.grabStatistics);
+
                 // Monitor the status of the video player.
                 $scope.$watch('playing', function isPlaying(playing) {
 
