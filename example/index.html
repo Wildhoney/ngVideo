@@ -18,6 +18,7 @@
     <script type="text/javascript" src="js/vendor/ng-video/Controls.js"></script>
     <script type="text/javascript" src="js/vendor/ng-video/FullScreen.js"></script>
     <script type="text/javascript" src="js/vendor/ng-video/Playlist.js"></script>
+    <script type="text/javascript" src="js/vendor/ng-video/Seekable.js"></script>
     <script type="text/javascript" src="js/vendor/ng-video/Screen.js"></script>
     <script type="text/javascript" src="js/vendor/ng-video/Feedback.js"></script>
     <script type="text/javascript" src="js/vendor/ng-video/Meta.js"></script>
@@ -97,6 +98,13 @@
                     </a>
                 </section>
 
+            </section>
+
+            <!-- Seekable Directive -->
+            <section vi-seekable class="seekable">
+                <span vi-seekable-time="10">Time</span>
+                <span vi-seekable-decrement="1">-1</span>
+                <span vi-seekable-increment="1">+1</span>
             </section>
 
             <!-- Playlist Directive -->

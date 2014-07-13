@@ -82,19 +82,22 @@
 
                     });
 
+                    /**
+                     * @method updatePosition
+                     * @return {void}
+                     */
+                    var updatePosition = function updatePosition() {
+
+                        // Calculate the percentage for the range node, and update
+                        // it accordingly.
+                        var percentage = (scope.player.currentTime / scope.duration) * 100;
+                        element.val(percentage);
+
+                    };
+
                     // Listen for when the statistics have been updated.
-                    scope.$watch('lastUpdate', function onUpdate() {
-
-                        if (scope.playing) {
-
-                            // Calculate the percentage for the range node, and update
-                            // it accordingly.
-                            var percentage = (scope.currentTime / scope.duration) * 100;
-                            element.val(percentage);
-
-                        }
-
-                    });
+                    scope.$watch('lastUpdate', updatePosition);
+                    scope.$on('ng-video/timeline/update', updatePosition);
 
                 }
 
