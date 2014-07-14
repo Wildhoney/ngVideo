@@ -224,6 +224,15 @@ With the `vi-playlist` directive you can manage your list of videos &ndash; by a
 </section>
 ```
 
+As well as listing the videos in the current playlist, the `vi-playlist` contains useful methods for traversing the playlist:
+
+ * `next()`;
+ * `previous()`;
+ * `first()`;
+ * `last()`;
+ 
+**Note:** You don't need to use the `ng-model` approach; `vi-playlist` has access to the `open` method which requires the passing in of the `videoModel`.
+
 ### Seekable #####
 
 Using the `vi-seekable` directive you can update the player's current time either absolutely or relative to the current time. For this `ngVideo` has three directives: `vi-seekable`, `vi-seekable-increment`, and `vi-seekable-decrement`.
@@ -238,15 +247,6 @@ Each of the three directive accepts a parameter which is used to either set the 
 </section>
 ```
 
-As well as listing the videos in the current playlist, the `vi-playlist` contains useful methods for traversing the playlist:
-
- * `next()`;
- * `previous()`;
- * `first()`;
- * `last()`;
- 
-**Note:** You don't need to use the `ng-model` approach; `vi-playlist` has access to the `open` method which requires the passing in of the `videoModel`.
- 
 ### Screen #####
 
 The `vi-screen` directive is the **only** mandatory directive &ndash; along with the core `ng-video` directive for managing the core logic. It is also one of the simplest directives, because it simply outputs the `video` node &ndash; with a little behaviour thrown in.
