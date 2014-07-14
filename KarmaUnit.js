@@ -9,7 +9,7 @@ module.exports = function(config) {
       'example/js/vendor/angular-mocks/angular-mocks.js',
       'components/Service.js',
       'components/*.js',
-      'tests/spec.js'
+      'tests/Spec.js'
     ],
     reporters: ['progress'],
     port: 9876,
