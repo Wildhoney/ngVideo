@@ -309,3 +309,14 @@ Below are a few of the parameters you may wish to play with:
  * `BUFFER_WIDTH`: Width of the `canvas` node in the aforementioned directive;
  * `SCREEN_CHANGE`: Whether clicking on `video` toggles video state;
  * `TIMELINE_CHANGE`: Whether changing `range` reflects in seeking;
+ 
+Contributing
+-------------------
+
+![Karma.js](http://karma-runner.github.io/assets/img/banner.png)
+
+`ngVideo` uses Jasmine with the Karma runner. All contributions to `ngVideo` are welcome!
+
+Please add a unit-test for your addition &ndash; or removal, and then run all of the tests using `karma start KarmaUnit.js`, or with Grunt: `grunt test`.
+
+Once you've committed your changes to your branch and all tests are passing, please open a [pull request](https://github.com/Wildhoney/ngVideo/pulls) for review.
