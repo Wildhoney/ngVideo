@@ -92,12 +92,35 @@
                         $scope.interval = {};
 
                         /**
+                         * @property buffering
+                         * @type {Boolean}
+                         */
+                        $scope.buffering = false;
+
+                        /**
+                         * @property lastTime
+                         * @type {Number}
+                         * @private
+                         */
+                        var lastTime = 0;
+
+                        /**
                          * @method grabStatistics
                          * @return {void}
                          */
                         $scope.grabStatistics = function grabStatistics() {
 
                             var player = $scope.player;
+
+                            // Determine if we're currently buffering.
+                            if (lastTime === player.currentTime && !player.paused) {
+                                $scope.buffering = true;
+                                return;
+                            }
+
+                            // Log the last time and ensure we're not displaying the buffering message.
+                            lastTime = player.currentTime;
+                            $scope.buffering = false;
 
                             // Iterate over each property we wish to listen to.
                             $angular.forEach(requiredProperties, function forEach(property) {
