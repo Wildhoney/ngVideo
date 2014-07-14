@@ -27,15 +27,19 @@
              */
             link: function link(scope, element) {
 
-                // When the video player screen is clicked, we'll toggle the playing
-                // state of the current video, if there is one.
-                element.bind('click', function() {
+                if (ngVideoOptions.SCREEN_CHANGE) {
 
-                    if (!scope.loading) {
-                        scope.toggleState();
-                    }
+                    // When the video player screen is clicked, we'll toggle the playing
+                    // state of the current video, if there is one.
+                    element.bind('click', function() {
 
-                });
+                        if (!scope.loading) {
+                            scope.toggleState();
+                        }
+
+                    });
+
+                }
 
             }
 

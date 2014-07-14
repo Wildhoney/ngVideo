@@ -49,19 +49,14 @@ module.exports = function(grunt) {
         },
 
         /**
-         * @property jasmine
+         * @property karma
          * @type {Object}
          */
-        jasmine: {
-            pivotal: {
-                src: ['components/Service.js', 'components/*.js'],
-                options: {
-                    specs: 'tests/spec.js',
-                    helpers: [
-                        'example/js/vendor/angular/angular.js',
-                        'example/js/vendor/angular-mocks/angular-mocks.js'
-                    ]
-                }
+        karma: {
+            unit: {
+                configFile: 'KarmaUnit.js',
+                background: false,
+                browsers: ['Firefox']
             }
         },
 
@@ -100,7 +95,7 @@ module.exports = function(grunt) {
 
     });
 
-    grunt.loadNpmTasks('grunt-contrib-jasmine');
+    grunt.loadNpmTasks('grunt-karma');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-compress');
@@ -108,8 +103,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-copy');
 
     grunt.registerTask('build', ['concat', 'uglify', 'copy', 'compress']);
-    grunt.registerTask('test', ['jasmine', 'jshint']);
-//    grunt.registerTask('default', ['jasmine', 'jshint', 'concat', 'copy', 'uglify', 'compress']);
-    grunt.registerTask('default', ['jasmine', 'concat', 'copy', 'uglify', 'compress']);
+    grunt.registerTask('test', ['jshint', 'karma']);
+    grunt.registerTask('default', ['jshint', 'karma', 'concat', 'copy', 'uglify', 'compress']);
 
 };

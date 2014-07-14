@@ -21,6 +21,8 @@
         RESTRICT: 'CA',
         REFRESH: 50,
         SCREEN_DIRECTIVE: 'vi-screen',
+        SCREEN_CHANGE: true,
+        TIMELINE_CHANGE: true,
         VOLUME_STEPS: 0.1,
         VOLUME_MINIMUM: 0,
         VOLUME_MAXIMUM: 1,
@@ -44,90 +46,90 @@
      */
     module.service('video', ['$rootScope', '$timeout', 'ngVideoPlaylist',
 
-        function videoService($rootScope, $timeout, ngVideoPlaylist) {
+    function videoService($rootScope, $timeout, ngVideoPlaylist) {
 
-            var service = {};
+        var service = {};
+
+        /**
+         * @method addSource
+         * @param type {String}
+         * @param src {String}
+         * @return {Object}
+         */
+        service.addSource = function addSource(type, src) {
+
+            // Add a new video to the playlist, and broadcast the success.
+            var model = { type: type, src: src };
+            ngVideoPlaylist.push(model);
+
+            $rootScope.$broadcast('ng-video/add', model);
+            return model;
+
+        };
+
+        /**
+         * @method multiSource
+         * @return {MultiSource}
+         */
+        service.multiSource = function multiSource() {
 
             /**
-             * @method addSource
-             * @param type {String}
-             * @param src {String}
-             * @return {Object}
+             * @class MultiSource
+             * @constructor
              */
-            service.addSource = function addSource(type, src) {
-
-                // Add a new video to the playlist, and broadcast the success.
-                var model = { type: type, src: src };
-                ngVideoPlaylist.push(model);
-
-                $rootScope.$broadcast('ng-video/add', model);
-                return model;
-
-            };
+            function MultiSource() {}
 
             /**
-             * @method multiSource
-             * @return {MultiSource}
+             * @property prototype
+             * @type {Object}
              */
-            service.multiSource = function multiSource() {
+            MultiSource.prototype = {
 
                 /**
-                 * @class MultiSource
-                 * @constructor
+                 * @property sources
+                 * @type {Array}
                  */
-                function MultiSource() {}
+                sources: [],
 
                 /**
-                 * @property prototype
-                 * @type {Object}
+                 * @method addSource
+                 * @param type {String}
+                 * @param src {String}
+                 * @return {Object}
                  */
-                MultiSource.prototype = {
+                addSource: function addSource(type, src) {
+                    var model = { type: type, src: src };
+                    this.sources.push(model);
+                    return model;
+                },
 
-                    /**
-                     * @property sources
-                     * @type {Array}
-                     */
-                    sources: [],
-
-                    /**
-                     * @method addSource
-                     * @param type {String}
-                     * @param src {String}
-                     * @return {Object}
-                     */
-                    addSource: function addSource(type, src) {
-                        var model = { type: type, src: src };
-                        this.sources.push(model);
-                        return model;
-                    },
-
-                    /**
-                     * @method save
-                     * @return {void}
-                     */
-                    save: function save() {
-                        ngVideoPlaylist.push(this.sources);
-                        $rootScope.$broadcast('ng-video/add', this.sources);
-                    }
-
-                };
-
-                return new MultiSource();
+                /**
+                 * @method save
+                 * @return {void}
+                 */
+                save: function save() {
+                    ngVideoPlaylist.push(this.sources);
+                    $rootScope.$broadcast('ng-video/add', this.sources);
+                }
 
             };
 
-            /**
-             * @method throwException
-             * @param message {String}
-             * @return {void}
-             */
-            service.throwException = function throwException(message) {
-                throw 'ngVideo: ' + message + '.';
-            };
+            return new MultiSource();
 
-            return service;
+        };
 
-        }]);
+        /**
+         * @method throwException
+         * @param message {String}
+         * @return {void}
+         */
+        service.throwException = function throwException(message) {
+            throw 'ngVideo: ' + message + '.';
+        };
+
+        return service;
+
+    }]);
 
 })(window.angular);
 
@@ -236,7 +238,7 @@
                     }());
 
                     // Once the video data has been loaded and the video is ready to be played.
-                    player.bind('loadeddata', function onLoadEnd() {
+                    player.bind('loadeddata', function onLoadedData() {
 
                         $scope.$apply(function apply() {
 
@@ -275,6 +277,7 @@
 
                             // Attempt to find the current video.
                             var index = ngVideoPlaylist.indexOf($scope.video);
+                            console.log(index);
 
                             if (index === -1 || typeof ngVideoPlaylist[index + 1] === 'undefined') {
 
@@ -338,6 +341,7 @@
                      * @return {void}
                      */
                     var loadVideo = function loadVideo(videoModel) {
+                        $scope.video = videoModel;
                         $scope.player.setAttribute('src', videoModel.src);
                         $scope.player.setAttribute('type', videoModel.type);
                         $scope.player.load();
@@ -407,7 +411,7 @@
                  * @method closeFullScreen
                  * @return {void}
                  */
-                $scope.closeFullScreen = function openFullScreen() {
+                $scope.closeFullScreen = function closeFullScreen() {
 
                     var document = $window.document;
 
@@ -493,6 +497,17 @@
 
                 }
 
+                scope.$on('ng-video/add', function() {
+
+                    if (ngVideoPlaylist.length === 1) {
+
+                        // Open the newly added video if it's the first video.
+                        scope.open(ngVideoPlaylist[0]);
+
+                    }
+
+                });
+
             }
 
         }
@@ -512,73 +527,73 @@
      */
     $angular.module('ngVideo').directive('viBuffer', ['ngVideoOptions',
 
-        function ngBufferDirective(ngVideoOptions) {
+    function ngBufferDirective(ngVideoOptions) {
 
-            return {
+        return {
 
-                /**
-                 * @property restrict
-                 * @type {String}
-                 */
-                restrict: ngVideoOptions.RESTRICT,
+            /**
+             * @property restrict
+             * @type {String}
+             */
+            restrict: ngVideoOptions.RESTRICT,
 
-                /**
-                 * @property template
-                 * @type {String}
-                 */
-                template: '<canvas height="{{height}}" width="{{width}}"></canvas>',
+            /**
+             * @property template
+             * @type {String}
+             */
+            template: '<canvas height="{{height}}" width="{{width}}"></canvas>',
 
-                /**
-                 * @property scope
-                 * @type {Boolean}
-                 */
-                scope: true,
+            /**
+             * @property scope
+             * @type {Boolean}
+             */
+            scope: true,
 
-                /**
-                 * @method link
-                 * @param scope {Object}
-                 * @param element {Object}
-                 * @return {void}
-                 */
-                link: function link(scope, element) {
+            /**
+             * @method link
+             * @param scope {Object}
+             * @param element {Object}
+             * @return {void}
+             */
+            link: function link(scope, element) {
 
-                    // Configure the width and the height.
-                    scope.height = ngVideoOptions.BUFFER_HEIGHT;
-                    scope.width  = ngVideoOptions.BUFFER_WIDTH;
+                // Configure the width and the height.
+                scope.height = ngVideoOptions.BUFFER_HEIGHT;
+                scope.width  = ngVideoOptions.BUFFER_WIDTH;
 
-                    var canvas  = element.find('canvas')[0],
-                        context = canvas.getContext('2d');
+                var canvas  = element.find('canvas')[0],
+                    context = canvas.getContext('2d');
 
-                    // Observe the `lastUpdate` which provides a live data-stream when a
-                    // video is playing.
-                    scope.$watch('lastUpdate', function watch() {
+                // Observe the `lastUpdate` which provides a live data-stream when a
+                // video is playing.
+                scope.$watch('lastUpdate', function watch() {
 
-                        var buffered = scope.player.buffered,
-                            duration = scope.player.duration,
-                            count    = buffered.length,
-                            width    = canvas.width,
-                            height   = canvas.height;
+                    var buffered = scope.player.buffered,
+                        duration = scope.player.duration,
+                        count    = buffered.length,
+                        width    = canvas.width,
+                        height   = canvas.height;
 
-                        // Determine the fill colour of the buffer bar.
-                        context.fillStyle = ngVideoOptions.BUFFER_COLOUR;
+                    // Determine the fill colour of the buffer bar.
+                    context.fillStyle = ngVideoOptions.BUFFER_COLOUR;
 
-                        while (count--) {
+                    while (count--) {
 
-                            // Fill in the rectangle according to the buffered object.
-                            var x = buffered.start(count) / duration * width,
-                                y = buffered.end(count) / duration * width;
+                        // Fill in the rectangle according to the buffered object.
+                        var x = buffered.start(count) / duration * width,
+                            y = buffered.end(count) / duration * width;
 
-                            context.fillRect(x, 0, y - x, height);
+                        context.fillRect(x, 0, y - x, height);
 
-                        }
+                    }
 
-                    });
-
-                }
+                });
 
             }
 
-        }]);
+        }
+
+    }]);
 
 })(window.angular);
 
@@ -722,214 +737,214 @@
      */
     $angular.module('ngVideo').directive('viFeedback', ['ngVideoOptions',
 
-        function ngFeedbackDirective(ngVideoOptions) {
+    function ngFeedbackDirective(ngVideoOptions) {
 
-            return {
+        return {
 
-                /**
-                 * @property restrict
-                 * @type {String}
-                 */
-                restrict: ngVideoOptions.RESTRICT,
+            /**
+             * @property restrict
+             * @type {String}
+             */
+            restrict: ngVideoOptions.RESTRICT,
 
-                /**
-                 * @property scope
-                 * @type {Boolean}
-                 */
-                scope: true,
+            /**
+             * @property scope
+             * @type {Boolean}
+             */
+            scope: true,
 
-                /**
-                 * @property controller
-                 * @type {Array}
-                 * @param $scope {Object}
-                 * @param $interval {Function|Object}
-                 * @param $window {Object}
-                 * @param ngVideoOptions {Object}
-                 */
-                controller: ['$rootScope', '$scope', '$interval', '$window', 'ngVideoOptions',
+            /**
+             * @property controller
+             * @type {Array}
+             * @param $scope {Object}
+             * @param $interval {Function|Object}
+             * @param $window {Object}
+             * @param ngVideoOptions {Object}
+             */
+            controller: ['$rootScope', '$scope', '$interval', '$window', 'ngVideoOptions',
 
-                    function controller($rootScope, $scope, $interval, $window, ngVideoOptions) {
+                function controller($rootScope, $scope, $interval, $window, ngVideoOptions) {
 
-                        /**
-                         * @property duration
-                         * @type {Number}
-                         */
-                        $scope.duration = 0;
+                    /**
+                     * @property duration
+                     * @type {Number}
+                     */
+                    $scope.duration = 0;
 
-                        /**
-                         * @property volume
-                         * @type {Number}
-                         */
-                        $scope.volume = 1;
+                    /**
+                     * @property volume
+                     * @type {Number}
+                     */
+                    $scope.volume = 1;
 
-                        /**
-                         * @property playbackRate
-                         * @type {Number}
-                         */
-                        $scope.playbackRate = 1;
+                    /**
+                     * @property playbackRate
+                     * @type {Number}
+                     */
+                    $scope.playbackRate = 1;
 
-                        /**
-                         * @property lastUpdate
-                         * @type {Number}
-                         */
-                        $scope.lastUpdate = 0;
+                    /**
+                     * @property lastUpdate
+                     * @type {Number}
+                     */
+                    $scope.lastUpdate = 0;
 
-                        /**
-                         * @property currentTime
-                         * @type {Number}
-                         */
-                        $scope.currentTime = 0;
+                    /**
+                     * @property currentTime
+                     * @type {Number}
+                     */
+                    $scope.currentTime = 0;
 
-                        /**
-                         * @property percentagePlayed
-                         * @type {Number}
-                         */
-                        $scope.percentagePlayed = 0;
+                    /**
+                     * @property percentagePlayed
+                     * @type {Number}
+                     */
+                    $scope.percentagePlayed = 0;
 
-                        /**
-                         * @property buffered
-                         * @type {Number}
-                         */
-                        $scope.buffered = 0;
+                    /**
+                     * @property buffered
+                     * @type {Number}
+                     */
+                    $scope.buffered = 0;
 
-                        /**
-                         * @property interval
-                         * @type {Object}
-                         */
-                        $scope.interval = {};
+                    /**
+                     * @property interval
+                     * @type {Object}
+                     */
+                    $scope.interval = {};
 
-                        /**
-                         * @property buffering
-                         * @type {Boolean}
-                         */
+                    /**
+                     * @property buffering
+                     * @type {Boolean}
+                     */
+                    $scope.buffering = false;
+
+                    /**
+                     * @property lastTime
+                     * @type {Number}
+                     * @private
+                     */
+                    var lastTime = 0;
+
+                    /**
+                     * @method grabStatistics
+                     * @return {void}
+                     */
+                    $scope.grabStatistics = function grabStatistics() {
+
+                        var player = $scope.player;
+
+                        // Determine if we're currently buffering.
+                        if (lastTime === player.currentTime && !player.paused) {
+                            $scope.buffering = true;
+                            return;
+                        }
+
+                        // Log the last time and ensure we're not displaying the buffering message.
+                        lastTime = player.currentTime;
                         $scope.buffering = false;
 
-                        /**
-                         * @property lastTime
-                         * @type {Number}
-                         * @private
-                         */
-                        var lastTime = 0;
+                        // Iterate over each property we wish to listen to.
+                        $angular.forEach(requiredProperties, function forEach(property) {
 
-                        /**
-                         * @method grabStatistics
-                         * @return {void}
-                         */
-                        $scope.grabStatistics = function grabStatistics() {
-
-                            var player = $scope.player;
-
-                            // Determine if we're currently buffering.
-                            if (lastTime === player.currentTime && !player.paused) {
-                                $scope.buffering = true;
-                                return;
-                            }
-
-                            // Log the last time and ensure we're not displaying the buffering message.
-                            lastTime = player.currentTime;
-                            $scope.buffering = false;
-
-                            // Iterate over each property we wish to listen to.
-                            $angular.forEach(requiredProperties, function forEach(property) {
-
-                                $scope[property] = !isNaN($scope.player[property]) ? $scope.player[property]
-                                    : $scope[property];
-
-                            });
-
-                            if ($scope.player.buffered.length !== 0) {
-
-                                // Update the buffered amount.
-                                $scope.buffered = $math.round(player.buffered.end(0) / player.duration) * 100;
-
-                            }
-
-                            if ($scope.player.muted) {
-
-                                // When muted the actual volume level is zero.
-                                $scope.volume = 0;
-
-                            }
-
-                            // Calculate other miscellaneous properties.
-                            $scope.percentagePlayed = ($scope.currentTime / $scope.duration) * 100;
-
-                            // Notify everybody that the statistics have been updated!
-                            $scope.lastUpdate = new $window.Date().getTime();
-
-                        };
-
-                        /**
-                         * @method beginPolling
-                         * @return {void}
-                         */
-                        $scope.beginPolling = function beginPolling() {
-
-                            // Update the statistics every so often.
-                            $scope.interval = $interval($scope.grabStatistics, ngVideoOptions.REFRESH);
-
-                        };
-
-                        /**
-                         * @method endPolling
-                         * @return {void}
-                         */
-                        $scope.endPolling = function endPolling() {
-                            $interval.cancel($scope.interval);
-                        };
-
-                        // When we need to force the refreshing of the statistics.
-                        $scope.$on('ng-video/reset', function forceReset() {
-
-                            $scope.player.currentTime = 0;
-                            $scope.grabStatistics();
+                            $scope[property] = !isNaN($scope.player[property]) ? $scope.player[property]
+                                : $scope[property];
 
                         });
 
-                        /**
-                         * @method updateVolume
-                         * @return {void}
-                         */
-                        var updateVolume = function updateVolume() {
-                            $scope.volume = $scope.player.volume;
-                        };
+                        if ($scope.player.buffered.length !== 0) {
 
-                        // When we need to force the refreshing of the volume.
-                        $scope.$on('ng-video/volume', updateVolume);
+                            // Update the buffered amount.
+                            $scope.buffered = $math.round(player.buffered.end(0) / player.duration) * 100;
 
-                        // When we need to force the refreshing of the properties.
-                        $scope.$on('ng-video/feedback/refresh', $scope.grabStatistics);
+                        }
 
-                        // Monitor the status of the video player.
-                        $scope.$watch('playing', function isPlaying(playing) {
+                        if ($scope.player.muted) {
 
-                            // Update the statistics once.
-                            $scope.grabStatistics();
+                            // When muted the actual volume level is zero.
+                            $scope.volume = 0;
 
-                            if (playing) {
+                        }
 
-                                // Update the statistics periodically.
-                                $scope.beginPolling();
-                                return;
+                        // Calculate other miscellaneous properties.
+                        $scope.percentagePlayed = ($scope.currentTime / $scope.duration) * 100;
 
-                            }
+                        // Notify everybody that the statistics have been updated!
+                        $scope.lastUpdate = new $window.Date().getTime();
 
-                            $scope.endPolling();
+                    };
 
-                        });
+                    /**
+                     * @method beginPolling
+                     * @return {void}
+                     */
+                    $scope.beginPolling = function beginPolling() {
 
-                        // Also register the event natively from the player itself.
-                        $scope.$on('ng-video/attach-events', function(event, player) {
-                            player.bind('timeupdate', $scope.grabStatistics);
-                            player.bind('volumechange', updateVolume);
+                        // Update the statistics every so often.
+                        $scope.interval = $interval($scope.grabStatistics, ngVideoOptions.REFRESH);
 
-                        });
+                    };
 
-                    }]
+                    /**
+                     * @method endPolling
+                     * @return {void}
+                     */
+                    $scope.endPolling = function endPolling() {
+                        $interval.cancel($scope.interval);
+                    };
 
-            }
+                    // When we need to force the refreshing of the statistics.
+                    $scope.$on('ng-video/reset', function forceReset() {
 
-        }]);
+                        $scope.player.currentTime = 0;
+                        $scope.grabStatistics();
+
+                    });
+
+                    /**
+                     * @method updateVolume
+                     * @return {void}
+                     */
+                    var updateVolume = function updateVolume() {
+                        $scope.volume = $scope.player.volume;
+                    };
+
+                    // When we need to force the refreshing of the volume.
+                    $scope.$on('ng-video/volume', updateVolume);
+
+                    // When we need to force the refreshing of the properties.
+                    $scope.$on('ng-video/feedback/refresh', $scope.grabStatistics);
+
+                    // Monitor the status of the video player.
+                    $scope.$watch('playing', function isPlaying(playing) {
+
+                        // Update the statistics once.
+                        $scope.grabStatistics();
+
+                        if (playing) {
+
+                            // Update the statistics periodically.
+                            $scope.beginPolling();
+                            return;
+
+                        }
+
+                        $scope.endPolling();
+
+                    });
+
+                    // Also register the event natively from the player itself.
+                    $scope.$on('ng-video/attach-events', function(event, player) {
+                        player.bind('timeupdate', $scope.grabStatistics);
+                        player.bind('volumechange', updateVolume);
+
+                    });
+
+                }]
+
+        }
+
+    }]);
 
 })(window.angular, window.Math);
 
@@ -1108,65 +1123,65 @@
      */
     module.directive('viMessages', ['$window', 'ngVideoOptions', 'ngVideoMessages',
 
-        function ngMessagesDirective($window, ngVideoOptions, ngVideoMessages) {
+    function ngMessagesDirective($window, ngVideoOptions, ngVideoMessages) {
 
-            return {
+        return {
+
+            /**
+             * @property restrict
+             * @type {String}
+             */
+            restrict: ngVideoOptions.RESTRICT,
+
+            /**
+             * @property scope
+             * @type {Boolean}
+             */
+            scope: true,
+
+            /**
+             * @property controller
+             * @type {Array}
+             * @param $scope {Object}
+             */
+            controller: ['$scope', function controller($scope) {
 
                 /**
-                 * @property restrict
-                 * @type {String}
-                 */
-                restrict: ngVideoOptions.RESTRICT,
-
-                /**
-                 * @property scope
-                 * @type {Boolean}
-                 */
-                scope: true,
-
-                /**
-                 * @property controller
+                 * @property messages
                  * @type {Array}
-                 * @param $scope {Object}
                  */
-                controller: ['$scope', function controller($scope) {
+                $scope.messages = [];
 
-                    /**
-                     * @property messages
-                     * @type {Array}
-                     */
-                    $scope.messages = [];
+                // Listen for the moment in which we can safely register the message events.
+                $scope.$on('ng-video/attach-events', function registerMessageEvents(event, player) {
 
-                    // Listen for the moment in which we can safely register the message events.
-                    $scope.$on('ng-video/attach-events', function registerMessageEvents(event, player) {
+                    // Iterate over our messages to register their events.
+                    $angular.forEach(ngVideoMessages, function forEach(messageModel) {
 
-                        // Iterate over our messages to register their events.
-                        $angular.forEach(ngVideoMessages, function forEach(messageModel) {
+                        player.bind(messageModel.event, function eventTriggered() {
 
-                            player.bind(messageModel.event, function eventTriggered() {
+                            delete messageModel.$$hashKey;
 
-                                delete messageModel.$$hashKey;
+                            // Create a copy to prevent duplicates.
+                            messageModel = $angular.copy(messageModel);
 
-                                // Create a copy to prevent duplicates.
-                                messageModel = $angular.copy(messageModel);
-
-                                // Push the message model into our messages array when it has been
-                                // triggered by the player.
-                                messageModel.date = new $window.Date();
-                                $scope.messages.push(messageModel);
-                                $scope.$apply();
-
-                            });
+                            // Push the message model into our messages array when it has been
+                            // triggered by the player.
+                            messageModel.date = new $window.Date();
+                            $scope.messages.push(messageModel);
+                            $scope.$apply();
 
                         });
 
                     });
 
-                }]
+                });
 
-            }
+            }]
 
-        }]);
+        }
+
+    }]);
 
 })(window.angular);
 
@@ -1591,15 +1606,19 @@
              */
             link: function link(scope, element) {
 
-                // When the video player screen is clicked, we'll toggle the playing
-                // state of the current video, if there is one.
-                element.bind('click', function() {
+                if (ngVideoOptions.SCREEN_CHANGE) {
 
-                    if (!scope.loading) {
-                        scope.toggleState();
-                    }
+                    // When the video player screen is clicked, we'll toggle the playing
+                    // state of the current video, if there is one.
+                    element.bind('click', function() {
 
-                });
+                        if (!scope.loading) {
+                            scope.toggleState();
+                        }
+
+                    });
+
+                }
 
             }
 
@@ -1711,53 +1730,55 @@
      */
     $angular.module('ngVideo').directive('viTimeline', ['ngVideoOptions',
 
-        function ngTimelineDirective(ngVideoOptions) {
+    function ngTimelineDirective(ngVideoOptions) {
 
-            return {
+        return {
+
+            /**
+             * @property restrict
+             * @type {String}
+             */
+            restrict: ngVideoOptions.RESTRICT,
+
+            /**
+             * @property template
+             * @type {String}
+             */
+            template: '<input type="range" value="0" />',
+
+            /**
+             * @property replace
+             * @type {Boolean}
+             */
+            replace: true,
+
+            /**
+             * @property scope
+             * @type {Boolean}
+             */
+            scope: true,
+
+            /**
+             * @property link
+             * @param scope {Object}
+             * @param element {Object}
+             * @return {void}
+             */
+            link: function(scope, element) {
 
                 /**
-                 * @property restrict
-                 * @type {String}
-                 */
-                restrict: ngVideoOptions.RESTRICT,
-
-                /**
-                 * @property template
-                 * @type {String}
-                 */
-                template: '<input type="range" value="0" />',
-
-                /**
-                 * @property replace
+                 * @property wasPlaying
                  * @type {Boolean}
+                 * @default false
                  */
-                replace: true,
+                scope.wasPlaying = false;
 
-                /**
-                 * @property scope
-                 * @type {Boolean}
-                 */
-                scope: true,
+                // When we need to force the resetting of the range.
+                scope.$on('ng-video/reset', function resetRange() {
+                    element.val(0);
+                });
 
-                /**
-                 * @property link
-                 * @param scope {Object}
-                 * @param element {Object}
-                 * @return {void}
-                 */
-                link: function(scope, element) {
-
-                    /**
-                     * @property wasPlaying
-                     * @type {Boolean}
-                     * @default false
-                     */
-                    scope.wasPlaying = false;
-
-                    // When we need to force the resetting of the range.
-                    scope.$on('ng-video/reset', function resetRange() {
-                        element.val(0);
-                    });
+                if (ngVideoOptions.TIMELINE_CHANGE) {
 
                     // Whenever the user attempts to seek we'll pause to allow them to
                     // change it in peace.
@@ -1784,28 +1805,30 @@
 
                     });
 
-                    /**
-                     * @method updatePosition
-                     * @return {void}
-                     */
-                    var updatePosition = function updatePosition() {
-
-                        // Calculate the percentage for the range node, and update
-                        // it accordingly.
-                        var percentage = (scope.player.currentTime / scope.duration) * 100;
-                        element.val(percentage);
-
-                    };
-
-                    // Listen for when the statistics have been updated.
-                    scope.$watch('lastUpdate', updatePosition);
-                    scope.$on('ng-video/seekable', updatePosition);
-
                 }
+
+                /**
+                 * @method updatePosition
+                 * @return {void}
+                 */
+                var updatePosition = function updatePosition() {
+
+                    // Calculate the percentage for the range node, and update
+                    // it accordingly.
+                    var percentage = (scope.player.currentTime / scope.duration) * 100;
+                    element.val(percentage);
+
+                };
+
+                // Listen for when the statistics have been updated.
+                scope.$watch('lastUpdate', updatePosition);
+                scope.$on('ng-video/seekable', updatePosition);
 
             }
 
-        }]);
+        }
+
+    }]);
 
 })(window.angular);
 

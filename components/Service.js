@@ -21,6 +21,8 @@
         RESTRICT: 'CA',
         REFRESH: 50,
         SCREEN_DIRECTIVE: 'vi-screen',
+        SCREEN_CHANGE: true,
+        TIMELINE_CHANGE: true,
         VOLUME_STEPS: 0.1,
         VOLUME_MINIMUM: 0,
         VOLUME_MAXIMUM: 1,
@@ -44,89 +46,89 @@
      */
     module.service('video', ['$rootScope', '$timeout', 'ngVideoPlaylist',
 
-        function videoService($rootScope, $timeout, ngVideoPlaylist) {
+    function videoService($rootScope, $timeout, ngVideoPlaylist) {
 
-            var service = {};
+        var service = {};
+
+        /**
+         * @method addSource
+         * @param type {String}
+         * @param src {String}
+         * @return {Object}
+         */
+        service.addSource = function addSource(type, src) {
+
+            // Add a new video to the playlist, and broadcast the success.
+            var model = { type: type, src: src };
+            ngVideoPlaylist.push(model);
+
+            $rootScope.$broadcast('ng-video/add', model);
+            return model;
+
+        };
+
+        /**
+         * @method multiSource
+         * @return {MultiSource}
+         */
+        service.multiSource = function multiSource() {
 
             /**
-             * @method addSource
-             * @param type {String}
-             * @param src {String}
-             * @return {Object}
+             * @class MultiSource
+             * @constructor
              */
-            service.addSource = function addSource(type, src) {
-
-                // Add a new video to the playlist, and broadcast the success.
-                var model = { type: type, src: src };
-                ngVideoPlaylist.push(model);
-
-                $rootScope.$broadcast('ng-video/add', model);
-                return model;
-
-            };
+            function MultiSource() {}
 
             /**
-             * @method multiSource
-             * @return {MultiSource}
+             * @property prototype
+             * @type {Object}
              */
-            service.multiSource = function multiSource() {
+            MultiSource.prototype = {
 
                 /**
-                 * @class MultiSource
-                 * @constructor
+                 * @property sources
+                 * @type {Array}
                  */
-                function MultiSource() {}
+                sources: [],
 
                 /**
-                 * @property prototype
-                 * @type {Object}
+                 * @method addSource
+                 * @param type {String}
+                 * @param src {String}
+                 * @return {Object}
                  */
-                MultiSource.prototype = {
+                addSource: function addSource(type, src) {
+                    var model = { type: type, src: src };
+                    this.sources.push(model);
+                    return model;
+                },
 
-                    /**
-                     * @property sources
-                     * @type {Array}
-                     */
-                    sources: [],
-
-                    /**
-                     * @method addSource
-                     * @param type {String}
-                     * @param src {String}
-                     * @return {Object}
-                     */
-                    addSource: function addSource(type, src) {
-                        var model = { type: type, src: src };
-                        this.sources.push(model);
-                        return model;
-                    },
-
-                    /**
-                     * @method save
-                     * @return {void}
-                     */
-                    save: function save() {
-                        ngVideoPlaylist.push(this.sources);
-                        $rootScope.$broadcast('ng-video/add', this.sources);
-                    }
-
-                };
-
-                return new MultiSource();
+                /**
+                 * @method save
+                 * @return {void}
+                 */
+                save: function save() {
+                    ngVideoPlaylist.push(this.sources);
+                    $rootScope.$broadcast('ng-video/add', this.sources);
+                }
 
             };
 
-            /**
-             * @method throwException
-             * @param message {String}
-             * @return {void}
-             */
-            service.throwException = function throwException(message) {
-                throw 'ngVideo: ' + message + '.';
-            };
+            return new MultiSource();
 
-            return service;
+        };
 
-        }]);
+        /**
+         * @method throwException
+         * @param message {String}
+         * @return {void}
+         */
+        service.throwException = function throwException(message) {
+            throw 'ngVideo: ' + message + '.';
+        };
+
+        return service;
+
+    }]);
 
 })(window.angular);

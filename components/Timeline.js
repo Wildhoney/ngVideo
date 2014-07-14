@@ -9,53 +9,55 @@
      */
     $angular.module('ngVideo').directive('viTimeline', ['ngVideoOptions',
 
-        function ngTimelineDirective(ngVideoOptions) {
+    function ngTimelineDirective(ngVideoOptions) {
 
-            return {
+        return {
+
+            /**
+             * @property restrict
+             * @type {String}
+             */
+            restrict: ngVideoOptions.RESTRICT,
+
+            /**
+             * @property template
+             * @type {String}
+             */
+            template: '<input type="range" value="0" />',
+
+            /**
+             * @property replace
+             * @type {Boolean}
+             */
+            replace: true,
+
+            /**
+             * @property scope
+             * @type {Boolean}
+             */
+            scope: true,
+
+            /**
+             * @property link
+             * @param scope {Object}
+             * @param element {Object}
+             * @return {void}
+             */
+            link: function(scope, element) {
 
                 /**
-                 * @property restrict
-                 * @type {String}
-                 */
-                restrict: ngVideoOptions.RESTRICT,
-
-                /**
-                 * @property template
-                 * @type {String}
-                 */
-                template: '<input type="range" value="0" />',
-
-                /**
-                 * @property replace
+                 * @property wasPlaying
                  * @type {Boolean}
+                 * @default false
                  */
-                replace: true,
+                scope.wasPlaying = false;
 
-                /**
-                 * @property scope
-                 * @type {Boolean}
-                 */
-                scope: true,
+                // When we need to force the resetting of the range.
+                scope.$on('ng-video/reset', function resetRange() {
+                    element.val(0);
+                });
 
-                /**
-                 * @property link
-                 * @param scope {Object}
-                 * @param element {Object}
-                 * @return {void}
-                 */
-                link: function(scope, element) {
-
-                    /**
-                     * @property wasPlaying
-                     * @type {Boolean}
-                     * @default false
-                     */
-                    scope.wasPlaying = false;
-
-                    // When we need to force the resetting of the range.
-                    scope.$on('ng-video/reset', function resetRange() {
-                        element.val(0);
-                    });
+                if (ngVideoOptions.TIMELINE_CHANGE) {
 
                     // Whenever the user attempts to seek we'll pause to allow them to
                     // change it in peace.
@@ -82,27 +84,29 @@
 
                     });
 
-                    /**
-                     * @method updatePosition
-                     * @return {void}
-                     */
-                    var updatePosition = function updatePosition() {
-
-                        // Calculate the percentage for the range node, and update
-                        // it accordingly.
-                        var percentage = (scope.player.currentTime / scope.duration) * 100;
-                        element.val(percentage);
-
-                    };
-
-                    // Listen for when the statistics have been updated.
-                    scope.$watch('lastUpdate', updatePosition);
-                    scope.$on('ng-video/seekable', updatePosition);
-
                 }
+
+                /**
+                 * @method updatePosition
+                 * @return {void}
+                 */
+                var updatePosition = function updatePosition() {
+
+                    // Calculate the percentage for the range node, and update
+                    // it accordingly.
+                    var percentage = (scope.player.currentTime / scope.duration) * 100;
+                    element.val(percentage);
+
+                };
+
+                // Listen for when the statistics have been updated.
+                scope.$watch('lastUpdate', updatePosition);
+                scope.$on('ng-video/seekable', updatePosition);
 
             }
 
-        }]);
+        }
+
+    }]);
 
 })(window.angular);

@@ -103,7 +103,7 @@
                     }());
 
                     // Once the video data has been loaded and the video is ready to be played.
-                    player.bind('loadeddata', function onLoadEnd() {
+                    player.bind('loadeddata', function onLoadedData() {
 
                         $scope.$apply(function apply() {
 
@@ -142,6 +142,7 @@
 
                             // Attempt to find the current video.
                             var index = ngVideoPlaylist.indexOf($scope.video);
+                            console.log(index);
 
                             if (index === -1 || typeof ngVideoPlaylist[index + 1] === 'undefined') {
 
@@ -205,6 +206,7 @@
                      * @return {void}
                      */
                     var loadVideo = function loadVideo(videoModel) {
+                        $scope.video = videoModel;
                         $scope.player.setAttribute('src', videoModel.src);
                         $scope.player.setAttribute('type', videoModel.type);
                         $scope.player.load();
@@ -274,7 +276,7 @@
                  * @method closeFullScreen
                  * @return {void}
                  */
-                $scope.closeFullScreen = function openFullScreen() {
+                $scope.closeFullScreen = function closeFullScreen() {
 
                     var document = $window.document;
 
@@ -359,6 +361,17 @@
                     scope.open(scope.video)
 
                 }
+
+                scope.$on('ng-video/add', function() {
+
+                    if (ngVideoPlaylist.length === 1) {
+
+                        // Open the newly added video if it's the first video.
+                        scope.open(ngVideoPlaylist[0]);
+
+                    }
+
+                });
 
             }
 

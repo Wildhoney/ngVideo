@@ -50,64 +50,64 @@
      */
     module.directive('viMessages', ['$window', 'ngVideoOptions', 'ngVideoMessages',
 
-        function ngMessagesDirective($window, ngVideoOptions, ngVideoMessages) {
+    function ngMessagesDirective($window, ngVideoOptions, ngVideoMessages) {
 
-            return {
+        return {
+
+            /**
+             * @property restrict
+             * @type {String}
+             */
+            restrict: ngVideoOptions.RESTRICT,
+
+            /**
+             * @property scope
+             * @type {Boolean}
+             */
+            scope: true,
+
+            /**
+             * @property controller
+             * @type {Array}
+             * @param $scope {Object}
+             */
+            controller: ['$scope', function controller($scope) {
 
                 /**
-                 * @property restrict
-                 * @type {String}
-                 */
-                restrict: ngVideoOptions.RESTRICT,
-
-                /**
-                 * @property scope
-                 * @type {Boolean}
-                 */
-                scope: true,
-
-                /**
-                 * @property controller
+                 * @property messages
                  * @type {Array}
-                 * @param $scope {Object}
                  */
-                controller: ['$scope', function controller($scope) {
+                $scope.messages = [];
 
-                    /**
-                     * @property messages
-                     * @type {Array}
-                     */
-                    $scope.messages = [];
+                // Listen for the moment in which we can safely register the message events.
+                $scope.$on('ng-video/attach-events', function registerMessageEvents(event, player) {
 
-                    // Listen for the moment in which we can safely register the message events.
-                    $scope.$on('ng-video/attach-events', function registerMessageEvents(event, player) {
+                    // Iterate over our messages to register their events.
+                    $angular.forEach(ngVideoMessages, function forEach(messageModel) {
 
-                        // Iterate over our messages to register their events.
-                        $angular.forEach(ngVideoMessages, function forEach(messageModel) {
+                        player.bind(messageModel.event, function eventTriggered() {
 
-                            player.bind(messageModel.event, function eventTriggered() {
+                            delete messageModel.$$hashKey;
 
-                                delete messageModel.$$hashKey;
+                            // Create a copy to prevent duplicates.
+                            messageModel = $angular.copy(messageModel);
 
-                                // Create a copy to prevent duplicates.
-                                messageModel = $angular.copy(messageModel);
-
-                                // Push the message model into our messages array when it has been
-                                // triggered by the player.
-                                messageModel.date = new $window.Date();
-                                $scope.messages.push(messageModel);
-                                $scope.$apply();
-
-                            });
+                            // Push the message model into our messages array when it has been
+                            // triggered by the player.
+                            messageModel.date = new $window.Date();
+                            $scope.messages.push(messageModel);
+                            $scope.$apply();
 
                         });
 
                     });
 
-                }]
+                });
 
-            }
+            }]
 
-        }]);
+        }
+
+    }]);
 
 })(window.angular);
