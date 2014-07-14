@@ -23,7 +23,7 @@
          * @type {Object}
          */
         $scope.videos = {
-            first: 'http://www.previewstube.com/trailers/skyfall.mp4',
+            first: 'http://www.w3schools.com/html/mov_bbb.mp4',
             second: 'http://www.w3schools.com/html/movie.mp4'
         };
 
