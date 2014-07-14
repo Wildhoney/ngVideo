@@ -43,14 +43,8 @@
         };
 
         // Add some video sources for the player!
-        $timeout(function() {
-            video.addSource('mp4', $scope.videos.first);
-        }, 1000);
-
-        // Add some video sources for the player!
-        $timeout(function() {
-            video.addSource('mp4', $scope.videos.second);
-        }, 2000);
+        video.addSource('mp4', $scope.videos.first);
+        video.addSource('mp4', $scope.videos.second);
 
     });
 
