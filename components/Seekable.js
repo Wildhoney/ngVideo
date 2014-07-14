@@ -65,7 +65,7 @@
      * @type {Function}
      * @param scope {Object}
      */
-    createSeekableDirective('time', function onTimeClick(scope, directiveValue) {
+    createSeekableDirective('', function onTimeClick(scope, directiveValue) {
         scope.player.currentTime = directiveValue;
     });
 
