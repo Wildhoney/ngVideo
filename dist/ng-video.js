@@ -261,11 +261,11 @@
                         $scope.$apply(function apply() {
 
                             /**
-                             * @method $play
+                             * @method playByIndex
                              * @param index {Number}
                              * @return {void}
                              */
-                            var $play = function $play(index) {
+                            var playByIndex = function playByIndex(index) {
 
                                 $scope.open(ngVideoPlaylist[index]);
                                 $scope.video = ngVideoPlaylist[index];
@@ -281,7 +281,7 @@
                                 if ($scope.player.loop) {
 
                                     // Determine if we should keep looping the playlist.
-                                    $play(0);
+                                    playByIndex(0);
                                     return;
 
                                 }
@@ -294,7 +294,7 @@
                             }
 
                             // Voila! Load the next video.
-                            $play(index + 1);
+                            playByIndex(index + 1);
 
                         });
 
@@ -799,12 +799,35 @@
                         $scope.interval = {};
 
                         /**
+                         * @property buffering
+                         * @type {Boolean}
+                         */
+                        $scope.buffering = false;
+
+                        /**
+                         * @property lastTime
+                         * @type {Number}
+                         * @private
+                         */
+                        var lastTime = 0;
+
+                        /**
                          * @method grabStatistics
                          * @return {void}
                          */
                         $scope.grabStatistics = function grabStatistics() {
 
                             var player = $scope.player;
+
+                            // Determine if we're currently buffering.
+                            if (lastTime === player.currentTime && !player.paused) {
+                                $scope.buffering = true;
+                                return;
+                            }
+
+                            // Log the last time and ensure we're not displaying the buffering message.
+                            lastTime = player.currentTime;
+                            $scope.buffering = false;
 
                             // Iterate over each property we wish to listen to.
                             $angular.forEach(requiredProperties, function forEach(property) {
