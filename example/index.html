@@ -40,7 +40,7 @@
         <section class="video" ng-video>
 
             <!-- Screen Directive -->
-            <video vi-screen></video>
+            <video autoplay="autoplay" loop="true" muted="muted" vi-screen></video>
 
             <section vi-controls class="controls">
                 <span vi-controls-play title="Play" class="glyphicon glyphicon-play"></span>
@@ -116,11 +116,11 @@
                     </li>
                     <li vi-playlist-video ng-repeat="video in videos" ng-model="video">
 
-                    <span vi-meta ng-model="video" class="meta">
-                        {{duration | number: 2}}s
-                    </span>
+                        <span vi-meta ng-model="video" class="meta">
+                            {{duration | number: 2}}s
+                        </span>
 
-                        {{videoName(video)}}
+                        {{getVideoName(video)}}
 
                     </li>
                 </ul>

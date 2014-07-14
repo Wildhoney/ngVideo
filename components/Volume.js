@@ -43,6 +43,14 @@
                  */
                 $scope.setVolume = function setVolume(volume) {
 
+                    if ($scope.player.muted && volume > 0) {
+
+                        // Determine if the user is un-muting the player, which can be set
+                        // as the `muted` attribute on the player itself.
+                        $scope.player.muted = false;
+
+                    }
+
                     if (volume < ngVideoOptions.VOLUME_MINIMUM) {
                         volume = ngVideoOptions.VOLUME_MINIMUM;
                     }

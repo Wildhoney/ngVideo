@@ -9,7 +9,7 @@
      */
     $angular.module(APP_NAME).controller('VideoController',
 
-    function videoController($scope, $timeout, video, ngVideoOptions) {
+    function videoController($scope, $timeout, video) {
 
         /**
          * @property playlistOpen
@@ -23,16 +23,16 @@
          * @type {Object}
          */
         $scope.videos = {
-            first: 'http://www.w3schools.com/html/mov_bbb.mp4',
+            first:  'http://www.w3schools.com/html/mov_bbb.mp4',
             second: 'http://www.w3schools.com/html/movie.mp4'
         };
 
         /**
-         * @method videoName
+         * @method getVideoName
          * @param videoModel {Object}
          * @return {String}
          */
-        $scope.videoName = function videoName(videoModel) {
+        $scope.getVideoName = function getVideoName(videoModel) {
 
             switch (videoModel.src) {
                 case ($scope.videos.first): return "Big Buck Bunny";

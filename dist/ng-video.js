@@ -722,176 +722,191 @@
      */
     $angular.module('ngVideo').directive('viFeedback', ['ngVideoOptions',
 
-    function ngFeedbackDirective(ngVideoOptions) {
+        function ngFeedbackDirective(ngVideoOptions) {
 
-        return {
-
-            /**
-             * @property restrict
-             * @type {String}
-             */
-            restrict: ngVideoOptions.RESTRICT,
-
-            /**
-             * @property scope
-             * @type {Boolean}
-             */
-            scope: true,
-
-            /**
-             * @property controller
-             * @type {Array}
-             * @param $scope {Object}
-             * @param $interval {Function|Object}
-             * @param $window {Object}
-             * @param ngVideoOptions {Object}
-             */
-            controller: ['$scope', '$interval', '$window', 'ngVideoOptions',
-
-            function controller($scope, $interval, $window, ngVideoOptions) {
+            return {
 
                 /**
-                 * @property duration
-                 * @type {Number}
+                 * @property restrict
+                 * @type {String}
                  */
-                $scope.duration = 0;
+                restrict: ngVideoOptions.RESTRICT,
 
                 /**
-                 * @property volume
-                 * @type {Number}
+                 * @property scope
+                 * @type {Boolean}
                  */
-                $scope.volume = 1;
+                scope: true,
 
                 /**
-                 * @property playbackRate
-                 * @type {Number}
+                 * @property controller
+                 * @type {Array}
+                 * @param $scope {Object}
+                 * @param $interval {Function|Object}
+                 * @param $window {Object}
+                 * @param ngVideoOptions {Object}
                  */
-                $scope.playbackRate = 1;
+                controller: ['$rootScope', '$scope', '$interval', '$window', 'ngVideoOptions',
 
-                /**
-                 * @property lastUpdate
-                 * @type {Number}
-                 */
-                $scope.lastUpdate = 0;
+                    function controller($rootScope, $scope, $interval, $window, ngVideoOptions) {
 
-                /**
-                 * @property currentTime
-                 * @type {Number}
-                 */
-                $scope.currentTime = 0;
+                        /**
+                         * @property duration
+                         * @type {Number}
+                         */
+                        $scope.duration = 0;
 
-                /**
-                 * @property percentagePlayed
-                 * @type {Number}
-                 */
-                $scope.percentagePlayed = 0;
+                        /**
+                         * @property volume
+                         * @type {Number}
+                         */
+                        $scope.volume = 1;
 
-                /**
-                 * @property buffered
-                 * @type {Number}
-                 */
-                $scope.buffered = 0;
+                        /**
+                         * @property playbackRate
+                         * @type {Number}
+                         */
+                        $scope.playbackRate = 1;
 
-                /**
-                 * @property interval
-                 * @type {Object}
-                 */
-                $scope.interval = {};
+                        /**
+                         * @property lastUpdate
+                         * @type {Number}
+                         */
+                        $scope.lastUpdate = 0;
 
-                /**
-                 * @method grabStatistics
-                 * @return {void}
-                 */
-                $scope.grabStatistics = function grabStatistics() {
+                        /**
+                         * @property currentTime
+                         * @type {Number}
+                         */
+                        $scope.currentTime = 0;
 
-                    var player = $scope.player;
+                        /**
+                         * @property percentagePlayed
+                         * @type {Number}
+                         */
+                        $scope.percentagePlayed = 0;
 
-                    // Iterate over each property we wish to listen to.
-                    $angular.forEach(requiredProperties, function forEach(property) {
+                        /**
+                         * @property buffered
+                         * @type {Number}
+                         */
+                        $scope.buffered = 0;
 
-                        $scope[property] = !isNaN($scope.player[property]) ? $scope.player[property]
-                                                                           : $scope[property];
+                        /**
+                         * @property interval
+                         * @type {Object}
+                         */
+                        $scope.interval = {};
 
-                    });
+                        /**
+                         * @method grabStatistics
+                         * @return {void}
+                         */
+                        $scope.grabStatistics = function grabStatistics() {
 
-                    if ($scope.player.buffered.length !== 0) {
+                            var player = $scope.player;
 
-                        // Update the buffered amount.
-                        $scope.buffered = $math.round(player.buffered.end(0) / player.duration) * 100;
+                            // Iterate over each property we wish to listen to.
+                            $angular.forEach(requiredProperties, function forEach(property) {
 
-                    }
+                                $scope[property] = !isNaN($scope.player[property]) ? $scope.player[property]
+                                    : $scope[property];
 
-                    // Calculate other miscellaneous properties.
-                    $scope.percentagePlayed = ($scope.currentTime / $scope.duration) * 100;
+                            });
 
-                    // Notify everybody that the statistics have been updated!
-                    $scope.lastUpdate = new $window.Date().getTime();
+                            if ($scope.player.buffered.length !== 0) {
 
-                };
+                                // Update the buffered amount.
+                                $scope.buffered = $math.round(player.buffered.end(0) / player.duration) * 100;
 
-                /**
-                 * @method beginPolling
-                 * @return {void}
-                 */
-                $scope.beginPolling = function beginPolling() {
+                            }
 
-                    // Update the statistics every so often.
-                    $scope.interval = $interval($scope.grabStatistics, ngVideoOptions.REFRESH);
+                            if ($scope.player.muted) {
 
-                };
+                                // When muted the actual volume level is zero.
+                                $scope.volume = 0;
 
-                // Also register the event natively from the player itself.
-                $scope.$on('ng-video/attach-events', function(event, player) {
-                    player.bind('timeupdate', $scope.grabStatistics);
-                });
+                            }
 
-                /**
-                 * @method endPolling
-                 * @return {void}
-                 */
-                $scope.endPolling = function endPolling() {
-                    $interval.cancel($scope.interval);
-                };
+                            // Calculate other miscellaneous properties.
+                            $scope.percentagePlayed = ($scope.currentTime / $scope.duration) * 100;
 
-                // When we need to force the refreshing of the statistics.
-                $scope.$on('ng-video/reset', function forceReset() {
+                            // Notify everybody that the statistics have been updated!
+                            $scope.lastUpdate = new $window.Date().getTime();
 
-                    $scope.player.currentTime = 0;
-                    $scope.grabStatistics();
+                        };
 
-                });
+                        /**
+                         * @method beginPolling
+                         * @return {void}
+                         */
+                        $scope.beginPolling = function beginPolling() {
 
-                // When we need to force the refreshing of the volume.
-                $scope.$on('ng-video/volume', function forceVolume(event, volume) {
-                    $scope.volume = volume;
-                });
+                            // Update the statistics every so often.
+                            $scope.interval = $interval($scope.grabStatistics, ngVideoOptions.REFRESH);
 
-                // When we need to force the refreshing of the properties.
-                $scope.$on('ng-video/feedback/refresh', $scope.grabStatistics);
+                        };
 
-                // Monitor the status of the video player.
-                $scope.$watch('playing', function isPlaying(playing) {
+                        /**
+                         * @method endPolling
+                         * @return {void}
+                         */
+                        $scope.endPolling = function endPolling() {
+                            $interval.cancel($scope.interval);
+                        };
 
-                    // Update the statistics once.
-                    $scope.grabStatistics();
+                        // When we need to force the refreshing of the statistics.
+                        $scope.$on('ng-video/reset', function forceReset() {
 
-                    if (playing) {
+                            $scope.player.currentTime = 0;
+                            $scope.grabStatistics();
 
-                        // Update the statistics periodically.
-                        $scope.beginPolling();
-                        return;
+                        });
 
-                    }
+                        /**
+                         * @method updateVolume
+                         * @return {void}
+                         */
+                        var updateVolume = function updateVolume() {
+                            $scope.volume = $scope.player.volume;
+                        };
 
-                    $scope.endPolling();
+                        // When we need to force the refreshing of the volume.
+                        $scope.$on('ng-video/volume', updateVolume);
 
-                });
+                        // When we need to force the refreshing of the properties.
+                        $scope.$on('ng-video/feedback/refresh', $scope.grabStatistics);
 
-            }]
+                        // Monitor the status of the video player.
+                        $scope.$watch('playing', function isPlaying(playing) {
 
-        }
+                            // Update the statistics once.
+                            $scope.grabStatistics();
 
-    }]);
+                            if (playing) {
+
+                                // Update the statistics periodically.
+                                $scope.beginPolling();
+                                return;
+
+                            }
+
+                            $scope.endPolling();
+
+                        });
+
+                        // Also register the event natively from the player itself.
+                        $scope.$on('ng-video/attach-events', function(event, player) {
+                            player.bind('timeupdate', $scope.grabStatistics);
+                            player.bind('volumechange', updateVolume);
+
+                        });
+
+                    }]
+
+            }
+
+        }]);
 
 })(window.angular, window.Math);
 
@@ -1815,6 +1830,14 @@
                  * @return {void}
                  */
                 $scope.setVolume = function setVolume(volume) {
+
+                    if ($scope.player.muted && volume > 0) {
+
+                        // Determine if the user is un-muting the player, which can be set
+                        // as the `muted` attribute on the player itself.
+                        $scope.player.muted = false;
+
+                    }
 
                     if (volume < ngVideoOptions.VOLUME_MINIMUM) {
                         volume = ngVideoOptions.VOLUME_MINIMUM;
