@@ -307,3 +307,5 @@ Below are a few of the parameters you may wish to play with:
  * `BUFFER_COLOUR`: Colour of the `canvas` element in the `vi-buffer` directive;
  * `BUFFER_HEIGHT`: Height of the `canvas` node in the aforementioned directive;
  * `BUFFER_WIDTH`: Width of the `canvas` node in the aforementioned directive;
+ * `SCREEN_CHANGE`: Whether clicking on `video` toggles video state;
+ * `TIMELINE_CHANGE`: Whether changing `range` reflects in seeking;

@@ -44,6 +44,18 @@
                 function controller($rootScope, $scope, $interval, $window, ngVideoOptions) {
 
                     /**
+                     * @property interval
+                     * @type {Object}
+                     */
+                    $scope.interval = {};
+
+                    /**
+                     * @property lastUpdate
+                     * @type {Number}
+                     */
+                    $scope.lastUpdate = 0;
+
+                    /**
                      * @property duration
                      * @type {Number}
                      */
@@ -62,12 +74,6 @@
                     $scope.playbackRate = 1;
 
                     /**
-                     * @property lastUpdate
-                     * @type {Number}
-                     */
-                    $scope.lastUpdate = 0;
-
-                    /**
                      * @property currentTime
                      * @type {Number}
                      */
@@ -84,12 +90,6 @@
                      * @type {Number}
                      */
                     $scope.buffered = 0;
-
-                    /**
-                     * @property interval
-                     * @type {Object}
-                     */
-                    $scope.interval = {};
 
                     /**
                      * @property buffering
@@ -126,7 +126,7 @@
                         $angular.forEach(requiredProperties, function forEach(property) {
 
                             $scope[property] = !isNaN($scope.player[property]) ? $scope.player[property]
-                                : $scope[property];
+                                                                               : $scope[property];
 
                         });
 
