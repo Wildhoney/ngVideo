@@ -32,10 +32,12 @@ section.video section.loading {
     width: 538px;
     height: 298px;
     color: white;
-    font-size: 11px;
-    z-index: 101;
-    padding: 20px;
-    background-color: rgba(0, 0, 0, .75);
+    text-shadow: 1px 1px 0 rgba(0, 0, 0, .25);
+    font-size: 12px;
+    pointer-events: all;
+    z-index: 201;
+    padding: 13px 0 0 40px;
+    background-color: rgba(0, 0, 0, .25);
 }
 
 section.video video {

@@ -128,11 +128,11 @@
                         $scope.$apply(function apply() {
 
                             /**
-                             * @method $play
+                             * @method playByIndex
                              * @param index {Number}
                              * @return {void}
                              */
-                            var $play = function $play(index) {
+                            var playByIndex = function playByIndex(index) {
 
                                 $scope.open(ngVideoPlaylist[index]);
                                 $scope.video = ngVideoPlaylist[index];
@@ -148,7 +148,7 @@
                                 if ($scope.player.loop) {
 
                                     // Determine if we should keep looping the playlist.
-                                    $play(0);
+                                    playByIndex(0);
                                     return;
 
                                 }
@@ -161,7 +161,7 @@
                             }
 
                             // Voila! Load the next video.
-                            $play(index + 1);
+                            playByIndex(index + 1);
 
                         });
 
