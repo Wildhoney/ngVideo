@@ -121,6 +121,15 @@ section.video section.feedback {
     height: 100%;
 }
 
+section.video section.feedback span.buffering {
+    color: white;
+    font-size: 12px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 18px 0 0 45px;
+}
+
 section.video section.generic {
     position: absolute;
     bottom: 11px;

@@ -140,6 +140,7 @@ Provides information relating to the video itself &ndash; such as the `duration`
 ```
 Currently the `vi-feedback` supports the following properties &ndash; as of `ngVideo@0.3.0`:
 
+ * `buffering`;
  * `currentTime`;
  * `duration`;
  * `volume`;
@@ -214,11 +215,8 @@ With the `vi-playlist` directive you can manage your list of videos &ndash; by a
 
     <ul>
         <li vi-playlist-video ng-repeat="video in videos" ng-model="video">
-            
             Play: {{video.src}}
-            
-        </li>
-            
+        </li>   
     </ul>
 
 </section>
