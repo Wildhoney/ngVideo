@@ -4,12 +4,11 @@ module.exports = function(config) {
     basePath: '',
     frameworks: ['jasmine'],
     files: [
-//      'components/*.js',
       'example/js/vendor/angular/angular.js',
       'example/js/vendor/jquery/dist/jquery.js',
       'example/js/vendor/angular-mocks/angular-mocks.js',
       'components/Service.js',
-      'components/Bootstrap.js',
+      'components/*.js',
       'tests/spec.js'
     ],
     reporters: ['progress'],
@@ -18,6 +17,6 @@ module.exports = function(config) {
       logLevel: config.LOG_INFO,
     autoWatch: true,
     browsers: ['Firefox'],
-    singleRun: true
+    singleRun: false
   });
 };
