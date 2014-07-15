@@ -9,6 +9,15 @@ describe('ngVideo', function() {
         $scope     = _$rootScope_.$new();
     }));
 
+    var playVideo = function playVideo() {
+
+        inject(function($rootScope, video) {
+            video.addSource('mp4', 'http://www.w3schools.com/html/mov_bbb.mp4');
+            $rootScope.$apply();
+        });
+
+    };
+
     var createDirective = function createDirective(template, shouldWrap) {
 
         if (shouldWrap) {
@@ -123,15 +132,6 @@ describe('ngVideo', function() {
 
     describe('Controls', function() {
 
-        var playVideo = function playVideo() {
-
-            inject(function($rootScope, video) {
-                video.addSource('mp4', 'http://www.w3schools.com/html/mov_bbb.mp4');
-                $rootScope.$apply();
-            });
-
-        };
-
         var html = '<div vi-controls><a vi-controls-play>Play</a><a vi-controls-pause>Pause</a></div>';
 
         it('Should be able to play the video;', function() {
@@ -152,6 +152,38 @@ describe('ngVideo', function() {
             expect($firstChildScope.player.pause).toHaveBeenCalled();
 
         });
+
+    });
+
+    describe('Feedback', function() {
+
+        var html = '<div vi-feedback></div>';
+
+        it('Should be able to retrieve details about the video;', function(done) {
+
+            createDirective(html, true);
+            playVideo();
+
+            inject(function($rootScope, $timeout) {
+
+                var lastUpdate = $secondChildScope.lastUpdate;
+                expect($secondChildScope.lastUpdate).not.toEqual(0);
+
+                $rootScope.$broadcast('ng-video/feedback/refresh');
+                $rootScope.$digest();
+
+                $timeout(function() {
+
+                    expect($secondChildScope.lastUpdate).not.toEqual(0);
+                    expect($secondChildScope.lastUpdate).not.toEqual(lastUpdate);
+                    done();
+
+                }, 1000);
+
+            });
+
+        });
+
 
     });
 
