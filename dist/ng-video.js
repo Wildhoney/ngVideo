@@ -95,21 +95,20 @@
                  * @method addSource
                  * @param type {String}
                  * @param src {String}
-                 * @return {Object}
+                 * @return {void}
                  */
                 addSource: function addSource(type, src) {
-                    var model = { type: type, src: src };
-                    this.sources.push(model);
-                    return model;
+                    this.sources.push({ type: type, src: src });
                 },
 
                 /**
                  * @method save
-                 * @return {void}
+                 * @return {Object}
                  */
                 save: function save() {
                     ngVideoPlaylist.push(this.sources);
                     $rootScope.$broadcast('ng-video/add', this.sources);
+                    return this.sources
                 }
 
             };
@@ -277,7 +276,6 @@
 
                             // Attempt to find the current video.
                             var index = ngVideoPlaylist.indexOf($scope.video);
-                            console.log(index);
 
                             if (index === -1 || typeof ngVideoPlaylist[index + 1] === 'undefined') {
 
@@ -766,6 +764,18 @@
                 function controller($rootScope, $scope, $interval, $window, ngVideoOptions) {
 
                     /**
+                     * @property interval
+                     * @type {Object}
+                     */
+                    $scope.interval = {};
+
+                    /**
+                     * @property lastUpdate
+                     * @type {Number}
+                     */
+                    $scope.lastUpdate = 0;
+
+                    /**
                      * @property duration
                      * @type {Number}
                      */
@@ -784,12 +794,6 @@
                     $scope.playbackRate = 1;
 
                     /**
-                     * @property lastUpdate
-                     * @type {Number}
-                     */
-                    $scope.lastUpdate = 0;
-
-                    /**
                      * @property currentTime
                      * @type {Number}
                      */
@@ -806,12 +810,6 @@
                      * @type {Number}
                      */
                     $scope.buffered = 0;
-
-                    /**
-                     * @property interval
-                     * @type {Object}
-                     */
-                    $scope.interval = {};
 
                     /**
                      * @property buffering
@@ -848,7 +846,7 @@
                         $angular.forEach(requiredProperties, function forEach(property) {
 
                             $scope[property] = !isNaN($scope.player[property]) ? $scope.player[property]
-                                : $scope[property];
+                                                                               : $scope[property];
 
                         });
 

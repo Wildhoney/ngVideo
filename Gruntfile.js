@@ -106,4 +106,30 @@ module.exports = function(grunt) {
     grunt.registerTask('test', ['jshint', 'karma']);
     grunt.registerTask('default', ['jshint', 'karma', 'concat', 'copy', 'uglify', 'compress']);
 
+    grunt.registerTask('custom', 'Compile a custom version of ngVideo.', function() {
+
+        var output  = 'dist/custom/<%= pkg.name %>.custom.js',
+            modules = (grunt.option('modules') || '').split(/,/ig),
+            files   = modules.map(function map(file) {
+                          return 'components/' + file + '.js';
+                      });
+
+        files.unshift('components/Bootstrap.js');
+        files.unshift('components/Screen.js');
+        files.unshift('components/Service.js');
+
+        // Create development version.
+        grunt.config.set('concat.options.separator', '\n\n');
+        grunt.config.set('concat.dist.src', files);
+        grunt.config.set('concat.dist.dest', output);
+        grunt.task.run('concat');
+
+        // Create minified version.
+        grunt.config.set('uglify.options.banner', '/*! <%= pkg.name %> Custom by <%= pkg.author %> created on <%= grunt.template.today("yyyy-mm-dd") %> */\n');
+        grunt.config.set('uglify.build.src', 'dist/custom/<%= pkg.name %>.custom.js');
+        grunt.config.set('uglify.build.dest', 'dist/custom/<%= pkg.name %>.custom.min.js');
+        grunt.task.run('uglify');
+
+    });
+
 };

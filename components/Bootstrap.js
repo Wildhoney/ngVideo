@@ -142,7 +142,6 @@
 
                             // Attempt to find the current video.
                             var index = ngVideoPlaylist.indexOf($scope.video);
-                            console.log(index);
 
                             if (index === -1 || typeof ngVideoPlaylist[index + 1] === 'undefined') {
 

@@ -27,10 +27,10 @@ section.video {
 
 section.video section.loading {
     position: absolute;
-    top: 5px;
+    top: 39px;
     left: 5px;
     width: 538px;
-    height: 298px;
+    height: 260px;
     color: white;
     text-shadow: 1px 1px 0 rgba(0, 0, 0, .25);
     font-size: 12px;

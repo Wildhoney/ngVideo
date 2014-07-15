@@ -95,21 +95,20 @@
                  * @method addSource
                  * @param type {String}
                  * @param src {String}
-                 * @return {Object}
+                 * @return {void}
                  */
                 addSource: function addSource(type, src) {
-                    var model = { type: type, src: src };
-                    this.sources.push(model);
-                    return model;
+                    this.sources.push({ type: type, src: src });
                 },
 
                 /**
                  * @method save
-                 * @return {void}
+                 * @return {Object}
                  */
                 save: function save() {
                     ngVideoPlaylist.push(this.sources);
                     $rootScope.$broadcast('ng-video/add', this.sources);
+                    return this.sources
                 }
 
             };

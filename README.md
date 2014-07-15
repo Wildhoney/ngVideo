@@ -14,7 +14,7 @@ ngVideo
 
 ![ngVideo 0.3.2](http://i.imgur.com/PoF8j70.png)
 
-`ngVideo` utilises [Angular.js directives](https://docs.angularjs.org/guide/directive) extensively which compartmentalises the various components that make-up the overall `ngVideo` experience &ndash; meaning you get to pick and choose which components you wish to utilise.
+`ngVideo` utilises [Angular.js directives](https://docs.angularjs.org/guide/directive) extensively which compartmentalises the various components that make-up the overall `ngVideo` experience &ndash; meaning you get to [pick and choose](#custom-build) which components you wish to utilise.
 
 Directive Requirements
 -------------------
@@ -24,7 +24,7 @@ When using `ngVideo`, the **only** required directive is the main `ng-video` dir
 Getting Started
 -------------------
 
-**Terminology:** When we mention `videoModel` we mean the `object` that is returned from `addSource`.
+**Terminology:** When we mention `videoModel` we mean the `object` that is returned from `addSource`/`save`.
 
 Starting to use `ngVideo` is a breeze! Firstly you **must** define the container which will contain your *video* node.
 
@@ -65,7 +65,7 @@ At this point you *should* notice that the video is visible in the player, but n
 Multi Source
 -------------------
 
-Not all browsers support the same media types, and therefore `ngVideo` comes bundled with a way to load multiple source types for each of your videos &ndash; `ngVideo` will attempt to play the first video in the source collection, and if unsupported, move to the next one.
+Not all browsers support the same media types, and therefore `ngVideo` comes bundled with a way to load multiple source types for each of your videos &ndash; `ngVideo` will attempt to play the first video in the source collection, and if unsupported, move to the next one, and so on.
 
 ```javascript
 var source = video.multiSource();
@@ -310,6 +310,25 @@ Below are a few of the parameters you may wish to play with:
  * `SCREEN_CHANGE`: Whether clicking on `video` toggles video state;
  * `TIMELINE_CHANGE`: Whether changing `range` reflects in seeking;
  
+---
+ 
+Custom Build
+-------------------
+
+As `ng-video` has a modular design, you can compile your own version of `ng-video` depending on the directives you wish to use.
+
+For example if you want a simple player with the play and pause buttons, and a volume control, then including the entire `ng-video` module would be wasteful. Instead you could compile your own `ng-video.custom.min.js` using the following `grunt` command:
+
+```
+grunt custom --modules=Controls,Volume
+```
+
+Each of the modules are separated by a comma &ndash; and three essential modules are included no matter what: `Service.js`, `Bootstrap.js`, and `Screen.js`.
+
+Once you've issued the `grunt custom` command your custom builds &ndash; development and minified, will be present in the **dist/custom** directory.
+
+---
+
 Contributing
 -------------------
 
