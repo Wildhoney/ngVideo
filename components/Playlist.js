@@ -117,7 +117,9 @@
      * @param ngVideoPlaylist {Array}
      * @param ngVideoOptions {Object}
      */
-    module.directive('viPlaylistVideo', function ngPlaylistVideoDirective(ngVideoPlaylist, ngVideoOptions) {
+    module.directive('viPlaylistVideo', ['ngVideoPlaylist', 'ngVideoOptions',
+
+    function ngPlaylistVideoDirective(ngVideoPlaylist, ngVideoOptions) {
 
         return {
 
@@ -167,6 +169,6 @@
 
         }
 
-    });
+    }]);
 
 })(window.angular);
