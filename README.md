@@ -1,11 +1,13 @@
 ngVideo
 ===================
 
-![Travis](http://img.shields.io/travis/Wildhoney/ngVideo.svg)
+![Travis](http://img.shields.io/travis/Wildhoney/ngVideo.svg?style=flat)
 &nbsp;
-![npm](http://img.shields.io/npm/v/ng-video.svg)
+![npm](http://img.shields.io/npm/v/ng-video.svg?style=flat)
 &nbsp;
-![License MIT](http://img.shields.io/badge/License-MIT-lightgrey.svg)
+![License MIT](http://img.shields.io/badge/License-MIT-lightgrey.svg?style=flat)
+&nbsp;
+![License MIT](http://img.shields.io/gittip/Wildhoney.svg?style=flat)
 
 * **Heroku**: [http://ng-video.herokuapp.com/](http://ng-video.herokuapp.com/)
 * **Bower:** `bower install ngvideo`
