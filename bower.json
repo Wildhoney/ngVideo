@@ -22,7 +22,6 @@
     "bower_components",
     "example",
     "releases",
-    "test",
     "tests"
   ],
   "dependencies": {
