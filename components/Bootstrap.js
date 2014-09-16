@@ -37,10 +37,12 @@
             /**
              * @property controller
              * @type {Array}
+             * @param $window {Object}
              * @param $rootScope {Object}
              * @param $scope {Object}
+             * @param video {Object}
              */
-            controller: ['$window', '$rootScope', '$scope', function controller($window, $rootScope, $scope) {
+            controller: ['$window', '$rootScope', '$scope', 'video', function controller($window, $rootScope, $scope, video) {
 
                 /**
                  * @property video
@@ -367,6 +369,22 @@
 
                         // Open the newly added video if it's the first video.
                         scope.open(ngVideoPlaylist[0]);
+
+                    }
+
+                });
+
+                scope.$watch(function watchSource() {
+
+                    // Watch for any changes to the `forceVideo` parameter.
+                    return video.forceVideo;
+
+                }, function forcingVideo() {
+
+                    if (video.forceVideo) {
+
+                        // Play the video immediately!
+                        scope.open(video.forceVideo);
 
                     }
 

@@ -51,18 +51,30 @@
         var service = {};
 
         /**
+         * @property forceVideo
+         * @type {String}
+         */
+        service.forceVideo = '';
+
+        /**
          * @method addSource
          * @param type {String}
          * @param src {String}
+         * @param immediatelyPlay {Boolean}
          * @return {Object}
          */
-        service.addSource = function addSource(type, src) {
+        service.addSource = function addSource(type, src, immediatelyPlay) {
 
             // Add a new video to the playlist, and broadcast the success.
             var model = { type: type, src: src };
             ngVideoPlaylist.push(model);
 
             $rootScope.$broadcast('ng-video/add', model);
+
+            if (immediatelyPlay) {
+                service.forceVideo = model;
+            }
+
             return model;
 
         };
@@ -103,12 +115,20 @@
 
                 /**
                  * @method save
+                 * @param immediatelyPlay {Boolean}
                  * @return {Object}
                  */
-                save: function save() {
+                save: function save(immediatelyPlay) {
+
                     ngVideoPlaylist.push(this.sources);
                     $rootScope.$broadcast('ng-video/add', this.sources);
-                    return this.sources
+
+                    if (immediatelyPlay) {
+                        service.forceVideo = this.sources;
+                    }
+
+                    return this.sources;
+
                 }
 
             };
@@ -171,10 +191,12 @@
             /**
              * @property controller
              * @type {Array}
+             * @param $window {Object}
              * @param $rootScope {Object}
              * @param $scope {Object}
+             * @param video {Object}
              */
-            controller: ['$window', '$rootScope', '$scope', function controller($window, $rootScope, $scope) {
+            controller: ['$window', '$rootScope', '$scope', 'video', function controller($window, $rootScope, $scope, video) {
 
                 /**
                  * @property video
@@ -501,6 +523,22 @@
 
                         // Open the newly added video if it's the first video.
                         scope.open(ngVideoPlaylist[0]);
+
+                    }
+
+                });
+
+                scope.$watch(function watchSource() {
+
+                    // Watch for any changes to the `forceVideo` parameter.
+                    return video.forceVideo;
+
+                }, function forcingVideo() {
+
+                    if (video.forceVideo) {
+
+                        // Play the video immediately!
+                        scope.open(video.forceVideo);
 
                     }
 
