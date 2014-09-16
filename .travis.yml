@@ -12,6 +12,7 @@ script:
   - grunt test
 deploy:
   provider: heroku
+  all_branches: true
   api_key:
     secure: El216+2f58AXkInfx5f5oiLnEhcoPPAVeLx7wIaxlqEx2dvYZdUQ6gmGK7kcl5jamslTZyo9UOCr9evIMfhxnILaqPPOEkDsrkHfDt9lCBeXkXtKZi5UP31Rr0xcci7op3pB8DkP1oIKeubLdQjszcUNbfDr1b4V5l9H2KZms88=
   app: ng-video
