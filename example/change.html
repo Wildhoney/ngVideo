@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>ngVideo</title>
+
+    <!-- Styles! -->
+    <link rel="stylesheet" type="text/css" href="css/default.css" />
+    <link rel="stylesheet" type="text/css" href="js/vendor/bootstrap/dist/css/bootstrap.css" />
+
+    <!-- Dependencies! -->
+    <script type="text/javascript" src="js/vendor/angular/angular.js"></script>
+    <script type="text/javascript" src="js/vendor/jquery/dist/jquery.js"></script>
+
+    <!-- ngVideo! -->
+    <script type="text/javascript" src="js/vendor/ng-video/Service.js"></script>
+    <script type="text/javascript" src="js/vendor/ng-video/Bootstrap.js"></script>
+    <script type="text/javascript" src="js/vendor/ng-video/Buffer.js"></script>
+    <script type="text/javascript" src="js/vendor/ng-video/Controls.js"></script>
+    <script type="text/javascript" src="js/vendor/ng-video/FullScreen.js"></script>
+    <script type="text/javascript" src="js/vendor/ng-video/PlaybackRate.js"></script>
+    <script type="text/javascript" src="js/vendor/ng-video/Playlist.js"></script>
+    <script type="text/javascript" src="js/vendor/ng-video/Seekable.js"></script>
+    <script type="text/javascript" src="js/vendor/ng-video/Screen.js"></script>
+    <script type="text/javascript" src="js/vendor/ng-video/Feedback.js"></script>
+    <script type="text/javascript" src="js/vendor/ng-video/Meta.js"></script>
+    <script type="text/javascript" src="js/vendor/ng-video/Messages.js"></script>
+    <script type="text/javascript" src="js/vendor/ng-video/Timeline.js"></script>
+    <script type="text/javascript" src="js/vendor/ng-video/Volume.js"></script>
+
+    <!-- Angular app! -->
+    <script type="text/javascript" src="js/Default.js"></script>
+    <script type="text/javascript" src="js/controllers/VideoController.js"></script>
+
+</head>
+<body ng-app="videoApp" ng-controller="VideoController">
+
+    <section class="ng-video-container">
+
+        <ul>
+            <li ng-click="playVideo('http://www.w3schools.com/html/mov_bbb.mp4')">
+                Play http://www.w3schools.com/html/mov_bbb.mp4
+            </li>
+            <li ng-click="playVideo('http://www.w3schools.com/html/movie.mp4')">
+                Play http://www.w3schools.com/html/movie.mp4
+            </li>
+        </ul>
+
+        <!-- Base Directive -->
+        <section class="video" ng-video>
+
+            <!-- Screen Directive -->
+            <video vi-screen></video>
+
+        </section>
+
+    </section>
+
+</body>
+</html>

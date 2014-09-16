@@ -116,7 +116,7 @@
 
                                 // If we're already determined to be playing then force
                                 // the starting of the video.
-                                $scope.play();
+                                $scope.player.play();
 
                             }
 

@@ -28,6 +28,15 @@
         };
 
         /**
+         * @method playVideo
+         * @param sourceUrl {String}
+         * @return {void}
+         */
+        $scope.playVideo = function playVideo(sourceUrl) {
+            video.addSource('mp4', sourceUrl, true);
+        };
+
+        /**
          * @method getVideoName
          * @param videoModel {Object}
          * @return {String}
