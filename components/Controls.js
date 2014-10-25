@@ -46,6 +46,7 @@
                  */
                 $scope.play = function play() {
                     $scope.player.play();
+                    $scope.$apply();
                 };
 
                 /**
@@ -54,6 +55,7 @@
                  */
                 $scope.pause = function pause() {
                     $scope.player.pause();
+                    $scope.$apply();
                 };
 
             }]
