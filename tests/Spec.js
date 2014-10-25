@@ -79,6 +79,20 @@
 
             });
 
+            it('Should be able to play/pause the video depending on the current state;', function() {
+
+                var scope = compileDirective('<section ng-video ng-model="interface"></section>', {
+                    interface: directiveInterface
+                }).scope;
+
+                expect(scope.isPaused).toBeTruthy();
+                directiveInterface.controls.playPause();
+                expect(scope.isPaused).toBeFalsy();
+                directiveInterface.controls.playPause();
+                expect(scope.isPaused).toBeTruthy();
+
+            });
+
         });
 
         describe('Sources', function() {

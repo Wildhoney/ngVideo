@@ -129,6 +129,21 @@
                         stop: function stop() {
                             $scope.videoElement.pause();
                             $scope.isPaused = true;
+                        },
+
+                        /**
+                         * @method playPause
+                         * @return {void}
+                         */
+                        playPause: function playPause() {
+
+                            if ($scope.isPaused) {
+                                this.play();
+                                return;
+                            }
+
+                            this.pause();
+
                         }
 
                     };
