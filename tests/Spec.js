@@ -47,7 +47,7 @@
             }).scope;
 
             expect(scope.interface).toEqual(directiveInterface);
-            expect(typeof scope.video).toBe('object');
+            expect(typeof scope.videoElement).toBe('object');
             expect(typeof scope.interface.controls.play).toEqual('function');
             expect(typeof scope.interface.controls.stop).toEqual('function');
             expect(typeof scope.interface.controls.pause).toEqual('function');
@@ -63,19 +63,19 @@
                 }).scope;
 
                 expect(scope.isPaused).toBeTruthy();
-                expect(scope.video.paused).toBeTruthy();
+                expect(scope.videoElement.paused).toBeTruthy();
                 directiveInterface.controls.play();
                 expect(scope.isPaused).toBeFalsy();
-                expect(scope.video.paused).toBeFalsy();
+                expect(scope.videoElement.paused).toBeFalsy();
                 directiveInterface.controls.pause();
                 expect(scope.isPaused).toBeTruthy();
-                expect(scope.video.paused).toBeTruthy();
+                expect(scope.videoElement.paused).toBeTruthy();
                 directiveInterface.controls.play();
                 expect(scope.isPaused).toBeFalsy();
-                expect(scope.video.paused).toBeFalsy();
+                expect(scope.videoElement.paused).toBeFalsy();
                 directiveInterface.controls.stop();
                 expect(scope.isPaused).toBeTruthy();
-                expect(scope.video.paused).toBeTruthy();
+                expect(scope.videoElement.paused).toBeTruthy();
 
             });
 
@@ -85,9 +85,9 @@
 
             it('Should be able to add and remove string sources;', function() {
 
-                var scope = compileDirective('<section ng-video ng-model="interface"></section>', {
+                compileDirective('<section ng-video ng-model="interface"></section>', {
                     interface: directiveInterface
-                }).scope;
+                });
 
                 expect(directiveInterface.sources.all().length).toEqual(0);
                 directiveInterface.sources.add('http://www.w3schools.com/html/mov_bbb.mp4');
@@ -98,6 +98,28 @@
                 expect(directiveInterface.sources.all().length).toEqual(1);
                 directiveInterface.sources.clear();
                 expect(directiveInterface.sources.all().length).toEqual(0);
+
+            });
+
+            it('Should be able to autoplay the added video source;', function() {
+
+                var scope = compileDirective('<section ng-video ng-model="interface"></section>', {
+                    interface: directiveInterface
+                }).scope;
+
+                expect(directiveInterface.options.isAutoplay()).toBeFalsy();
+                directiveInterface.options.setAutoplay(true);
+                expect(directiveInterface.options.isAutoplay()).toBeTruthy();
+                expect(scope.video).toBeFalsy();
+                expect(scope.isPaused).toBeTruthy();
+                expect(scope.videoElement.paused).toBeTruthy();
+                directiveInterface.sources.add('http://www.w3schools.com/html/movie.mp4');
+                expect(scope.video).toEqual('http://www.w3schools.com/html/movie.mp4');
+                expect(scope.isPaused).toBeFalsy();
+                expect(scope.videoElement.paused).toBeFalsy();
+
+                scope.$apply();
+                expect(scope.videoElement.getAttribute('src')).toEqual('http://www.w3schools.com/html/movie.mp4');
 
             });
 
