@@ -76,16 +76,18 @@
                 $scope.isPaused = true;
 
                 /**
-                 * @method attachInterface
-                 * @return {void}
+                 * @property collection
+                 * @type {Array}
                  */
-                $scope.attachInterface = function attachInterface() {
+                $scope.collection = [];
 
-                    /**
-                     * @property controls
-                     * @type {Object}
-                     */
-                    $scope.interface.controls = {
+                /**
+                 * @method attachControls
+                 * @return {Object}
+                 */
+                $scope.attachControls = function attachControls() {
+
+                    return {
 
                         /**
                          * @method play
@@ -115,6 +117,78 @@
                         }
 
                     };
+
+                };
+
+                /**
+                 * @method attachSources
+                 * @returns {Object}
+                 */
+                $scope.attachSources = function attachSources() {
+
+                    return {
+
+                        /**
+                         * @method add
+                         * @param source {String}
+                         * @return {String}
+                         */
+                        add: function add(source) {
+
+                            $scope.collection.push(source);
+                            return source;
+
+                        },
+
+                        /**
+                         * @method remove
+                         * @param source {String}
+                         * @return {void}
+                         */
+                        remove: function remove(source) {
+
+                            var index = $scope.collection.indexOf(source);
+                            $scope.collection.splice(index, 1);
+
+                        },
+
+                        /**
+                         * @method all
+                         * @return {Array}
+                         */
+                        all: function all() {
+                            return $scope.collection;
+                        },
+
+                        /**
+                         * @method clear
+                         * @return {void}
+                         */
+                        clear: function clear() {
+                            $scope.collection.length = 0;
+                        }
+
+                    };
+
+                };
+
+                /**
+                 * @method attachInterface
+                 * @return {void}
+                 */
+                $scope.attachInterface = function attachInterface() {
+
+                    /**
+                     * @property controls
+                     * @type {Object}
+                     */
+                    $scope.interface.controls = $scope.attachControls();
+
+                    /**
+                     * @property sources
+                     * @type {Object}
+                     */
+                    $scope.interface.sources = $scope.attachSources();
 
                 };
 

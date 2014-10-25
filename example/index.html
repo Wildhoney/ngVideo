@@ -43,7 +43,12 @@
         <!-- Base Directive -->
         <section class="video" ng-video ng-model="interface">
 
-            <!--&lt;!&ndash; Screen Directive &ndash;&gt;-->
+            <section vi-controls class="controls">
+                <span ng-click="interface.controls.play()" title="Play" class="glyphicon glyphicon-play"></span>
+                <span ng-click="interface.controls.pause()" title="Pause" class="glyphicon glyphicon-pause"></span>
+            </section>
+
+            <!--<!-- Screen Directive -->-->
             <!--<video vi-screen></video>-->
 
             <!--<section vi-controls class="controls">-->
@@ -51,12 +56,12 @@
                 <!--<span vi-controls-pause title="Pause" class="glyphicon glyphicon-pause"></span>-->
             <!--</section>-->
 
-            <!--&lt;!&ndash; Full Screen Directive &ndash;&gt;-->
+            <!--<!-- Full Screen Directive -->-->
             <!--<section class="full-screen">-->
                 <!--<span title="Full Screen" vi-full-screen-toggle class="glyphicon glyphicon-fullscreen"></span>-->
             <!--</section>-->
 
-            <!--&lt;!&ndash; Feedback Directive &ndash;&gt;-->
+            <!--<!-- Feedback Directive -->-->
             <!--<section vi-feedback class="feedback">-->
 
                 <!--<span class="buffering" ng-show="buffering">Buffering...</span>-->
@@ -65,7 +70,7 @@
                     <!--Loading...-->
                 <!--</section>-->
 
-                <!--&lt;!&ndash; Volume Directive &ndash;&gt;-->
+                <!--<!-- Volume Directive -->-->
                 <!--<section vi-volume class="volume">-->
 
                     <!--<div class="scale">-->
@@ -77,7 +82,7 @@
 
                 <!--</section>-->
 
-                <!--&lt;!&ndash; Duration Directive &ndash;&gt;-->
+                <!--<!-- Duration Directive -->-->
                 <!--<section class="duration">-->
                     <!--{{currentTime | number: 2}}s of {{duration | number: 2}}s-->
                     <!--[{{percentagePlayed | number: 0}}%]-->
@@ -85,12 +90,12 @@
 
                 <!--<section class="title">ngVideo</section>-->
 
-                <!--&lt;!&ndash; Timeline Directive &ndash;&gt;-->
+                <!--<!-- Timeline Directive -->-->
                 <!--<section class="timeline">-->
                     <!--<input vi-timeline />-->
                 <!--</section>-->
 
-                <!--&lt;!&ndash; Buffer Directive &ndash;&gt;-->
+                <!--<!-- Buffer Directive -->-->
                 <!--<section vi-buffer class="buffer"></section>-->
 
                 <!--<section class="generic">-->
@@ -107,7 +112,7 @@
 
             <!--</section>-->
 
-            <!--&lt;!&ndash; Playlist Directive &ndash;&gt;-->
+            <!--<!-- Playlist Directive -->-->
             <!--<section vi-playlist class="playlist" ng-show="$parent.playlistOpen">-->
 
                 <!--<ul>-->
