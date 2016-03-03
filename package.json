@@ -1,6 +1,6 @@
 {
   "name": "ng-video",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Modularised HTML5 video implementation using Angular.",
   "main": "dist/ng-video.js",
   "directories": {
@@ -11,7 +11,6 @@
   },
   "scripts": {
     "test": "grunt test",
-    "build": "grunt build",
     "start": "node example/server/default.js",
     "postinstall": "bower install; grunt build"
   },

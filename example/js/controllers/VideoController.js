@@ -9,67 +9,51 @@
      */
     $angular.module(APP_NAME).controller('VideoController',
 
-    function videoController($scope, $timeout) {
+    function videoController($scope, $timeout, video) {
 
         /**
-         * @property interface
+         * @property playlistOpen
+         * @type {Boolean}
+         * @default false
+         */
+        $scope.playlistOpen = false;
+
+        /**
+         * @property videos
          * @type {Object}
          */
-        $scope.interface = {};
+        $scope.videos = {
+            first:  'http://www.w3schools.com/html/mov_bbb.mp4',
+            second: 'http://www.w3schools.com/html/movie.mp4'
+        };
 
-        $scope.$on('$videoReady', function videoReady() {
+        /**
+         * @method playVideo
+         * @param sourceUrl {String}
+         * @return {void}
+         */
+        $scope.playVideo = function playVideo(sourceUrl) {
+            video.addSource('mp4', sourceUrl, true);
+        };
 
-            $scope.interface.options.setAutoplay(true);
+        /**
+         * @method getVideoName
+         * @param videoModel {Object}
+         * @return {String}
+         */
+        $scope.getVideoName = function getVideoName(videoModel) {
 
-            $scope.interface.sources.add('http://www.w3schools.com/html/mov_bbb.mp4');
+            switch (videoModel.src) {
+                case ($scope.videos.first): return "Big Buck Bunny";
+                case ($scope.videos.second): return "The Bear";
+                default: return "Unknown Video";
+            }
 
-        });
+        };
 
-        //
-        //
-        ///**
-        // * @property playlistOpen
-        // * @type {Boolean}
-        // * @default false
-        // */
-        //$scope.playlistOpen = false;
-        //
-        ///**
-        // * @property videos
-        // * @type {Object}
-        // */
-        //$scope.videos = {
-        //    first:  'http://www.w3schools.com/html/mov_bbb.mp4',
-        //    second: 'http://www.w3schools.com/html/movie.mp4'
-        //};
-        //
-        ///**
-        // * @method playVideo
-        // * @param sourceUrl {String}
-        // * @return {void}
-        // */
-        //$scope.playVideo = function playVideo(sourceUrl) {
-        //    video.addSource('mp4', sourceUrl, true);
-        //};
-        //
-        ///**
-        // * @method getVideoName
-        // * @param videoModel {Object}
-        // * @return {String}
-        // */
-        //$scope.getVideoName = function getVideoName(videoModel) {
-        //
-        //    switch (videoModel.src) {
-        //        case ($scope.videos.first): return "Big Buck Bunny";
-        //        case ($scope.videos.second): return "The Bear";
-        //        default: return "Unknown Video";
-        //    }
-        //
-        //};
-        //
-        //// Add some video sources for the player!
-        //video.addSource('mp4', $scope.videos.first);
-        //video.addSource('mp4', $scope.videos.second);
+        // Add some video sources for the player!
+        video.addSource('mp4', $scope.videos.first);
+        video.addSource('mp4', $scope.videos.second);
 
     });
 

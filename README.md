@@ -34,12 +34,6 @@ Starting to use `ngVideo` is a breeze! Firstly you **must** define the container
 <section class="video" ng-video>
 ```
 
-And add the module to your Angular application:
-
-```javascript
-$angular.module('myAngularModule', ['ngVideo']);
-```
-
 **Note:** You can load multi-sources for each video for fallback purposes with [`multiSource`](#multi-source).
 
 You then need to fulfill the only other requirement for `ngVideo` &ndash; the `video` node:

@@ -1,144 +1,190 @@
-(function() {
+describe('ngVideo', function() {
 
-    describe('ngVideo', function ngVideoTests() {
+    beforeEach(module('ngVideo'));
 
-        beforeEach(module('ngVideo'));
+    var $rootScope, $scope, $firstChildScope, $secondChildScope, $directive;
 
-        /**
-         * @property directiveInterface
-         * @type {Object}
-         */
-        var directiveInterface = {};
+    beforeEach(inject(function(_$rootScope_) {
+        $rootScope = _$rootScope_;
+        $scope     = _$rootScope_.$new();
+    }));
 
-        /**
-         * @method compileDirective
-         * @param html {String}
-         * @param [properties={}] {Object}
-         * @return {Object}
-         */
-        var compileDirective = function compileDirective(html, properties) {
+    var playVideo = function playVideo() {
 
-            var scope, document = '';
+        inject(function($rootScope, video) {
+            video.addSource('mp4', 'http://www.w3schools.com/html/mov_bbb.mp4');
+            $rootScope.$apply();
+        });
 
-            inject(function inject($rootScope, $compile) {
+    };
 
-                scope = $rootScope.$new();
+    var createDirective = function createDirective(template, shouldWrap) {
 
-                for (var property in properties || {}) {
+        if (shouldWrap) {
+            template = '<section ng-video><video vi-screen></video>' + template + '</section>';
+        }
 
-                    if (properties.hasOwnProperty(property)) {
-                        scope[property] = properties[property];
-                    }
+        inject(function($compile) {
 
-                }
-
-                document = $compile(html)(scope);
-
-            });
-
-            return { scope: scope.$$childHead, html: document };
-
-        };
-
-        it('Should be able to attach the interface to the local object;', function() {
-
-            var scope = compileDirective('<section ng-video ng-model="interface"></section>', {
-                interface: directiveInterface
-            }).scope;
-
-            expect(scope.interface).toEqual(directiveInterface);
-            expect(typeof scope.videoElement).toBe('object');
-            expect(typeof scope.interface.controls.play).toEqual('function');
-            expect(typeof scope.interface.controls.stop).toEqual('function');
-            expect(typeof scope.interface.controls.pause).toEqual('function');
+            // Compile the directive, and find its child scope, if defined.
+            $directive        = $compile(template)($scope);
+            $firstChildScope  = $scope.$$childHead;
+            $secondChildScope = $firstChildScope.$$childHead;
 
         });
 
-        describe('Controls', function() {
+    };
 
-            it('Should be able to play, pause and stop the video state;', function() {
+    describe('Bootstrap', function() {
 
-                var scope = compileDirective('<section ng-video ng-model="interface"></section>', {
-                    interface: directiveInterface
-                }).scope;
+        var html = '<section ng-video><video vi-screen></video></section>';
 
-                expect(scope.isPaused).toBeTruthy();
-                expect(scope.videoElement.paused).toBeTruthy();
-                directiveInterface.controls.play();
-                expect(scope.isPaused).toBeFalsy();
-                expect(scope.videoElement.paused).toBeFalsy();
-                directiveInterface.controls.pause();
-                expect(scope.isPaused).toBeTruthy();
-                expect(scope.videoElement.paused).toBeTruthy();
-                directiveInterface.controls.play();
-                expect(scope.isPaused).toBeFalsy();
-                expect(scope.videoElement.paused).toBeFalsy();
-                directiveInterface.controls.stop();
-                expect(scope.isPaused).toBeTruthy();
-                expect(scope.videoElement.paused).toBeTruthy();
-
-            });
-
-            it('Should be able to play/pause the video depending on the current state;', function() {
-
-                var scope = compileDirective('<section ng-video ng-model="interface"></section>', {
-                    interface: directiveInterface
-                }).scope;
-
-                expect(scope.isPaused).toBeTruthy();
-                directiveInterface.controls.playPause();
-                expect(scope.isPaused).toBeFalsy();
-                directiveInterface.controls.playPause();
-                expect(scope.isPaused).toBeTruthy();
-
-            });
-
+        it('Should be able to ensure `ng-video-screen` directive exists;', function() {
+            expect(function() {
+                createDirective('<div ng-video></div>');
+            }).toThrow('ngVideo: Must add ng-video-screen directive.');
         });
 
-        describe('Sources', function() {
+        it('Should be able to define the video element;', function() {
+            createDirective(html);
+            expect($firstChildScope.player).toBeDefined();
+            expect($firstChildScope.player instanceof Object);
+        });
 
-            it('Should be able to add and remove string sources;', function() {
+        it('Should be able to broadcast `attach-events`;', inject(function($rootScope) {
+            spyOn($rootScope, '$broadcast');
+            createDirective(html);
+            expect($rootScope.$broadcast).toHaveBeenCalled();
+        }));
 
-                compileDirective('<section ng-video ng-model="interface"></section>', {
-                    interface: directiveInterface
-                });
+        it('Should be able to play a video and modify its state;', inject(function($rootScope, ngVideoPlaylist, video) {
 
-                expect(directiveInterface.sources.all().length).toEqual(0);
-                directiveInterface.sources.add('http://www.w3schools.com/html/mov_bbb.mp4');
-                expect(directiveInterface.sources.all().length).toEqual(1);
-                directiveInterface.sources.add('http://www.w3schools.com/html/movie.mp4');
-                expect(directiveInterface.sources.all().length).toEqual(2);
-                directiveInterface.sources.remove('http://www.w3schools.com/html/mov_bbb.mp4');
-                expect(directiveInterface.sources.all().length).toEqual(1);
-                directiveInterface.sources.clear();
-                expect(directiveInterface.sources.all().length).toEqual(0);
+            createDirective(html);
+            expect(ngVideoPlaylist.length).toEqual(0);
+            video.addSource('mp4', 'http://www.w3schools.com/html/mov_bbb.mp4');
+            expect(ngVideoPlaylist.length).toEqual(1);
+            $rootScope.$apply();
+            expect($firstChildScope.player.getAttribute('src')).toEqual('http://www.w3schools.com/html/mov_bbb.mp4');
+            expect($firstChildScope.player.paused).toBeTruthy();
 
-            });
+            // Play the video.
+            $firstChildScope.player.play();
+            angular.element($firstChildScope.player).triggerHandler('play');
+            expect($firstChildScope.player.paused).toBeFalsy();
+            $firstChildScope.$apply();
+            expect($firstChildScope.playing).toBeTruthy();
 
-            it('Should be able to autoplay the added video source;', function() {
+            // Pause the video.
+            $firstChildScope.player.pause();
+            angular.element($firstChildScope.player).triggerHandler('pause');
+            expect($firstChildScope.player.paused).toBeTruthy();
+            $firstChildScope.$apply();
+            expect($firstChildScope.playing).toBeFalsy();
 
-                var scope = compileDirective('<section ng-video ng-model="interface"></section>', {
-                    interface: directiveInterface
-                }).scope;
+            // Toggle the video state.
+            spyOn($firstChildScope.player, 'play');
+            $firstChildScope.toggleState();
+            angular.element($firstChildScope.player).triggerHandler('play');
+            expect($firstChildScope.player.play).toHaveBeenCalled();
 
-                expect(directiveInterface.options.isAutoplay()).toBeFalsy();
-                directiveInterface.options.setAutoplay(true);
-                expect(directiveInterface.options.isAutoplay()).toBeTruthy();
-                expect(scope.video).toBeFalsy();
-                expect(scope.isPaused).toBeTruthy();
-                expect(scope.videoElement.paused).toBeTruthy();
-                directiveInterface.sources.add('http://www.w3schools.com/html/movie.mp4');
-                expect(scope.video).toEqual('http://www.w3schools.com/html/movie.mp4');
-                expect(scope.isPaused).toBeFalsy();
-                expect(scope.videoElement.paused).toBeFalsy();
+            // Toggle the video state.
+            spyOn($firstChildScope.player, 'pause');
+            $firstChildScope.toggleState();
+            expect($firstChildScope.player.pause).toHaveBeenCalled();
 
-                scope.$apply();
-                expect(scope.videoElement.getAttribute('src')).toEqual('http://www.w3schools.com/html/movie.mp4');
+        }));
 
-            });
+        it('Should be able to open in full-screen;', inject(function($rootScope) {
+            createDirective(html);
+            spyOn($firstChildScope.container, 'mozRequestFullScreen');
+            $firstChildScope.openFullScreen();
+            expect($firstChildScope.container.mozRequestFullScreen).toHaveBeenCalled();
+        }));
+
+    });
+
+    describe('Buffer', function() {
+
+        var html = '<section ng-video><video vi-screen></video><div vi-buffer></div></section>';
+
+        it('Should be able to define the dimensions of the canvas;', inject(function(ngVideoOptions) {
+
+            ngVideoOptions.BUFFER_HEIGHT = 100;
+            ngVideoOptions.BUFFER_WIDTH = 100;
+
+            createDirective(html);
+            expect($secondChildScope.height).toEqual(100);
+            expect($secondChildScope.width).toEqual(100);
+            expect($directive.find('canvas').length).toEqual(1);
+
+        }));
+
+        it('Should be able to listen to the `lastUpdate` property;', function() {
+
+            spyOn($rootScope, '$watch').andCallThrough();
+            createDirective(html);
+            $scope.$apply();
+            expect($rootScope.$watch).toHaveBeenCalled();
 
         });
 
     });
 
-})();
+    describe('Controls', function() {
+
+        var html = '<div vi-controls><a vi-controls-play>Play</a><a vi-controls-pause>Pause</a></div>';
+
+        it('Should be able to play the video;', function() {
+
+            createDirective(html, true);
+            playVideo();
+
+            spyOn($firstChildScope.player, 'play');
+            spyOn($firstChildScope.player, 'pause');
+
+            var playButton = angular.element($directive.find('a')[0]);
+            playButton.triggerHandler('click');
+            expect($firstChildScope.player.play).toHaveBeenCalled();
+            expect($firstChildScope.player.pause).not.toHaveBeenCalled();
+
+            var pauseButton = angular.element($directive.find('a')[1]);
+            pauseButton.triggerHandler('click');
+            expect($firstChildScope.player.pause).toHaveBeenCalled();
+
+        });
+
+    });
+
+    describe('Feedback', function() {
+
+        var html = '<div vi-feedback></div>';
+
+        it('Should be able to retrieve details about the video;', function(done) {
+
+            createDirective(html, true);
+            playVideo();
+
+            inject(function($rootScope, $timeout) {
+
+                var lastUpdate = $secondChildScope.lastUpdate;
+                expect($secondChildScope.lastUpdate).not.toEqual(0);
+
+                $rootScope.$broadcast('ng-video/feedback/refresh');
+                $rootScope.$digest();
+
+                $timeout(function() {
+
+                    expect($secondChildScope.lastUpdate).not.toEqual(0);
+                    expect($secondChildScope.lastUpdate).not.toEqual(lastUpdate);
+                    done();
+
+                }, 1000);
+
+            });
+
+        });
+
+
+    });
+
+});

@@ -10,12 +10,9 @@
 
     <!-- Dependencies! -->
     <script type="text/javascript" src="js/vendor/angular/angular.js"></script>
-    <script type="text/javascript" src="js/vendor/angular-sanitize/angular-sanitize.js"></script>
-    <!--<script type="text/javascript" src="js/vendor/jquery/dist/jquery.js"></script>-->
+    <script type="text/javascript" src="js/vendor/jquery/dist/jquery.js"></script>
 
     <!-- ngVideo! -->
-    <script type="text/javascript" src="js/vendor/ng-video/Common.js"></script>
-
     <script type="text/javascript" src="js/vendor/ng-video/Service.js"></script>
     <script type="text/javascript" src="js/vendor/ng-video/Bootstrap.js"></script>
     <script type="text/javascript" src="js/vendor/ng-video/Buffer.js"></script>
@@ -41,11 +38,14 @@
     <section class="ng-video-container">
 
         <!-- Base Directive -->
-        <section class="video" ng-video ng-model="interface">
+        <section class="video" ng-video>
+
+            <!-- Screen Directive -->
+            <video vi-screen></video>
 
             <section vi-controls class="controls">
-                <span ng-click="interface.controls.play()" title="Play" class="glyphicon glyphicon-play"></span>
-                <span ng-click="interface.controls.pause()" title="Pause" class="glyphicon glyphicon-pause"></span>
+                <span vi-controls-play title="Play" class="glyphicon glyphicon-play"></span>
+                <span vi-controls-pause title="Pause" class="glyphicon glyphicon-pause"></span>
             </section>
 
             <!-- Full Screen Directive -->
