@@ -11,6 +11,7 @@
   },
   "scripts": {
     "test": "grunt test",
+    "build": "grunt build",
     "start": "node example/server/default.js",
     "postinstall": "bower install; grunt build"
   },
