@@ -146,6 +146,14 @@
             throw 'ngVideo: ' + message + '.';
         };
 
+        /**
+         * @method resetSource
+         * @return {void}
+         */
+        service.resetSource = function clearSource(){
+            ngVideoPlaylist.length = 0;
+        };
+
         return service;
 
     }]);
