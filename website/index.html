@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>ngVideo - HTML5 Video Player</title>
+
+    <!-- Styles -->
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.2.0/css/bootstrap.min.css" />
+
+    <!-- Dependencies -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.19/angular.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+    <!-- ngVideo -->
+    <script type="text/javascript" src="../dist/ng-video.js"></script>
+
+    <!-- Angular app -->
+    <script type="text/javascript" src="app.js"></script>
+
+</head>
+<body ng-app="videoApp" ng-controller="VideoController">
+
+    <header class="site-header">
+        <h1>ngVideo</h1>
+        <p>A modularised HTML5 video player built with AngularJS</p>
+    </header>
+
+    <section class="ng-video-container">
+
+        <!-- Base Directive -->
+        <section class="video" ng-video>
+
+            <!-- Screen Directive -->
+            <video vi-screen></video>
+
+            <section vi-controls class="controls">
+                <span vi-controls-play title="Play" class="glyphicon glyphicon-play"></span>
+                <span vi-controls-pause title="Pause" class="glyphicon glyphicon-pause"></span>
+            </section>
+
+            <!-- Full Screen Directive -->
+            <section class="full-screen">
+                <span title="Full Screen" vi-full-screen-toggle class="glyphicon glyphicon-fullscreen"></span>
+            </section>
+
+            <!-- Feedback Directive -->
+            <section vi-feedback class="feedback">
+
+                <span class="buffering" ng-show="buffering">Buffering...</span>
+
+                <section class="loading" ng-show="loading">
+                    Loading...
+                </section>
+
+                <!-- Volume Directive -->
+                <section vi-volume class="volume">
+
+                    <div class="scale">
+                        <div class="bar" style="width: {{volume * 100}}%"></div>
+                    </div>
+
+                    <span vi-volume-decrease title="Decrease Volume" class="decrease glyphicon glyphicon-minus"></span>
+                    <span vi-volume-increase title="Increase Volume" class="increase glyphicon glyphicon-plus"></span>
+
+                </section>
+
+                <!-- Duration Directive -->
+                <section class="duration">
+                    {{currentTime | number: 2}}s of {{duration | number: 2}}s
+                    [{{percentagePlayed | number: 0}}%]
+                </section>
+
+                <section class="title">ngVideo</section>
+
+                <!-- Timeline Directive -->
+                <section class="timeline">
+                    <input vi-timeline />
+                </section>
+
+                <!-- Buffer Directive -->
+                <section vi-buffer class="buffer"></section>
+
+                <section class="generic">
+                    V{{volume}}
+                    <span vi-messages>M{{messages.length}}</span>
+                    R{{playbackRate}}
+                    P{{playing ? 1 : 0}}
+                    L{{loading ? 1 : 0}}
+                    B{{buffered}}%
+                    <a href="https://github.com/Wildhoney/ngVideo" target="_blank">
+                        GitHub.com/Wildhoney/ngVideo
+                    </a>
+                </section>
+
+            </section>
+
+            <!-- Playlist Directive -->
+            <section vi-playlist class="playlist" ng-show="$parent.playlistOpen">
+
+                <ul>
+                    <li class="title">
+                        <span class="glyphicon glyphicon-facetime-video"></span> &nbsp;
+                        Playlist
+                        <div class="close-playlist"
+                             title="Close Playlist"
+                             ng-click="$parent.playlistOpen = !$parent.playlistOpen">
+                            &times;
+                        </div>
+                    </li>
+                    <li vi-playlist-video ng-repeat="video in videos" ng-model="video">
+
+                        <span vi-meta ng-model="video" class="meta">
+                            {{duration | number: 2}}s
+                        </span>
+
+                        {{getVideoName(video)}}
+
+                    </li>
+                </ul>
+
+            </section>
+
+            <span title="Open Playlist"
+                  ng-show="!playlistOpen"
+                  ng-click="playlistOpen = !playlistOpen"
+                  class="open-playlist glyphicon glyphicon-facetime-video">
+            </span>
+
+        </section>
+
+    </section>
+
+</body>
+</html>
